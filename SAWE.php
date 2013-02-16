@@ -5,10 +5,10 @@
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
 	Version: 1.3
 	Author: Matthew Trevino
-	Author URI: http://boyevul.com
+	Author URI: https://github.com/boyevul/
 	License: A "Slug" license name e.g. GPL2
 
-	Copyright 2013  Matthew Trevino  (admin@boyevul.com)
+	Copyright 2013  Matthew Trevino  (boyevul@gmail.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
