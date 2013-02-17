@@ -1,0 +1,25 @@
+/********************************************************************/
+/*	Simple Announcement With Exclusion Styles Default Styles       
+	Version: 1.4 												   */
+/******************************************************************/
+
+#SAWE_shortcode, #SAWE_widget {
+	padding: 5px;
+	margin: auto; 
+	width: 100%:
+}
+
+#SAWE_shortcode img, #SAWE_widget img {
+	width: 100%; 
+	display: block; 
+	margin-bottom: 2px;
+	clear: both; 
+}
+
+#SAWE_shortcode p, #SAWE_widget p {
+	clear: both; 
+	font-size: 95%;
+	line-height: 96%;
+	margin-top: 5px;
+}
+

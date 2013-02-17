@@ -248,12 +248,12 @@
 	add_action("admin_menu", "simple_announcement_with_exclusion_add_options_page");
 	
 	if (is_admin() ) {
-		wp_register_style( 'SAWEStylesheet', plugins_url('style.css', __FILE__) );
+		wp_register_style( 'SAWEStylesheet', plugins_url('style.css', __FILE__), '1.4' );
 		wp_enqueue_style( 'SAWEStylesheet' );
 	}
 	
 	if (!is_admin() && get_option("simple_announcement_with_exclusion_6") === "yes") {
-		wp_register_style( 'SAWEDefaultStylesheet', plugins_url('default.css', __FILE__) );
+		wp_register_style( 'SAWEDefaultStylesheet', plugins_url('default.css', __FILE__), '1.4' );
 		wp_enqueue_style( 'SAWEDefaultStylesheet' );
 	}
 	

@@ -1,0 +1,74 @@
+/********************************************************************/
+/*	Simple Announcement With Exclusion Styles for the options page 
+	Version: 1.4                                                   */
+/******************************************************************/
+	.SAWE_settings {
+		width: 320px;
+		margin: 0px auto;
+		float: left;
+		display: block;
+		border: 1px dotted #000;
+		padding: 5px;
+		background-color: #fff5dc;
+		color: #35332f;
+	}
+
+	.SAWE_information {
+		width: 230px;
+		margin-bottom: 10px;
+		float: right; 
+		display: block; 
+		background-color: #2d2c28;
+		border: 1px solid #21201d;
+		color: #fff5dc;
+		padding: 5px;
+	}
+	
+	.SAWE_container {
+		width: 600px; 
+		margin: auto; 
+		display: block;
+	}
+
+	.SAWE_container h2 {
+		text-align: center; 
+		margin-bottom: -10px;
+		font-size: 20px;
+	}
+
+	.SAWE_container p {
+		text-align: center; 
+		font-size: 10px;
+	}
+	
+	.SAWE_information p {
+		text-align: left;
+		line-height: 12px;
+	}
+
+	.SAWE_settings label {
+		margin-bottom: 10px;
+		height: 35px;
+		clear: both;
+		display: block; 
+		width: 100%;
+		border-bottom: 1px dotted #000;
+	}
+
+	.SAWE_settings label .SAWE_settings_title {
+		display: block; 
+		float: left; 
+		margin-top: 5px;
+		font-size: 12px;
+	}
+
+	.SAWE_settings label input[type="text"], .SAWE_settings label select, .SAWE_settings input[type="submit"] {
+		width: 80px;
+		display: block;
+		float: right;
+		cursor: pointer;
+	}
+	
+	.SAWE_information a {
+		color: #ccf8ff;
+	}
