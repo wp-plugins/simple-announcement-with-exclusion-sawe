@@ -395,11 +395,11 @@
 				echo $after_widget ;
 			}
 
-			function update( $new_instance, $old_instance ) {
+			function SAWEupdate( $new_instance, $old_instance ) {
 				return $new_instance;
 			}
 			
-			function form( $instance ) {
+			function SAWEform( $instance ) {
 				$title = esc_attr( $instance["title"] );
 			}
 		}
