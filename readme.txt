@@ -25,7 +25,7 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 == Screenshots ==
 
-1. 
+1. Settings page
 
 
 == Changelog ==
