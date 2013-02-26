@@ -5,7 +5,7 @@
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
 	Version: 1.4
 	Author: Matthew Trevino
-	Author URI: https://github.com/boyevul/
+	Author URI: http://suntaku.com
 	License: A "Slug" license name e.g. GPL2
 
 	Copyright 2013  Matthew Trevino  (boyevul@gmail.com)
