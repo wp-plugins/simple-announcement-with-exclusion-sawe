@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: https://github.com/boyevul/SAWE
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 1.4
+	Version: 1.5
 	Author: Matthew Trevino
 	Author URI: http://suntaku.com
 	License: A "Slug" license name e.g. GPL2
@@ -37,7 +37,8 @@
 */
 
 
-//	Last update February 16th, 2013 - 8:04 PM
+//	Last update March 1st, 2013 - 9:53 AM
+	// Issue 1.0.0 - Exclusion not working (commented out in options table until it can be fixed.)
 
 
 // SAWE-000
@@ -50,6 +51,7 @@
 		// core settings
 		add_option("simple_announcement_with_exclusion_0","","Wrapper");
 		add_option("simple_announcement_with_exclusion_1","","Category");
+		add_option("simple_announcement_with_exclusion_1_1","","Tag");
 		add_option("simple_announcement_with_exclusion_2","3","Option 2");
 		add_option("simple_announcement_with_exclusion_3","","Option 3");
 		add_option("simple_announcement_with_exclusion_3_2","","Option 3.2");
@@ -68,6 +70,7 @@
 		if ( get_option("simple_announcement_with_exclusion_delete_on_deactivate") === "yes") {
 			delete_option("simple_announcement_with_exclusion_0");
 			delete_option("simple_announcement_with_exclusion_1");
+			delete_option("simple_announcement_with_exclusion_1_1");
 			delete_option("simple_announcement_with_exclusion_2");
 			delete_option("simple_announcement_with_exclusion_3");
 			delete_option("simple_announcement_with_exclusion_3_2");
@@ -94,6 +97,7 @@
 		if (
 				$_REQUEST["simple_announcement_with_exclusion_0"] ||
 				$_REQUEST["simple_announcement_with_exclusion_1"] ||
+				$_REQUEST["simple_announcement_with_exclusion_1_1"] ||
 				$_REQUEST["simple_announcement_with_exclusion_2"] ||
 				$_REQUEST["simple_announcement_with_exclusion_3"] ||
 				$_REQUEST["simple_announcement_with_exclusion_3_2"] ||
@@ -108,6 +112,7 @@
 			
 			update_option("simple_announcement_with_exclusion_0",$_REQUEST["simple_announcement_with_exclusion_0"]);
 			update_option("simple_announcement_with_exclusion_1",$_REQUEST["simple_announcement_with_exclusion_1"]);
+			update_option("simple_announcement_with_exclusion_1_1",$_REQUEST["simple_announcement_with_exclusion_1_1"]);
 			update_option("simple_announcement_with_exclusion_2",$_REQUEST["simple_announcement_with_exclusion_2"]);
 			update_option("simple_announcement_with_exclusion_3",$_REQUEST["simple_announcement_with_exclusion_3"]);
 			update_option("simple_announcement_with_exclusion_3_2",$_REQUEST["simple_announcement_with_exclusion_3_2"]);
@@ -132,6 +137,7 @@
 	
 		$default_simple_announcement_with_exclusion_0 = get_option("simple_announcement_with_exclusion_0");
 		$default_simple_announcement_with_exclusion_1 = get_option("simple_announcement_with_exclusion_1");
+		$default_simple_announcement_with_exclusion_1_1 = get_option("simple_announcement_with_exclusion_1_1");
 		$default_simple_announcement_with_exclusion_2 = get_option("simple_announcement_with_exclusion_2");
 		$default_simple_announcement_with_exclusion_3 = get_option("simple_announcement_with_exclusion_3");
 		$default_simple_announcement_with_exclusion_3_2 = get_option("simple_announcement_with_exclusion_3_2");
@@ -150,18 +156,32 @@
 		</label>
 
 		<label for=\"simple_announcement_with_exclusion_1\"><span class=\"SAWE_settings_title\">Category:</span>
-		<select name=\"simple_announcement_with_exclusion_1\">";
-				$sawe_categories=  get_categories(); 
-				foreach ($sawe_categories as $sawe_category) {
-					echo "<option value=\"",$sawe_category->cat_ID,"\"";
-					if ($sawe_category->cat_ID == $default_simple_announcement_with_exclusion_1) { echo " selected=\"selected\""; }
-					echo ">",$sawe_category->cat_name," - ",$sawe_category->category_count,"</option>";
+		<select name=\"simple_announcement_with_exclusion_1\">
+		<option value=\"\"><hr /></option>";
+				$sawe_tags =  get_categories('taxonomy=category'); 
+				foreach ($sawe_tags as $sawe_tag) {
+					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
+					if ($sawe_tag->cat_ID == $default_simple_announcement_with_exclusion_1) { echo " selected=\"selected\""; }
+					echo ">",$sawe_tag->cat_name," - ",$sawe_tag->category_count,"</option>";
+				}
+
+				
+		echo "
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_1_1\"><span class=\"SAWE_settings_title\">Tag:</span>
+		<select name=\"simple_announcement_with_exclusion_1_1\">
+		<option value=\"\"><hr /></option>";
+				$sawe_tags =  get_categories('taxonomy=post_tag'); 
+				foreach ($sawe_tags as $sawe_tag) {
+					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
+					if ($sawe_tag->cat_ID == $default_simple_announcement_with_exclusion_1_1) { echo " selected=\"selected\""; }
+					echo ">",$sawe_tag->cat_name," - ",$sawe_tag->category_count,"</option>";
 				}
 				
 		echo "
 		</select>
 		</label>
-
 		<label for=\"simple_announcement_with_exclusion_2\"><span class=\"SAWE_settings_title\">Number of posts:</span>
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_2\" value=\"",$default_simple_announcement_with_exclusion_2,"\" />
 		</label>
@@ -209,16 +229,20 @@
 				<option value=\"excerpt\""; if ($default_simple_announcement_with_exclusion_4_3 == "excerpt") { echo " selected=\"selected\""; } echo ">Excerpt</option>
 				<option value=\"content\""; if ($default_simple_announcement_with_exclusion_4_3 == "content") { echo " selected=\"selected\""; } echo ">Content</option>
 			</select>
-			</label>
-				
-			<label for=\"simple_announcement_with_exclusion_5\"><span class=\"SAWE_settings_title\">Exclude posts from main loop?:</span>
-			<select name=\"simple_announcement_with_exclusion_5\">
-				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_5 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_5 == "no") { echo " selected=\"selected\""; } echo ">No</option>
-			</select>
-			</label>
+			</label>";
+			
+			// Issue 1.0.0 - Exclusion not working
+			// Currently, for whatever unknown reason, exclusion IS NOT WORKING.
+			// Commenting this out for now until I can figoure out what exactly is going wrong.
+			
+			// <label for=\"simple_announcement_with_exclusion_5\"><span class=\"SAWE_settings_title\">Exclude posts from main loop?:</span>
+			// <select name=\"simple_announcement_with_exclusion_5\">
+			// 	<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_5 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+			// 	<option value=\"no\""; if ($default_simple_announcement_with_exclusion_5 == "no") { echo " selected=\"selected\""; } echo ">No</option>
+			// </select>
+			// </label>
 
-			<label for=\"simple_announcement_with_exclusion_6\"><span class=\"SAWE_settings_title\">Include default CSS?:</span>
+			echo "<label for=\"simple_announcement_with_exclusion_6\"><span class=\"SAWE_settings_title\">Include default CSS?:</span>
 			<select name=\"simple_announcement_with_exclusion_6\">
 				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_6 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_6 == "no") { echo " selected=\"selected\""; } echo ">No</option>
@@ -345,6 +369,7 @@
 		
 			$SAWE_0_w = ( get_option("simple_announcement_with_exclusion_0") );
 			$SAWE_1_w = ( get_option("simple_announcement_with_exclusion_1") );
+			$SAWE_1_1_w = ( get_option("simple_announcement_with_exclusion_1_1") );
 			$SAWE_2_w = ( get_option("simple_announcement_with_exclusion_2") );
 			$SAWE_3_w = ( get_option("simple_announcement_with_exclusion_3") );
 			$SAWE_3_2_w = ( get_option("simple_announcement_with_exclusion_3_2") );
@@ -354,14 +379,54 @@
 			$SAWE_5_w = ( get_option("simple_announcement_with_exclusion_5") );
 			$SAWE_6_w = ( get_option("simple_announcement_with_exclusion_6") );
 			
-			if ($SAWE_1_w != "" && $SAWE_2_w != "" && $SAWE_3_w != "") {
+			if ($SAWE_1_w != "" && $SAWE_1_1_w == "" && $SAWE_2_w != "" && $SAWE_3_w != "") {
 				echo "<div class=\"";
 				if ($SAWE_0_w != "") { echo "$SAWE_0_w"; }
 				echo "\" id=\"SAWE_widget\">";
 				global $post;
 				$tmp_post = $post;
 				$args = array( 
-					"category" => $SAWE_1_w, 
+					"cat" => $SAWE_1_w, 
+					"numberposts" => $SAWE_2_w, 
+					"order" => $SAWE_3_2_w, 
+					"orderby" => $SAWE_3_w 
+				);
+				$lastposts = get_posts( $args );
+				foreach($lastposts as $post) : setup_postdata($post); 
+
+				if ($SAWE_4_w == "yes") { 
+					if ( has_post_thumbnail() ) { ?>
+					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_post_thumbnail( "thumbnail" ); ?></a><br />
+					<?php } 			
+				}
+				
+				if ($SAWE_4_2_w == "yes") { ?>
+					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+				<?php }
+				
+				if ($SAWE_4_3_w == "excerpt") {
+					the_excerpt();
+				} elseif ($SAWE_4_3_w == "content") {
+					the_content();
+				}
+				
+				endforeach;
+				
+				if ($SAWE_0_w != "") { 
+					echo "</div>"; 
+				} 
+				
+				$post = $tmp_post;
+				echo $after_widget ;
+			}
+			if ($SAWE_1_w == "" && $SAWE_1_1_w != "" && $SAWE_2_w != "" && $SAWE_3_w != "") {
+				echo "<div class=\"";
+				if ($SAWE_0_w != "") { echo "$SAWE_0_w"; }
+				echo "\" id=\"SAWE_widget\">";
+				global $post;
+				$tmp_post = $post;
+				$args = array( 
+					"tag__in" => $SAWE_1_1_w, 
 					"numberposts" => $SAWE_2_w, 
 					"order" => $SAWE_3_2_w, 
 					"orderby" => $SAWE_3_w 
@@ -412,14 +477,14 @@
 
 // Hook into the loop and exclude our announcements category from showing on the front page.
 // if the option to do is set.
-	function SAWE_filter_home( $query ) {
-		$SAWE_1_fh = ( get_option("simple_announcement_with_exclusion_1") );
-		$SAWE_5_fh = ( get_option("simple_announcement_with_exclusion_5") );
-		if ( $query->is_home() && $query->is_main_query() && $SAWE_5_fh == "yes" ) {
-			$query->set( "cat", "-".$SAWE_1_fh."" );
-		}
-	}
-	add_action( "pre_get_posts", "SAWE_filter_home" );
+//	function SAWE_filter_home( $sawe_filter_query ) {
+//		$SAWE_1_fh = ( get_option("simple_announcement_with_exclusion_1") );
+//		$SAWE_5_fh = ( get_option("simple_announcement_with_exclusion_5") );
+//		if ( $sawe_filter_query->is_home() && $sawe_filter_query->is_main_query() && $SAWE_5_fh == "yes" ) {
+//			$sawe_filter_query = new WP_Query( "cat=-".$SAWE_1_fh."" );
+//		}
+//	}
+//	add_action( "pre_get_posts", "SAWE_filter_home" );
 	
 	
 	
@@ -430,6 +495,7 @@
 		if (!is_admin() ) {
 			$SAWE_0_sc = ( get_option("simple_announcement_with_exclusion_0") );
 			$SAWE_1_sc = ( get_option("simple_announcement_with_exclusion_1") );
+			$SAWE_1_1_sc = ( get_option("simple_announcement_with_exclusion_1_1") );
 			$SAWE_2_sc = ( get_option("simple_announcement_with_exclusion_2") );
 			$SAWE_3_sc = ( get_option("simple_announcement_with_exclusion_3") );
 			$SAWE_3_2_sc = ( get_option("simple_announcement_with_exclusion_3_2") );
@@ -439,14 +505,53 @@
 			$SAWE_5_sc = ( get_option("simple_announcement_with_exclusion_5") );
 			$SAWE_6_sc = ( get_option("simple_announcement_with_exclusion_6") );
 			
-			if ($SAWE_1_sc != "" && $SAWE_2_sc != "" && $SAWE_3_sc != "") {
+			if ($SAWE_1_sc != "" && $SAWE_1_1_sc == "" && $SAWE_2_sc != "" && $SAWE_3_sc != "") {
 				echo "<div class=\"";
 				if ($SAWE_0_w != "") { echo "$SAWE_0_sc"; }
 				echo "\" id=\"SAWE_shortcode\">";
 				global $post;
 				$tmp_post = $post;
 				$args = array( 
-					"category" => $SAWE_1_sc, 
+					"cat" => $SAWE_1_sc, 
+					"numberposts" => $SAWE_2_sc, 
+					"order" => $SAWE_3_2_sc, 
+					"orderby" => $SAWE_3_sc 
+				);
+				$lastposts = get_posts( $args );
+				foreach($lastposts as $post) : setup_postdata($post); 
+
+				if ($SAWE_4_sc == "yes") { 
+					if ( has_post_thumbnail() ) { ?>
+					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_post_thumbnail( "thumbnail" ); ?></a><br />
+					<?php } 			
+				}
+				
+				if ($SAWE_4_2_sc == "yes") { ?>
+					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+				<?php }
+				
+				if ($SAWE_4_3_sc == "excerpt") {
+					the_excerpt();
+				} elseif ($SAWE_4_3_sc == "content") {
+					the_content();
+				}				
+				
+				endforeach;
+				
+				if ($SAWE_0_sc != "") { 
+					echo "</div>"; 
+				} 
+				
+				$post = $tmp_post;
+			}
+			if ($SAWE_1_sc == "" && $SAWE_1_1_sc != "" && $SAWE_2_sc != "" && $SAWE_3_sc != "") {
+				echo "<div class=\"";
+				if ($SAWE_0_w != "") { echo "$SAWE_0_sc"; }
+				echo "\" id=\"SAWE_shortcode\">";
+				global $post;
+				$tmp_post = $post;
+				$args = array( 
+					"tag__in" => $SAWE_1_1_sc, 
 					"numberposts" => $SAWE_2_sc, 
 					"order" => $SAWE_3_2_sc, 
 					"orderby" => $SAWE_3_sc 
