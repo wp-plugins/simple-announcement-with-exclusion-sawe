@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: widget, category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.5
+Stable tag: 1.6
 
 Set aside a category to show in a widget, hide it from the feed.
 
@@ -26,6 +26,9 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
+= 1.6 = 
+* Fixed exclusion (it should now be working properly).  Worthwhile to note that pre_get_posts and exclusion rules don't affect sticky posts.
+
 = 1.5 =
 * Added the tags to the sorting options.  If both a tag AND a category are selected, nothing will show.  You will need to select the first option of the dropdown (blank) for one or the other for one of the two to show.
 * An issue with the exclusion function is keeping posts from being excluded properly.  The function and the option have been commented out in the code until a fix can be issued.

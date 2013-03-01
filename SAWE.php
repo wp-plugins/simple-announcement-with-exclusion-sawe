@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: https://github.com/boyevul/SAWE
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 1.5
+	Version: 1.6
 	Author: Matthew Trevino
 	Author URI: http://suntaku.com
 	License: A "Slug" license name e.g. GPL2
@@ -37,8 +37,9 @@
 */
 
 
-//	Last update March 1st, 2013 - 9:53 AM
+//	Last update March 1st, 2013 - 3:26 PM
 	// Issue 1.0.0 - Exclusion not working (commented out in options table until it can be fixed.)
+	 // FIXED.  (Also worth noting that pre_get_posts and taxonomy exclusion don't work on sticky posts.
 
 
 // SAWE-000
@@ -229,20 +230,16 @@
 				<option value=\"excerpt\""; if ($default_simple_announcement_with_exclusion_4_3 == "excerpt") { echo " selected=\"selected\""; } echo ">Excerpt</option>
 				<option value=\"content\""; if ($default_simple_announcement_with_exclusion_4_3 == "content") { echo " selected=\"selected\""; } echo ">Content</option>
 			</select>
-			</label>";
-			
-			// Issue 1.0.0 - Exclusion not working
-			// Currently, for whatever unknown reason, exclusion IS NOT WORKING.
-			// Commenting this out for now until I can figoure out what exactly is going wrong.
-			
-			// <label for=\"simple_announcement_with_exclusion_5\"><span class=\"SAWE_settings_title\">Exclude posts from main loop?:</span>
-			// <select name=\"simple_announcement_with_exclusion_5\">
-			// 	<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_5 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-			// 	<option value=\"no\""; if ($default_simple_announcement_with_exclusion_5 == "no") { echo " selected=\"selected\""; } echo ">No</option>
-			// </select>
-			// </label>
+			</label>
 
-			echo "<label for=\"simple_announcement_with_exclusion_6\"><span class=\"SAWE_settings_title\">Include default CSS?:</span>
+			 <label for=\"simple_announcement_with_exclusion_5\"><span class=\"SAWE_settings_title\">Exclude posts from main loop?:</span>
+			 <select name=\"simple_announcement_with_exclusion_5\">
+			 	<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_5 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+			 	<option value=\"no\""; if ($default_simple_announcement_with_exclusion_5 == "no") { echo " selected=\"selected\""; } echo ">No</option>
+			 </select>
+			 </label>
+
+			<label for=\"simple_announcement_with_exclusion_6\"><span class=\"SAWE_settings_title\">Include default CSS?:</span>
 			<select name=\"simple_announcement_with_exclusion_6\">
 				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_6 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_6 == "no") { echo " selected=\"selected\""; } echo ">No</option>
@@ -474,20 +471,6 @@
 		function SAWEWidgetInit() {
 		register_widget( "SAWEWidget" );
 	}
-
-// Hook into the loop and exclude our announcements category from showing on the front page.
-// if the option to do is set.
-//	function SAWE_filter_home( $sawe_filter_query ) {
-//		$SAWE_1_fh = ( get_option("simple_announcement_with_exclusion_1") );
-//		$SAWE_5_fh = ( get_option("simple_announcement_with_exclusion_5") );
-//		if ( $sawe_filter_query->is_home() && $sawe_filter_query->is_main_query() && $SAWE_5_fh == "yes" ) {
-//			$sawe_filter_query = new WP_Query( "cat=-".$SAWE_1_fh."" );
-//		}
-//	}
-//	add_action( "pre_get_posts", "SAWE_filter_home" );
-	
-	
-	
 	
 // SAWE-004
 // Shortcode (for displaying wherever)
@@ -587,4 +570,28 @@
 	}
 	
 	add_shortcode("sawe", "SAWE_shortcode");
+
+	
+	
+	
+	
+// Hook into the loop and exclude our announcements category from showing on the front page.
+// if the option to do is set.
+	function SAWE_filter_home( $query ) {
+
+		$SAWE_1_fh = ( get_option("simple_announcement_with_exclusion_1") );
+		$SAWE_1_1_fh = ( get_option("simple_announcement_with_exclusion_1_1") );
+		$SAWE_5_fh = ( get_option("simple_announcement_with_exclusion_5") );
+
+		if ( $query->is_home() && $query->is_main_query() && $SAWE_5_fh == "yes" && $SAWE_1_fh != "" && $SAWE_1_1_fh == "") {
+			$query->set( 'category__not_in', $SAWE_1_fh );
+			
+		}
+		
+		if ( $query->is_home() && $query->is_main_query() && $SAWE_5_fh == "yes" && $SAWE_1_fh == ""  && $SAWE_1_1_fh != "") {
+			$query->set( 'category__not_in', $SAWE_1_1_fh );
+		}
+	}
+	add_action( "pre_get_posts", "SAWE_filter_home" );	
+	do_action( 'SAWE_filter_home');
 ?>
