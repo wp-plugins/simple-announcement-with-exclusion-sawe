@@ -2,6 +2,33 @@
 /*	Simple Announcement With Exclusion Styles for the options page 
 	Version: 1.4                                                   */
 /******************************************************************/
+	.navigation {
+		margin: auto;
+		width: 300px;
+		display: block; 
+		position: relative;
+	}
+
+	.faq {
+		width: 570px;
+		margin: 10px auto;
+		float: left;
+		display: block;
+		border: 1px dotted #000;
+		padding: 5px;
+		background-color: #fff5dc;
+		color: #35332f;
+	}	
+	.faq p { 
+		margin-top: 5px; 
+		padding: 5px;
+	}
+	.faq div {
+		clear: both; 
+		margin-bottom: 15px;
+		border-bottom: 1px dotted #000;
+	}
+	
 	.SAWE_settings {
 		width: 320px;
 		margin: 0px auto;
@@ -39,7 +66,8 @@
 
 	.SAWE_container p {
 		text-align: center; 
-		font-size: 10px;
+		font-size: 14px;
+		line-height: 16px;
 	}
 	
 	.SAWE_information p {
@@ -78,7 +106,8 @@
 		text-align: left !important;
 	}
 	
-	.moreinfo {
+	div.moreinfo {
+		text-align: left !important;
 		clear: both; 
 		margin: auto;
 		width: 560px;
@@ -88,25 +117,28 @@
 		padding: 5px;
 	}
 	
-	
-#SAWE_shortcode, #SAWE_widget {
-	padding: 5px;
-	margin: auto; 
-	width: 95%;
-	overflow: hidden;
-}
+	#SAWE_shortcode, #SAWE_widget {
+		padding: 5px;
+		margin: auto; 
+		width: 95%;
+		overflow: hidden;
+	}
 
-#SAWE_shortcode img, #SAWE_widget img {
-	width: 100%; 
-	display: block; 
-	margin-bottom: 2px;
-	clear: both; 
+	#SAWE_shortcode img, #SAWE_widget img {
+		width: 100%; 
+		display: block; 
+		margin-bottom: 2px;
+		clear: both; 
 
-}
+	}
 
-#SAWE_shortcode p, #SAWE_widget p {
-	clear: both; 
-	font-size: 95%;
-	line-height: 96%;
-	margin-top: 5px;
-}
+	#SAWE_shortcode p, #SAWE_widget p {
+		clear: both; 
+		font-size: 95%;
+		line-height: 96%;
+		margin-top: 5px;
+	}
+
+	#preview {
+		background-color: #000;
+	}

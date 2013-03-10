@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://suntaku.com/sawe/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 1.8
+	Version: 1.9
 	Author: Matthew Trevino
 	Author URI: http://suntaku.com
 	License: A "Slug" license name e.g. GPL2
@@ -37,7 +37,7 @@
 */
 
 
-//	Last update March 9th, 2013 - 7:31 PM
+//	Last update March 10th, 2013 - 11:01 AM
 	// Issue 1.0.0 - Exclusion not working (commented out in options table until it can be fixed.)
 	 // FIXED.  (Also worth noting that pre_get_posts and taxonomy exclusion don't work on sticky posts.
 
@@ -348,13 +348,13 @@
 	function simple_announcement_with_exclusions_page_content() { 
 		echo "	<div class=\"SAWE_container\">
 				<h2>Simple Announcement With Exclusion (SAWE)</h2>
-				<p>Designate a category for announcements to show in a widget while excluding it from the main loop.</p>
+				<p>Designate a group of posts to show in a widget while excluding it from the main loop.</p>
 
-				<div class=\"moreinfo\">
+				
 				<script type=\"text/javascript\">
 				jQuery(document).ready(function () {
-					jQuery('#SAWEinfo').bind('change', function () {
-						var elements = jQuery('div.SAWEinfo').children().hide(); // hide all the elements
+					jQuery('#SAWEsection').bind('change', function () {
+						var elements = jQuery('div.SAWEsection').children().hide(); // hide all the elements
 						var value = jQuery(this).val();
 		
 						if (value.length) { // if somethings' selected
@@ -364,32 +364,27 @@
 				});		
 				</script>
 				<div id=\"information\">
-				<select id=\"SAWEinfo\">
-				<option value=\"\">Select an option to learn more about what it is and what it does</option>
-				<option value=\"divclassname\">Div class name</option>
-				<option value=\"posttype\">What kind of post type</option>
-				<option value=\"numberofposts\">Number of posts</option>
-				<option value=\"postsorder\">Posts order</option>
-				<option value=\"thumbnails\">Thumbnails</option>
-				<option value=\"showtitles\">Show titles</option>
-				<option value=\"excerptcontentnothing\">Show excerpt, content, or nothing</option>
-				<option value=\"exclude\">Exclude posts from main loop</option>
-				<option value=\"includecss\">Include default CSS</option>
-				<option value=\"deactivation\">Delete options on deactivation</option>
-				</select>
+				<select id=\"SAWEsection\" class=\"navigation\">
+				<option value=\"\">Sections</option>
+				<option value=\"\">--------</option>
+				<option value=\"options\" selected=\"selected\">Options</option>
+				<option value=\"faq\">FAQ</option>
+				</select>				
 				
 				
-				
-					<div class=\"SAWEinfo\">
+				<div class=\"SAWEsection\">
+					<div class=\"faq\">
 
 					<div class=\"divclassname\">
-					<p>This setting is an optional one.  Simply put, it will give the widget created 
+					<p><strong><u>Div class name (optional)</u></strong><br />
+					This setting is an optional one.  Simply put, it will give the widget created 
 					a div class name of your choosing so that you may style it yourself with your 
 					theme's CSS.</p>
 					</div>
 
 					<div class=\"posttype\">
-					<p>You are able to choose from either your post tags, post categories, or post formats.  
+					<p><strong><u>What kind of post type</u></strong><br />
+					You are able to choose from either your post tags, post categories, or post formats.  
 					If post formats are not enabled by your theme or a plugin, SAWE will enable <strong>all</strong> 
 					post formats.</p>
 					<p>Once you make a choice, a second dropdown menu will appear, and you will be able to select 
@@ -402,37 +397,49 @@
 					</div>
 					
 					<div class=\"numberofposts\">
-					<p>Here, you may define how many posts are shown.  This number may be as high as you wish it to be, or as low 
+					<p><strong><u>Number of posts</u></strong><br />
+					Here, you may define how many posts are shown.  This number may be as high as you wish it to be, or as low 
 					as you want.</p>
 					</div>
 					
+					<div class=\"orderby\">
+					<p><strong><u>Order by</u></strong><br />
+					You may order your posts by date, title, or randomly.					
+					</div>
+					
 					<div class=\"postsorder\">
-					<p>Here, you may define <strong>how</strong> your posts are ordered - in descending order, or ascending.  Descending is 
+					<p><strong><u>Posts order</u></strong><br />
+					Here, you may define <strong>how</strong> your posts are ordered - in descending order, or ascending.  Descending is 
 					top to bottom, and ascending is bottom to top.  If you are planning on showing only one post at a time, top to bottom 
 					is going to be your choice (ascending will only show the first post from your chosen post type).</p>
 					</div>
 					
 					<div class=\"thumbnails\">
-					<p>If your theme or plugins do not enable post thumbnails, SAWE enables them for you.  Here, you may choose whether or 
+					<p><strong><u>Thumbnails?</u></strong><br />
+					If your theme or plugins do not enable post thumbnails, SAWE enables them for you.  Here, you may choose whether or 
 					not to include post thumbnails in your new loop.</p>
 					</div>
 					
 					<div class=\"showtitles\">
-					<p>Whether or not you want clickable title links to accompany your posts.  If you choose to show nothing in the following option, 
+					<p><strong><u>Show titles?</u></strong><br />
+					Whether or not you want clickable title links to accompany your posts.  If you choose to show nothing in the following option, 
 					you may wish to have this activated.</p>
 					</div>
 					
 					<div class=\"excerptcontentnothing\">
-					<p>Here, you may select whether you want the excerpt of the post shown, the full content of the post, or nothing at all.
+					<p><strong><u>Show excerpt, content, or nothing?</u></strong><br />
+					Here, you may select whether you want the excerpt of the post shown, the full content of the post, or nothing at all.
 					Full content is <strong>full content</strong> - links, images, and all.</p>
 					</div>
 					
 					<div class=\"exclude\">
-					<p>Whether or not you want the posts in your new loop to be excluded from your main loop (home loop only)</p>
+					<p><strong><u>Exclude posts from main loop?</u></strong><br />
+					Whether or not you want the posts in your new loop to be excluded from your main loop (home loop only)</p>
 					</div>
 					
 					<div class=\"includecss\">
-					<p>The default CSS is a simple CSS file that styles the elements of the new loop.  It styles the following elements: 
+					<p><strong><u>Include default CSS?</u></strong><br />
+					The default CSS is a simple CSS file that styles the elements of the new loop.  It styles the following elements: 
 					#SAWE_shortcode, #SAWE_widget, #SAWE_shortcode img, #SAWE_widget img, #SAWE_shortcode p, #SAWE_widget p.</p>
 					<p>#SAWE_shortcode and #SAWE_widget are the container of the new loop, while img and p are images and paragraphs.  
 					It will attempt (if enabled) to apply a width of 100% to the images (thumbnails), give clearance on both sides to paragraph 
@@ -441,7 +448,8 @@
 					</div>
 					
 					<div class=\"deactivation\">
-					<p>SAWE stores its settings in the options table of your Wordpress installation.  If this option is set to no, 
+					<p><strong><u>Delete options on deactivation?</u></strong><br />
+					SAWE stores its settings in the options table of your Wordpress installation.  If this option is set to no, 
 					even if you deactivate it and delete it, the options will remain (should want to reinstall for whatever reason).  
 					However, should you want to completely uninstall (and delete these options from your installation database), 
 					set this option to <strong>yes</strong> before you deactivate the plugin and uninstall it.</p>
@@ -454,7 +462,10 @@
 				
 				
 				</div>		
+
 				
+				<div class=\"SAWEsection\">
+				<div class=\"options\">
 				<blockquote>
 				
 					";
@@ -467,20 +478,11 @@
 				echo "</blockquote>
 
 				
+
 				
 				<div class=\"SAWE_information\">
 				<strong>Shortcode</strong>
 				<p>Use the shortcode <strong>[SAWE]</strong> on a post or a page to display the SAWE loop.</p>
-				</div>
-				
-				<div class=\"SAWE_information\">
-				<strong>About Default Styles</strong>
-				<p>You have the option of loading the default styles for the widget/shortcode area, which will style 
-				the output of SAWE to make the content fit in the best way possible.  However, since each theme is different, 
-				and styling can be tricky when it comes to preparing for the potential thousands of different themes this 
-				plugin could interact with, I can't say that it will look great <strong>in every situation</strong>.</p>
-				<p>Should you find that loading the default styles makes it stick out in a way that is unsastisfactory, I'd 
-				suggest simply disabling that option, adding a class name, and editing the CSS manually.</p>
 				</div>
 				
 				<div class=\"SAWE_information\">
@@ -506,9 +508,11 @@
 				<p>Hopefully you've been able to find some use out of this little plugin!</p>
 				</div>
 											
-				</div>
 				
-				<div class=\"moreinfo\">";
+				
+				<div class=\"SAWE_information\" id=\"preview\">
+				PREVIEW<hr />
+				";
 			$SAWE_0_sc = ( get_option("simple_announcement_with_exclusion_0") );
 			$SAWE_1_sc = ( get_option("simple_announcement_with_exclusion_1") );
 			$SAWE_1_1_sc = ( get_option("simple_announcement_with_exclusion_1_1") );
@@ -591,7 +595,10 @@
 			}				
 				echo "</div>
 				
-
+				</div>
+				</div>
+				</div>
+				</div>
 				
 				
 				
