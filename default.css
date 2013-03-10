@@ -6,7 +6,8 @@
 #SAWE_shortcode, #SAWE_widget {
 	padding: 5px;
 	margin: auto; 
-	width: 100%:
+	width: 95%;
+	overflow: hidden;
 }
 
 #SAWE_shortcode img, #SAWE_widget img {

@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://suntaku.com/sawe/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 1.7
+	Version: 1.8
 	Author: Matthew Trevino
 	Author URI: http://suntaku.com
 	License: A "Slug" license name e.g. GPL2
@@ -37,7 +37,7 @@
 */
 
 
-//	Last update March 1st, 2013 - 3:26 PM
+//	Last update March 9th, 2013 - 7:31 PM
 	// Issue 1.0.0 - Exclusion not working (commented out in options table until it can be fixed.)
 	 // FIXED.  (Also worth noting that pre_get_posts and taxonomy exclusion don't work on sticky posts.
 
@@ -188,9 +188,9 @@
 		<label for=\"simple_announcement_with_exclusion_1\"><span class=\"SAWE_settings_title\">What kind of post type:</span>
 		<select name=\"simple_announcement_with_exclusion_1\" id=\"chooseposttype\">
 		<option value=\"\">Choose a post type</option>
-		<option value=\"cat\"";if ($default_simple_announcement_with_exclusion_1 == "cat") { echo "selected=\"selected\""; } echo ">Category</option>
-		<option value=\"tag\"";if ($default_simple_announcement_with_exclusion_1 == "tag") { echo "selected=\"selected\""; } echo ">Tag</option>
-		<option value=\"post-format\"";if ($default_simple_announcement_with_exclusion_1 == "post-format") { echo "selected=\"selected\""; } echo ">Post format</option>
+		<option value=\"cat\"";if ($default_simple_announcement_with_exclusion_1 == "cat") { echo " selected=\"selected\""; } echo ">Category</option>
+		<option value=\"tag\"";if ($default_simple_announcement_with_exclusion_1 == "tag") { echo " selected=\"selected\""; } echo ">Tag</option>
+		<option value=\"post-format\"";if ($default_simple_announcement_with_exclusion_1 == "post-format") { echo " selected=\"selected\""; } echo ">Post format</option>
 		</select>
 		</label>";
 		
@@ -198,7 +198,7 @@
 		// If option value cat is selected
 		echo "<label for=\"simple_announcement_with_exclusion_1_1\" class=\"cat\"><span class=\"SAWE_settings_title\">Post format:</span>
 		<select name=\"simple_announcement_with_exclusion_1_1\">
-		<option value=\"\"><hr /></option>";
+		<option value=\"\"></option>";
 				$sawe_tags =  get_categories('taxonomy=category'); 
 				foreach ($sawe_tags as $sawe_tag) {
 					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
@@ -213,7 +213,7 @@
 		// If option value tag is selected
 		echo "<label for=\"simple_announcement_with_exclusion_1_2\" class=\"tag\"><span class=\"SAWE_settings_title\">Tag:</span>
 		<select name=\"simple_announcement_with_exclusion_1_2\">
-		<option value=\"\"><hr /></option>";
+		<option value=\"\"></option>";
 				$sawe_tags =  get_categories('taxonomy=post_tag'); 
 				foreach ($sawe_tags as $sawe_tag) {
 					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
@@ -231,16 +231,16 @@
 		// If option value post-format is selected
 		echo "<label for=\"simple_announcement_with_exclusion_1_3\" class=\"post-format\"><span class=\"SAWE_settings_title\">Post format:</span>
 		<select name=\"simple_announcement_with_exclusion_1_3\">
-		<option value=\"\"><hr /></option>
-		<option value=\"post-format-aside\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-aside") { echo "selected=\"selected\""; } echo ">Aside</option>
-		<option value=\"post-format-gallery\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-gallery") { echo "selected=\"selected\""; } echo ">Gallery</option>
-		<option value=\"post-format-link\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-link") { echo "selected=\"selected\""; } echo ">Link</option>
-		<option value=\"post-format-image\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-image") { echo "selected=\"selected\""; } echo ">Image</option>
-		<option value=\"post-format-quote\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-quote") { echo "selected=\"selected\""; } echo ">Quote</option>
-		<option value=\"post-format-status\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-status") { echo "selected=\"selected\""; } echo ">Status</option>
-		<option value=\"post-format-video\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-video") { echo "selected=\"selected\""; } echo ">Video</option>
-		<option value=\"post-format-audio\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-audio") { echo "selected=\"selected\""; } echo ">Audio</option>
-		<option value=\"post-format-chat\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-chat") { echo "selected=\"selected\""; } echo ">Chat</option>
+		<option value=\"\"></option>
+		<option value=\"post-format-aside\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
+		<option value=\"post-format-gallery\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
+		<option value=\"post-format-link\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
+		<option value=\"post-format-image\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
+		<option value=\"post-format-quote\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
+		<option value=\"post-format-status\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
+		<option value=\"post-format-video\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
+		<option value=\"post-format-audio\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
+		<option value=\"post-format-chat\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
 		</select>
 		</label>
 		</div>";
@@ -286,7 +286,7 @@
 				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_4_2 == "no") { echo " selected=\"selected\""; } echo ">No</option>
 			</select>
 			</label>
-				<label for=\"simple_announcement_with_exclusion_4_3\"><span class=\"SAWE_settings_title\">Show post excerpt, full content, or nothing?</span>
+				<label for=\"simple_announcement_with_exclusion_4_3\"><span class=\"SAWE_settings_title\">Show excerpt, content, or nothing?</span>
 			<select name=\"simple_announcement_with_exclusion_4_3\">
 				<option value=\"nothing\""; if ($default_simple_announcement_with_exclusion_4_3 == "nothing") { echo " selected=\"selected\""; } echo ">Nothing</option>
 				<option value=\"excerpt\""; if ($default_simple_announcement_with_exclusion_4_3 == "excerpt") { echo " selected=\"selected\""; } echo ">Excerpt</option>
@@ -349,6 +349,111 @@
 		echo "	<div class=\"SAWE_container\">
 				<h2>Simple Announcement With Exclusion (SAWE)</h2>
 				<p>Designate a category for announcements to show in a widget while excluding it from the main loop.</p>
+
+				<div class=\"moreinfo\">
+				<script type=\"text/javascript\">
+				jQuery(document).ready(function () {
+					jQuery('#SAWEinfo').bind('change', function () {
+						var elements = jQuery('div.SAWEinfo').children().hide(); // hide all the elements
+						var value = jQuery(this).val();
+		
+						if (value.length) { // if somethings' selected
+							elements.filter('.' + value).show(); // show the ones we want
+						}
+					}).trigger('change'); // Setup the initial states
+				});		
+				</script>
+				<div id=\"information\">
+				<select id=\"SAWEinfo\">
+				<option value=\"\">Select an option to learn more about what it is and what it does</option>
+				<option value=\"divclassname\">Div class name</option>
+				<option value=\"posttype\">What kind of post type</option>
+				<option value=\"numberofposts\">Number of posts</option>
+				<option value=\"postsorder\">Posts order</option>
+				<option value=\"thumbnails\">Thumbnails</option>
+				<option value=\"showtitles\">Show titles</option>
+				<option value=\"excerptcontentnothing\">Show excerpt, content, or nothing</option>
+				<option value=\"exclude\">Exclude posts from main loop</option>
+				<option value=\"includecss\">Include default CSS</option>
+				<option value=\"deactivation\">Delete options on deactivation</option>
+				</select>
+				
+				
+				
+					<div class=\"SAWEinfo\">
+
+					<div class=\"divclassname\">
+					<p>This setting is an optional one.  Simply put, it will give the widget created 
+					a div class name of your choosing so that you may style it yourself with your 
+					theme's CSS.</p>
+					</div>
+
+					<div class=\"posttype\">
+					<p>You are able to choose from either your post tags, post categories, or post formats.  
+					If post formats are not enabled by your theme or a plugin, SAWE will enable <strong>all</strong> 
+					post formats.</p>
+					<p>Once you make a choice, a second dropdown menu will appear, and you will be able to select 
+					from all available options (whether they are tags, categories, or formats).  While the post formats 
+					dropdown is pre-filled (aside, gallery, link, image, quote, status, video, audio, chat), tag and categories 
+					will be generated dynamically (and only if there is at least one post in that category.</p>
+					<p>Unlike the post format dropdown, tags and categories will be accompanied by the number of posts associated 
+					with each option, so that you may plan appropriately for how many posts to show in the option below (<em>Number 
+					of posts</em>).</p>
+					</div>
+					
+					<div class=\"numberofposts\">
+					<p>Here, you may define how many posts are shown.  This number may be as high as you wish it to be, or as low 
+					as you want.</p>
+					</div>
+					
+					<div class=\"postsorder\">
+					<p>Here, you may define <strong>how</strong> your posts are ordered - in descending order, or ascending.  Descending is 
+					top to bottom, and ascending is bottom to top.  If you are planning on showing only one post at a time, top to bottom 
+					is going to be your choice (ascending will only show the first post from your chosen post type).</p>
+					</div>
+					
+					<div class=\"thumbnails\">
+					<p>If your theme or plugins do not enable post thumbnails, SAWE enables them for you.  Here, you may choose whether or 
+					not to include post thumbnails in your new loop.</p>
+					</div>
+					
+					<div class=\"showtitles\">
+					<p>Whether or not you want clickable title links to accompany your posts.  If you choose to show nothing in the following option, 
+					you may wish to have this activated.</p>
+					</div>
+					
+					<div class=\"excerptcontentnothing\">
+					<p>Here, you may select whether you want the excerpt of the post shown, the full content of the post, or nothing at all.
+					Full content is <strong>full content</strong> - links, images, and all.</p>
+					</div>
+					
+					<div class=\"exclude\">
+					<p>Whether or not you want the posts in your new loop to be excluded from your main loop (home loop only)</p>
+					</div>
+					
+					<div class=\"includecss\">
+					<p>The default CSS is a simple CSS file that styles the elements of the new loop.  It styles the following elements: 
+					#SAWE_shortcode, #SAWE_widget, #SAWE_shortcode img, #SAWE_widget img, #SAWE_shortcode p, #SAWE_widget p.</p>
+					<p>#SAWE_shortcode and #SAWE_widget are the container of the new loop, while img and p are images and paragraphs.  
+					It will attempt (if enabled) to apply a width of 100% to the images (thumbnails), give clearance on both sides to paragraph 
+					elements (so as to separate them from thumbnails and title links), and give a 5px margin.</p>
+					<p>Completely optional, and provided as a convenience.</p>
+					</div>
+					
+					<div class=\"deactivation\">
+					<p>SAWE stores its settings in the options table of your Wordpress installation.  If this option is set to no, 
+					even if you deactivate it and delete it, the options will remain (should want to reinstall for whatever reason).  
+					However, should you want to completely uninstall (and delete these options from your installation database), 
+					set this option to <strong>yes</strong> before you deactivate the plugin and uninstall it.</p>
+					</div>
+					
+					</div>
+					</div>
+					
+					
+				
+				
+				</div>		
 				
 				<blockquote>
 				
@@ -360,6 +465,8 @@
 					print_simple_announcement_with_exclusion_form();
 					
 				echo "</blockquote>
+
+				
 				
 				<div class=\"SAWE_information\">
 				<strong>Shortcode</strong>
@@ -398,9 +505,96 @@
 				<strong>Thanks for using SAWE!</strong>
 				<p>Hopefully you've been able to find some use out of this little plugin!</p>
 				</div>
-				
-				
+											
 				</div>
+				
+				<div class=\"moreinfo\">";
+			$SAWE_0_sc = ( get_option("simple_announcement_with_exclusion_0") );
+			$SAWE_1_sc = ( get_option("simple_announcement_with_exclusion_1") );
+			$SAWE_1_1_sc = ( get_option("simple_announcement_with_exclusion_1_1") );
+			$SAWE_1_2_sc = ( get_option("simple_announcement_with_exclusion_1_2") );
+			$SAWE_1_3_sc = ( get_option("simple_announcement_with_exclusion_1_3") );
+			$SAWE_2_sc = ( get_option("simple_announcement_with_exclusion_2") );
+			$SAWE_3_sc = ( get_option("simple_announcement_with_exclusion_3") );
+			$SAWE_3_2_sc = ( get_option("simple_announcement_with_exclusion_3_2") );
+			$SAWE_4_sc = ( get_option("simple_announcement_with_exclusion_4") );
+			$SAWE_4_2_sc = ( get_option("simple_announcement_with_exclusion_4_2") );
+			$SAWE_4_3_sc = ( get_option("simple_announcement_with_exclusion_4_3") );
+			$SAWE_5_sc = ( get_option("simple_announcement_with_exclusion_5") );
+			$SAWE_6_sc = ( get_option("simple_announcement_with_exclusion_6") );
+			
+			if ($SAWE_1_sc != "" && $SAWE_2_sc != "" && $SAWE_3_sc != "") {
+				echo "<div class=\"";
+				if ($SAWE_0_w != "") { echo "$SAWE_0_sc"; }
+				echo "\" id=\"SAWE_shortcode\">";
+				global $post;
+				$tmp_post = $post;
+				
+					if ($SAWE_1_sc == "cat") {
+						$args = array(
+						"cat" => $SAWE_1_1_sc, 
+						"numberposts" => $SAWE_2_sc, 
+						"order" => $SAWE_3_2_sc, 
+						"orderby" => $SAWE_3_sc
+						);
+					}
+					elseif ($SAWE_1_sc == "tag") {
+						$args = array(
+						"tag_in" => $SAWE_1_2_sc,
+						"numberposts" => $SAWE_2_sc, 
+						"order" => $SAWE_3_2_sc, 
+						"orderby" => $SAWE_3_sc 
+						);
+					}
+					elseif ($SAWE_1_sc == "post-format") {
+						$args = array(
+						"numberposts" => $SAWE_2_sc, 
+						"order" => $SAWE_3_2_sc, 
+						"orderby" => $SAWE_3_sc,
+						'tax_query' => array(
+							array(
+							  'taxonomy' => 'post_format',
+							  'field'    => 'slug',
+							  'terms'    => array( $SAWE_1_3_sc ),
+							  'operator' => 'IN'
+							)
+						)
+						);
+					}
+					
+				$lastposts = get_posts( $args );
+				foreach($lastposts as $post) : setup_postdata($post); 
+
+				if ($SAWE_4_sc == "yes") { 
+					if ( has_post_thumbnail() ) { ?>
+					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_post_thumbnail( "thumbnail" ); ?></a><br />
+					<?php } 			
+				}
+				
+				if ($SAWE_4_2_sc == "yes") { ?>
+					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+				<?php }
+				
+				if ($SAWE_4_3_sc == "excerpt") {
+					the_excerpt();
+				} elseif ($SAWE_4_3_sc == "content") {
+					the_content();
+				}				
+				
+				endforeach;
+				
+				if ($SAWE_0_sc != "") { 
+					echo "</div>"; 
+				} 
+				
+				$post = $tmp_post;
+			}				
+				echo "</div>
+				
+
+				
+				
+				
 			";			
 	}
 	
