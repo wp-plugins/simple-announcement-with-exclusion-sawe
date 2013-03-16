@@ -1,11 +1,11 @@
 <?php
 /*
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
-	Plugin URI: http://suntaku.com/sawe/
+	Plugin URI: http://wordpress.org/extend/plugins/simple-announcement-with-exclusion-sawe/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
 	Version: 1.9
 	Author: Matthew Trevino
-	Author URI: http://suntaku.com
+	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
 
 	Copyright 2013  Matthew Trevino  (boyevul@gmail.com)
