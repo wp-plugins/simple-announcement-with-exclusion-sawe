@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://papercaves.com/wordpress-plugins/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 2.0
+	Version: 2.1
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -37,7 +37,7 @@
 */
 
 
-//	Last update March 10th, 2013 - 11:01 AM
+//	Last update March 18th, 2013 - 2:44 AM
 	// Issue 1.0.0 - Exclusion not working (commented out in options table until it can be fixed.)
 	 // FIXED.  (Also worth noting that pre_get_posts and taxonomy exclusion don't work on sticky posts.
 
@@ -298,6 +298,10 @@
 			 <select name=\"simple_announcement_with_exclusion_5\">
 			 	<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_5 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 			 	<option value=\"no\""; if ($default_simple_announcement_with_exclusion_5 == "no") { echo " selected=\"selected\""; } echo ">No</option>
+				<option value=\"frontcat\""; if ($default_simple_announcement_with_exclusion_5 == "frontcat") { echo " selected=\"selected\""; } echo ">Main &amp; Category</option>
+				<option value=\"fronttag\""; if ($default_simple_announcement_with_exclusion_5 == "fronttag") { echo " selected=\"selected\""; } echo ">Main &amp; Tag</option>
+				<option value=\"everywhere\""; if ($default_simple_announcement_with_exclusion_5 == "everywhere") { echo " selected=\"selected\""; } echo ">Everywhere</option>
+				
 			 </select>
 			 </label>
 
@@ -435,6 +439,12 @@
 					<div class=\"exclude\">
 					<p><strong><u>Exclude posts from main loop?</u></strong><br />
 					Whether or not you want the posts in your new loop to be excluded from your main loop (home loop only)</p>
+					<p>Yes will exclude it from the main (home) loop only - no will leave them in the loop.  Main &amp; Category will 
+					exclude the posts from both the main loop and category loop (useful for post types and tags).  Main &amp; Tag will 
+					exclude the posts from both the main loop and the tag loop (useful for categories).  Everywhere will only show the 
+					content either in single post view or through the widget (excluded from any archive, search result, or front page).</p>
+					
+					
 					</div>
 					
 					<div class=\"includecss\">
@@ -834,14 +844,42 @@
 		$SAWE_1_2_fh = ( get_option("simple_announcement_with_exclusion_1_2") );
 		$SAWE_5_fh = ( get_option("simple_announcement_with_exclusion_5") );
 
-		if ( $query->is_home() && $query->is_main_query() && $SAWE_5_fh == "yes" && $SAWE_1_fh == "cat") {
+		if ( $SAWE_5_fh == "yes" ) {
+		if ( $query->is_home() && $query->is_main_query() && $SAWE_1_fh == "cat") {
 			$query->set( "category__not_in", $SAWE_1_1_fh );
 		}
 		
-		if ( $query->is_home() && $query->is_main_query() && $SAWE_5_fh == "yes" && $SAWE_1_fh == "tag") {
+		if ( $query->is_home() && $query->is_main_query() && $SAWE_1_fh == "tag") {
 			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
 		}
-	
+		}
+		
+		if ( $SAWE_5_fh == "frontcat" ) {
+		if ( $query->is_home && $SAWE_1_fh == "cat" || $query->is_category && $SAWE_1_fh == "cat") {
+			$query->set( "category__not_in", $SAWE_1_1_fh );
+		}
+		if ( $query->is_home && $SAWE_1_fh == "tag" || $query->is_category && $SAWE_1_fh == "tag") {
+			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
+		}
+		}
+
+		if ( $SAWE_5_fh == "fronttag" ) {
+		if ( $query->is_home && $SAWE_1_fh == "cat" || $query->is_tag && $SAWE_1_fh == "cat") {
+			$query->set( "category__not_in", $SAWE_1_1_fh );
+		}
+		if ( $query->is_home && $SAWE_1_fh == "tag" || $query->is_tag && $SAWE_1_fh == "tag") {
+			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
+		}
+		}		
+
+		if ( $SAWE_5_fh == "everywhere" ) {
+		if ( $query->is_home && $SAWE_1_fh == "cat" || $query->is_archive && $SAWE_1_fh == "cat" || $query->is_search  && $SAWE_1_fh == "cat") {
+			$query->set( "category__not_in", $SAWE_1_1_fh );
+		}
+		if ( $query->is_home && $SAWE_1_fh == "tag" || $query->is_archive && $SAWE_1_fh == "tag" || $query->is_search  && $SAWE_1_fh == "tag") {
+			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
+		}
+		}				
 	
 	}
 	
@@ -859,7 +897,36 @@
 		) );
 		$query->set( 'tax_query', $tax_query );
 	}
+
+	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "fronttag" && $SAWE_1_hh == "post-format" ||  $query->is_tag() && $SAWE_5_hh == "fronttag" && $SAWE_1_hh == "post-format") {
+		$tax_query = array( array(
+			'taxonomy' => 'post_format',
+			'field' => 'slug',
+			'terms' => array( $SAWE_1_3_hh ),
+			'operator' => 'NOT IN',
+		) );
+		$query->set( 'tax_query', $tax_query );
+	}	
 	
+	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "frontcat" && $SAWE_1_hh == "post-format" ||  $query->is_category() && $SAWE_5_hh == "frontcat" && $SAWE_1_hh == "post-format") {
+		$tax_query = array( array(
+			'taxonomy' => 'post_format',
+			'field' => 'slug',
+			'terms' => array( $SAWE_1_3_hh ),
+			'operator' => 'NOT IN',
+		) );
+		$query->set( 'tax_query', $tax_query );
+	}	
+	
+	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format" ||  $query->is_archive() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format" ||  $query->is_search() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format") {
+		$tax_query = array( array(
+			'taxonomy' => 'post_format',
+			'field' => 'slug',
+			'terms' => array( $SAWE_1_3_hh ),
+			'operator' => 'NOT IN',
+		) );
+		$query->set( 'tax_query', $tax_query );
+	}
 	
 	}
 	
