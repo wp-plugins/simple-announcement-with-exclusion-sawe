@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: widget, category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.9
+Stable tag: 2.0
 
 Set aside a category to show in a widget, hide it from the feed.
 
@@ -26,6 +26,9 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
+= 2.0 =
+* Choosing tag wasn't working - fixed it.  Exclusion fixed (again).
+
 = 1.9 = 
 * FAQ moved to separate section, hidden so as not to clutter the options page - navigated to via dropdown.
 

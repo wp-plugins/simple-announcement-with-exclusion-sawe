@@ -1,9 +1,9 @@
 <?php
 /*
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
-	Plugin URI: http://wordpress.org/extend/plugins/simple-announcement-with-exclusion-sawe/
+	Plugin URI: http://papercaves.com/wordpress-plugins/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 1.9
+	Version: 2.0
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -544,7 +544,7 @@
 					}
 					elseif ($SAWE_1_sc == "tag") {
 						$args = array(
-						"tag_in" => $SAWE_1_2_sc,
+						"tag__in" => $SAWE_1_2_sc,
 						"numberposts" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
 						"orderby" => $SAWE_3_sc 
@@ -664,7 +664,7 @@
 					}
 					elseif ($SAWE_1_w == "tag") {
 						$args = array(
-						"tag_in" => $SAWE_1_2_w,
+						"tag__in" => $SAWE_1_2_w,
 						"numberposts" => $SAWE_2_w, 
 						"order" => $SAWE_3_2_w, 
 						"orderby" => $SAWE_3_w 
@@ -767,7 +767,7 @@
 					}
 					elseif ($SAWE_1_sc == "tag") {
 						$args = array(
-						"tag_in" => $SAWE_1_2_sc,
+						"tag__in" => $SAWE_1_2_sc,
 						"numberposts" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
 						"orderby" => $SAWE_3_sc 
@@ -837,9 +837,12 @@
 		if ( $query->is_home() && $query->is_main_query() && $SAWE_5_fh == "yes" && $SAWE_1_fh == "cat") {
 			$query->set( "category__not_in", $SAWE_1_1_fh );
 		}
-		elseif ( $query->is_home() && $query->is_main_query() && $SAWE_5_fh == "yes" && $SAWE_1_fh == "tag") {
-			$query->set( "category__not_in", $SAWE_1_2_fh );
+		
+		if ( $query->is_home() && $query->is_main_query() && $SAWE_5_fh == "yes" && $SAWE_1_fh == "tag") {
+			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
 		}
+	
+	
 	}
 	
 	function SAWE_exclude_formats( $query ) {
@@ -856,10 +859,12 @@
 		) );
 		$query->set( 'tax_query', $tax_query );
 	}
+	
+	
 	}
 	
-	
 	add_action( "pre_get_posts", "SAWE_filter_home" );	
-	add_action( 'pre_get_posts', 'SAWE_exclude_formats' );
+	add_action( "pre_get_posts", "SAWE_exclude_formats" );
+	
 	
 ?>
