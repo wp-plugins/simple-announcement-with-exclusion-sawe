@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: widget, category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.1
+Stable tag: 2.2
 
 Set aside a category to show in a widget, hide it from the feed.
 
@@ -26,6 +26,9 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
+= 2.2 =
+* Issue 1.0.1 - Everywhere excluded it from EVERYWHERE.  Designated everywhere to mean is_main_query() only. (FIXED)
+
 = 2.1 =
 * 3 new exclusion rules: Main & category (exclude from main loop and category loop - useful for post types and tags) - Main & tag (exclude from main loop and tag loop - useful for categories) - Everywhere (exclude from search results, category loop, tag loop, and front page).
 

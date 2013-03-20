@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://papercaves.com/wordpress-plugins/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 2.1
+	Version: 2.2
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -37,10 +37,12 @@
 */
 
 
-//	Last update March 18th, 2013 - 2:44 AM
+//	Last update March 20th, 2013 - 10:09 AM
 	// Issue 1.0.0 - Exclusion not working (commented out in options table until it can be fixed.)
 	 // FIXED.  (Also worth noting that pre_get_posts and taxonomy exclusion don't work on sticky posts.
 
+	// Issue 1.0.1 - Everywhere excluded it from EVERYWHERE.  Designated everywhere to mean is_main_query() only.
+	 // FIXED March 20th, 2013 10:09 AM
 
 // Add theme support for Post Formats
 // Aside, gallery, link, image, quote, status, video, audio, chat	 
@@ -873,10 +875,10 @@
 		}		
 
 		if ( $SAWE_5_fh == "everywhere" ) {
-		if ( $query->is_home && $SAWE_1_fh == "cat" || $query->is_archive && $SAWE_1_fh == "cat" || $query->is_search  && $SAWE_1_fh == "cat") {
+		if ( $query->is_home && $SAWE_1_fh == "cat" || $query->is_archive && $query->is_main_query() && $SAWE_1_fh == "cat" || $query->is_search  && $query->is_main_query() && $SAWE_1_fh == "cat") {
 			$query->set( "category__not_in", $SAWE_1_1_fh );
 		}
-		if ( $query->is_home && $SAWE_1_fh == "tag" || $query->is_archive && $SAWE_1_fh == "tag" || $query->is_search  && $SAWE_1_fh == "tag") {
+		if ( $query->is_home && $SAWE_1_fh == "tag" || $query->is_archive && $query->is_main_query() && $SAWE_1_fh == "tag" || $query->is_search  && $query->is_main_query() && $SAWE_1_fh == "tag") {
 			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
 		}
 		}				
@@ -918,7 +920,7 @@
 		$query->set( 'tax_query', $tax_query );
 	}	
 	
-	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format" ||  $query->is_archive() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format" ||  $query->is_search() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format") {
+	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format" ||  $query->is_archive() && $query->is_main_query() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format" ||  $query->is_search() && $query->is_main_query() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format") {
 		$tax_query = array( array(
 			'taxonomy' => 'post_format',
 			'field' => 'slug',
