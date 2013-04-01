@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://papercaves.com/wordpress-plugins/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 2.2
+	Version: 2.3
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -337,7 +337,7 @@
 	add_action("admin_menu", "simple_announcement_with_exclusion_add_options_page");
 	
 	if (is_admin() ) {
-		wp_register_style( 'SAWEStylesheet', plugins_url('style.css', __FILE__), '1.4' );
+		wp_register_style( 'SAWEStylesheet', plugins_url('style.css', __FILE__), '2.3' );
 		wp_enqueue_style( 'SAWEStylesheet' );
 	}
 	
@@ -353,10 +353,12 @@
 // Display the information on the page that was created.
 	function simple_announcement_with_exclusions_page_content() { 
 		echo "	<div class=\"SAWE_container\">
-				<h2>Simple Announcement With Exclusion (SAWE)</h2>
+				<h2>Simple Announcement With Exclusion</h2>
 				<p>Designate a group of posts to show in a widget while excluding it from the main loop.</p>
-
-				
+				<blockquote>
+					Use the widget or shortcode: [SAWE] to display on a post or page.
+				</blockquote>
+				<blockquote>
 				<script type=\"text/javascript\">
 				jQuery(document).ready(function () {
 					jQuery('#SAWEsection').bind('change', function () {
@@ -490,37 +492,6 @@
 				echo "</blockquote>
 
 				
-
-				
-				<div class=\"SAWE_information\">
-				<strong>Shortcode</strong>
-				<p>Use the shortcode <strong>[SAWE]</strong> on a post or a page to display the SAWE loop.</p>
-				</div>
-				
-				<div class=\"SAWE_information\">
-				<strong>Post thumbnails</strong>
-				<p>";
-				
-				if ( (function_exists("has_post_thumbnail")) ) { 
-					echo "Looks like post thumbnails were already enabled for this theme!";
-				} else {
-					add_theme_support( 'post-thumbnails' );
-					echo "Post thumbnails has been enabled for your theme.  You may add them from your post editing screen.";
-				}
-				
-				echo "</p></div>
-				
-				<div class=\"SAWE_information\">
-				<strong>Changelog</strong>
-				<p>You can view the official changelog for this plugin at its page on Github (located here: <a href=\"https://github.com/boyevul/sawe\">https://github.com/boyevul/sawe</a>)</p>
-				</div>
-				
-				<div class=\"SAWE_information\">
-				<strong>Thanks for using SAWE!</strong>
-				<p>Hopefully you've been able to find some use out of this little plugin!</p>
-				</div>
-											
-				
 				
 				<div class=\"SAWE_information\" id=\"preview\">
 				PREVIEW<hr />
@@ -610,6 +581,7 @@
 				</div>
 				</div>
 				</div>
+				</blockquote>
 				</div>
 				
 				
