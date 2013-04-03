@@ -511,7 +511,13 @@
 			$SAWE_4_3_sc = ( get_option("simple_announcement_with_exclusion_4_3") );
 			$SAWE_5_sc = ( get_option("simple_announcement_with_exclusion_5") );
 			$SAWE_6_sc = ( get_option("simple_announcement_with_exclusion_6") );
-			$SAWE_7_sc = ( get_option("simple_announcement_with_exclusion_7") );
+			if ( (function_exists("wp_pagenavi")) ) { $SAWE_7_sc = ( get_option("simple_announcement_with_exclusion_7") ); } else { $SAWE_7_sc = "no"; }
+					if ($SAWE_7_sc === "yes") {
+						$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+					}
+					if ($SAWE_7_sc === "no") {
+						$paged = '';
+					}
 			
 			if ($SAWE_1_sc != "" && $SAWE_2_sc != "" && $SAWE_3_sc != "") {
 				echo "<div class=\"";
