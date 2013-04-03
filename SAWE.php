@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://papercaves.com/wordpress-plugins/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 2.3.1
+	Version: 2.3.2
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -42,10 +42,19 @@
 	// Issue 1.0.1 - Everywhere excluded it from EVERYWHERE.  Designated everywhere to mean is_main_query() only.
 	 // FIXED March 20th, 2013 10:09 AM
 
-// Add theme support for Post Formats
-// Aside, gallery, link, image, quote, status, video, audio, chat	 
+	// Add theme support for Post Formats
+	// Aside, gallery, link, image, quote, status, video, audio, chat	 
 	add_theme_support( 'post-formats', array( 'aside', 'gallery','link','image','quote','status','video','audio','chat' ) );
-	
+	// Add shortcode [sawe]
+	add_shortcode("sawe", "SAWE_shortcode");
+	// Add widget
+	add_action( "widgets_init", "SAWEWidgetInit" );
+		function SAWEWidgetInit() {
+		register_widget( "SAWEWidget" );
+	}	
+	// Add filters for exclusion rule sets
+	add_action( "pre_get_posts", "SAWE_filter_home" );	
+	add_action( "pre_get_posts", "SAWE_exclude_formats" );
 
 // SAWE-000
 // Registering and installaing relevant plugin information to the database.
@@ -172,7 +181,6 @@
 		$default_simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");
 		
 		echo "
-		
 		<script type=\"text/javascript\">
 		jQuery(document).ready(function () {
 			jQuery('#chooseposttype').bind('change', function () {
@@ -318,17 +326,17 @@
 				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 			</select>
 			</label>";
-
-// Paging function not yet implemented.
-//
-//			<label for=\"simple_announcement_with_exclusion_7\"><span class=\"SAWE_settings_title\">Paged?:</span>
-//			<select name=\"simple_announcement_with_exclusion_7\">
-//				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_7 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-//				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_7 === "no") { echo " selected=\"selected\""; } echo ">No</option>
-//			</select>
-//			</label>			
-//
-// Will be Soon.
+			
+			
+			// wp-pagenavi plugin needs to be present to take advantage of pagination
+			if ( (function_exists("wp_pagenavi")) ) {
+				echo "<label for=\"simple_announcement_with_exclusion_7\"><span class=\"SAWE_settings_title\">Paged?:</span>
+				<select name=\"simple_announcement_with_exclusion_7\">
+					<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_7 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+					<option value=\"no\""; if ($default_simple_announcement_with_exclusion_7 === "no") { echo " selected=\"selected\""; } echo ">No</option>
+				</select>
+				</label>";
+			}
 			
 			echo "<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\"><span class=\"SAWE_settings_title\">Delete options on deactivation?:</span>
 			<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
@@ -616,10 +624,8 @@
 			}
 		
 			$SAWE_0_w = ( get_option("simple_announcement_with_exclusion_0") );
-			
 			// What kind of post type
 			$SAWE_1_w = ( get_option("simple_announcement_with_exclusion_1") );
-			
 			// Post type selection (be it category, tag, or post format)
 			$SAWE_1_1_w = ( get_option("simple_announcement_with_exclusion_1_1") );
 			$SAWE_1_2_w = ( get_option("simple_announcement_with_exclusion_1_2") );
@@ -632,24 +638,22 @@
 			$SAWE_4_3_w = ( get_option("simple_announcement_with_exclusion_4_3") );
 			$SAWE_5_w = ( get_option("simple_announcement_with_exclusion_5") );
 			$SAWE_6_w = ( get_option("simple_announcement_with_exclusion_6") );
-			$SAWE_7_w = ( get_option("simple_announcement_with_exclusion_7") );
-			
+			// Post pagination (needs wp-pagenavi wordpress plugin)
+			if ( (function_exists("wp_pagenavi")) ) { $SAWE_7_w = ( get_option("simple_announcement_with_exclusion_7") ); } else { $SAWE_7_w = "no"; }
+					if ($SAWE_7_w === "yes") {
+						$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+					}
+					if ($SAWE_7_w === "no") {
+						$paged = '';
+					}		
 			if ($SAWE_1_w != "" && $SAWE_2_w != "" && $SAWE_3_w != "") {
 				echo "<div class=\"";
 				if ($SAWE_0_w != "") { echo "$SAWE_0_w"; }
 				echo "\" id=\"SAWE_widget\">";
 				
-					if ($SAWE_7_w === "yes") {
-						$SAWE_paged_widget = (get_query_var('paged')) ? get_query_var('paged') : 1;
-					}
-					if ($SAWE_7_w === "no") {
-						$SAWE_paged_widget = '';
-					}				
-				
-				
 					if ($SAWE_1_w === "cat") {
 						$args = array(
-						"paged" => $SAWE_paged_widget,
+						"paged" => $paged,
 						"cat" => $SAWE_1_1_w, 
 						"posts_per_page" => $SAWE_2_w, 
 						"order" => $SAWE_3_2_w, 
@@ -658,7 +662,7 @@
 					}
 					elseif ($SAWE_1_w === "tag") {
 						$args = array(
-						"paged" => $SAWE_paged_widget,
+						"paged" => $paged,
 						"tag__in" => $SAWE_1_2_w,
 						"posts_per_page" => $SAWE_2_w, 
 						"order" => $SAWE_3_2_w, 
@@ -667,7 +671,7 @@
 					}
 					elseif ($SAWE_1_w === "post-format") {
 						$args = array(
-						"paged" => $SAWE_paged_widget,
+						"paged" => $paged,
 						"posts_per_page" => $SAWE_2_w, 
 						"order" => $SAWE_3_2_w, 
 						"orderby" => $SAWE_3_w,
@@ -681,56 +685,44 @@
 						)
 						);
 					}
-				
-
-				$SAWE_widget_query = new WP_Query( $args );
-				if ($SAWE_widget_query->have_posts()) : 
-				while ($SAWE_widget_query->have_posts()) : $SAWE_widget_query->the_post();
-
-				if ($SAWE_4_w === "yes") { 
-					if ( has_post_thumbnail() ) { ?>
-					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_post_thumbnail( "thumbnail" ); ?></a><br />
-					<?php } 			
-				}
-				
-				if ($SAWE_4_2_w === "yes") { ?>
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-				<?php }
-				
-				if ($SAWE_4_3_w === "excerpt") {
-					the_excerpt();
-				} elseif ($SAWE_4_3_w === "content") {
-					the_content();
-				}
-				
+				// The widget loop
+				$wp_query_SAWE_widget = new WP_Query( $args );
+				if ( $wp_query_SAWE_widget->have_posts() ):
+				while ($wp_query_SAWE_widget->have_posts()) : $wp_query_SAWE_widget->the_post();
+					if ($SAWE_4_w === "yes") { 
+						if ( has_post_thumbnail() ) { 
+							echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
+								",the_post_thumbnail( "thumbnail" ),"</a><br />";
+						} 			
+					}
+					if ($SAWE_4_2_w === "yes") { 
+							echo "<a class=\"SAWE_widget_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
+					}
+					if ($SAWE_4_3_w === "excerpt") { the_excerpt(); 
+					} elseif ($SAWE_4_3_w === "content") { the_content(); }
 				endwhile;
-				
-
-				
+				if ($SAWE_7_w === "yes") { 
+					if ( (function_exists("wp_pagenavi")) ) {
+						echo "<div class=\"SAWE_post_navigation\">";
+						wp_pagenavi(array( 'query' => $wp_query_SAWE_widget ) );
+						echo "</div>";
+					}
+				}
 				endif;
-
-				if ($SAWE_0_w != "") { 
-					echo "</div>"; 
-				} 
-				
+				if ($SAWE_0_w != "") { echo "</div>"; } 
 				echo $after_widget ;
 			}
-
-
+			
 			function SAWEupdate( $new_instance, $old_instance ) {
 				return $new_instance;
 			}
-			
 			function SAWEform( $instance ) {
 				$title = esc_attr( $instance["title"] );
 			}
 		}
 	}
 
-	add_action( "widgets_init", "SAWEWidgetInit" );
-		function SAWEWidgetInit() {
-		register_widget( "SAWEWidget" );
-	}
+
 	
 // SAWE-004
 // Shortcode (for displaying wherever)
@@ -750,22 +742,21 @@
 			$SAWE_5_sc = ( get_option("simple_announcement_with_exclusion_5") );
 			$SAWE_6_sc = ( get_option("simple_announcement_with_exclusion_6") );
 			$SAWE_7_sc = ( get_option("simple_announcement_with_exclusion_7") );
-			
+			if ( (function_exists("wp_pagenavi")) ) { $SAWE_7_w = ( get_option("simple_announcement_with_exclusion_7") ); } else { $SAWE_7_w = "no"; }
+			if ($SAWE_7_sc === "yes") {
+				$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+			}
+			if ($SAWE_7_sc === "no") {
+				$paged = '';
+			}
 			if ($SAWE_1_sc != "" && $SAWE_2_sc != "" && $SAWE_3_sc != "") {
 				echo "<div class=\"";
 				if ($SAWE_0_sc != "") { echo "$SAWE_0_sc"; }
 				echo "\" id=\"SAWE_shortcode\">";
-						if ($SAWE_7_sc === "yes") {
-						$SAWE_paged_widget = (get_query_var('paged')) ? get_query_var('paged') : 1;
-					}
-					if ($SAWE_7_sc === "no") {
-						$SAWE_paged_widget = '';
-					}				
-				
 				
 					if ($SAWE_1_sc === "cat") {
 						$args = array(
-						"paged" => $SAWE_paged_widget,
+						"paged" => $paged,
 						"cat" => $SAWE_1_1_sc, 
 						"posts_per_page" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
@@ -774,7 +765,7 @@
 					}
 					elseif ($SAWE_1_sc === "tag") {
 						$args = array(
-						"paged" => $SAWE_paged_scidget,
+						"paged" => $paged,
 						"tag__in" => $SAWE_1_2_sc,
 						"posts_per_page" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
@@ -783,7 +774,7 @@
 					}
 					elseif ($SAWE_1_sc === "post-format") {
 						$args = array(
-						"paged" => $SAWE_paged_widget,
+						"paged" => $paged,
 						"posts_per_page" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
 						"orderby" => $SAWE_3_sc,
@@ -797,40 +788,37 @@
 						)
 						);
 					}
-
-				$SAWE_widget_query = new WP_Query( $args );
-				if ($SAWE_widget_query->have_posts()) : 
-				while ($SAWE_widget_query->have_posts()) : $SAWE_widget_query->the_post();
-
-				if ($SAWE_4_sc === "yes") { 
-					if ( has_post_thumbnail() ) { ?>
-					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_post_thumbnail( "thumbnail" ); ?></a><br />
-					<?php } 			
-				}
-				
-				if ($SAWE_4_2_sc === "yes") { ?>
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-				<?php }
-				
-				if ($SAWE_4_3_sc === "excerpt") {
-					the_excerpt();
-				} elseif ($SAWE_4_3_sc === "content") {
-					the_content();
-				}
-				
+				// The shortcode loop
+				$wp_query_SAWE_shortcode = new WP_Query( $args );
+				if ( $wp_query_SAWE_shortcode->have_posts() ):
+				while ($wp_query_SAWE_shortcode->have_posts()) : $wp_query_SAWE_shortcode->the_post();
+					if ($SAWE_4_sc === "yes") { 
+						if ( has_post_thumbnail() ) { 
+							echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
+								",the_post_thumbnail( "thumbnail" ),"</a><br />";
+						} 			
+					}
+					if ($SAWE_4_2_sc === "yes") { 
+							echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
+					}
+					if ($SAWE_4_3_sc === "excerpt") { the_excerpt(); 
+					} elseif ($SAWE_4_3_sc === "content") { the_content(); }
 				endwhile;
+				if ($SAWE_7_sc === "yes") { 
+					if ( (function_exists("wp_pagenavi")) ) {
+						echo "<div class=\"SAWE_post_navigation\">";
+						wp_pagenavi(array( 'query' => $wp_query_SAWE_shortcode ) );
+						echo "</div>";
+					}
+				}
 				endif;
-				
-				if ($SAWE_0_sc != "") { 
-					echo "</div>"; 
-				} 
-				
-				$post = $tmp_post;
+				if ($SAWE_0_sc != "") { echo "</div>"; } 
 			}
+			
 		}
 	}
 	
-	add_shortcode("sawe", "SAWE_shortcode");
+
 
 	
 	
@@ -931,7 +919,4 @@
 	
 	}
 	
-	add_action( "pre_get_posts", "SAWE_filter_home" );	
-	add_action( "pre_get_posts", "SAWE_exclude_formats" );
-
 ?>

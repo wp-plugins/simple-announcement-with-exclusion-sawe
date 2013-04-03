@@ -23,4 +23,7 @@
 	line-height: 96%;
 	margin-top: 5px;
 }
-
+a.SAWE_shortcode_title,a.SAWE_widget_title { display: block;}
+.SAWE_post_navigation { clear: both; margin: 10px 0 10px 0; }
+.SAWE_left { float: left; }
+.SAWE_right { float: right; }
