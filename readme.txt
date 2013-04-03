@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: widget, category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 2.3
+Stable tag: 2.3.1
 
 Set aside a category to show in a widget, hide it from the feed.
 
@@ -26,6 +26,10 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
+= 2.3.1 = 
+* get_posts swapped for query_posts (for widget, shortcode output, and preview area).  
+* When category selected as post type, option title should now read "Category" (instead of "Post Format").
+
 = 2.3 =
 * So - let's go ahead and clean up the admin screen.
 

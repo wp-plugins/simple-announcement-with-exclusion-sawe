@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://papercaves.com/wordpress-plugins/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 2.3
+	Version: 2.3.1
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -36,8 +36,6 @@
 
 */
 
-
-//	Last update March 20th, 2013 - 10:09 AM
 	// Issue 1.0.0 - Exclusion not working (commented out in options table until it can be fixed.)
 	 // FIXED.  (Also worth noting that pre_get_posts and taxonomy exclusion don't work on sticky posts.
 
@@ -70,6 +68,7 @@
 		add_option("simple_announcement_with_exclusion_4_3","nothing","Option 4.3");
 		add_option("simple_announcement_with_exclusion_5","yes","Option 5");
 		add_option("simple_announcement_with_exclusion_6","no","Option 6");
+		add_option("simple_announcement_with_exclusion_7","no","Option 7");
 		add_option("simple_announcement_with_exclusion_delete_on_deactivate","no","Delete on deactivate?");
 	}
 
@@ -78,6 +77,7 @@
 // Check to make sure that the option to delete is set to "yes" before we delete the information.	
 	function simple_announcement_with_exclusion_uninstall() {
 		if ( get_option("simple_announcement_with_exclusion_delete_on_deactivate") === "yes") {
+		
 			delete_option("simple_announcement_with_exclusion_0");
 			delete_option("simple_announcement_with_exclusion_1");
 			delete_option("simple_announcement_with_exclusion_1_1");
@@ -91,7 +91,9 @@
 			delete_option("simple_announcement_with_exclusion_4_3");
 			delete_option("simple_announcement_with_exclusion_5");
 			delete_option("simple_announcement_with_exclusion_6");
+			delete_option("simple_announcement_with_exclusion_7");
 			delete_option("simple_announcement_with_exclusion_delete_on_deactivate");
+			
 		} else { }
 		
 	}
@@ -120,6 +122,7 @@
 				$_REQUEST["simple_announcement_with_exclusion_4_3"] ||
 				$_REQUEST["simple_announcement_with_exclusion_5"] ||
 				$_REQUEST["simple_announcement_with_exclusion_6"] ||
+				$_REQUEST["simple_announcement_with_exclusion_7"] ||
 				$_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"]
 				
 			) {
@@ -137,6 +140,7 @@
 			update_option("simple_announcement_with_exclusion_4_3",$_REQUEST["simple_announcement_with_exclusion_4_3"]);
 			update_option("simple_announcement_with_exclusion_5",$_REQUEST["simple_announcement_with_exclusion_5"]);
 			update_option("simple_announcement_with_exclusion_6",$_REQUEST["simple_announcement_with_exclusion_6"]);
+			update_option("simple_announcement_with_exclusion_7",$_REQUEST["simple_announcement_with_exclusion_7"]);
 			update_option("simple_announcement_with_exclusion_delete_on_deactivate",$_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"]);
 			$simple_announcement_with_exclusion_was_updated = true;
 			
@@ -164,6 +168,7 @@
 		$default_simple_announcement_with_exclusion_4_3 = get_option("simple_announcement_with_exclusion_4_3");
 		$default_simple_announcement_with_exclusion_5 = get_option("simple_announcement_with_exclusion_5");
 		$default_simple_announcement_with_exclusion_6 = get_option("simple_announcement_with_exclusion_6");
+		$default_simple_announcement_with_exclusion_7 = get_option("simple_announcement_with_exclusion_7");
 		$default_simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");
 		
 		echo "
@@ -190,21 +195,21 @@
 		<label for=\"simple_announcement_with_exclusion_1\"><span class=\"SAWE_settings_title\">What kind of post type:</span>
 		<select name=\"simple_announcement_with_exclusion_1\" id=\"chooseposttype\">
 		<option value=\"\">Choose a post type</option>
-		<option value=\"cat\"";if ($default_simple_announcement_with_exclusion_1 == "cat") { echo " selected=\"selected\""; } echo ">Category</option>
-		<option value=\"tag\"";if ($default_simple_announcement_with_exclusion_1 == "tag") { echo " selected=\"selected\""; } echo ">Tag</option>
-		<option value=\"post-format\"";if ($default_simple_announcement_with_exclusion_1 == "post-format") { echo " selected=\"selected\""; } echo ">Post format</option>
+		<option value=\"cat\"";if ($default_simple_announcement_with_exclusion_1 === "cat") { echo " selected=\"selected\""; } echo ">Category</option>
+		<option value=\"tag\"";if ($default_simple_announcement_with_exclusion_1 === "tag") { echo " selected=\"selected\""; } echo ">Tag</option>
+		<option value=\"post-format\"";if ($default_simple_announcement_with_exclusion_1 === "post-format") { echo " selected=\"selected\""; } echo ">Post format</option>
 		</select>
 		</label>";
 		
 		echo "<div class=\"posttypeselection\">";
 		// If option value cat is selected
-		echo "<label for=\"simple_announcement_with_exclusion_1_1\" class=\"cat\"><span class=\"SAWE_settings_title\">Post format:</span>
+		echo "<label for=\"simple_announcement_with_exclusion_1_1\" class=\"cat\"><span class=\"SAWE_settings_title\">Category:</span>
 		<select name=\"simple_announcement_with_exclusion_1_1\">
 		<option value=\"\"></option>";
 				$sawe_tags =  get_categories('taxonomy=category'); 
 				foreach ($sawe_tags as $sawe_tag) {
 					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
-					if ($sawe_tag->cat_ID == $default_simple_announcement_with_exclusion_1_1) { echo " selected=\"selected\""; }
+					if ($sawe_tag->cat_ID === $default_simple_announcement_with_exclusion_1_1) { echo " selected=\"selected\""; }
 					echo ">",$sawe_tag->cat_name," - ",$sawe_tag->category_count,"</option>";
 				}
 		echo "</select>
@@ -219,7 +224,7 @@
 				$sawe_tags =  get_categories('taxonomy=post_tag'); 
 				foreach ($sawe_tags as $sawe_tag) {
 					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
-					if ($sawe_tag->cat_ID == $default_simple_announcement_with_exclusion_1_2) { echo " selected=\"selected\""; }
+					if ($sawe_tag->cat_ID === $default_simple_announcement_with_exclusion_1_2) { echo " selected=\"selected\""; }
 					echo ">",$sawe_tag->cat_name," - ",$sawe_tag->category_count,"</option>";
 				}
 				
@@ -234,15 +239,15 @@
 		echo "<label for=\"simple_announcement_with_exclusion_1_3\" class=\"post-format\"><span class=\"SAWE_settings_title\">Post format:</span>
 		<select name=\"simple_announcement_with_exclusion_1_3\">
 		<option value=\"\"></option>
-		<option value=\"post-format-aside\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
-		<option value=\"post-format-gallery\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
-		<option value=\"post-format-link\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
-		<option value=\"post-format-image\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
-		<option value=\"post-format-quote\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
-		<option value=\"post-format-status\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
-		<option value=\"post-format-video\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
-		<option value=\"post-format-audio\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
-		<option value=\"post-format-chat\"";if ($default_simple_announcement_with_exclusion_1_3 == "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
+		<option value=\"post-format-aside\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
+		<option value=\"post-format-gallery\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
+		<option value=\"post-format-link\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
+		<option value=\"post-format-image\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
+		<option value=\"post-format-quote\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
+		<option value=\"post-format-status\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
+		<option value=\"post-format-video\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
+		<option value=\"post-format-audio\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
+		<option value=\"post-format-chat\"";if ($default_simple_announcement_with_exclusion_1_3 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
 		</select>
 		</label>
 		</div>";
@@ -253,17 +258,17 @@
 		
 		<label for=\"simple_announcement_with_exclusion_3\"><span class=\"SAWE_settings_title\">Order by:</span>
 		<select name=\"simple_announcement_with_exclusion_3\">
-			<option value=\"date\""; if ($default_simple_announcement_with_exclusion_3 == "date") { echo " selected=\"selected\""; } echo ">Date</option>
-			<option value=\"title\""; if ($default_simple_announcement_with_exclusion_3 == "title") { echo " selected=\"selected\""; } echo ">Title</option>
-			<option value=\"rand\""; if ($default_simple_announcement_with_exclusion_3 == "rand") { echo " selected=\"selected\""; } echo ">Random</option>
+			<option value=\"date\""; if ($default_simple_announcement_with_exclusion_3 === "date") { echo " selected=\"selected\""; } echo ">Date</option>
+			<option value=\"title\""; if ($default_simple_announcement_with_exclusion_3 === "title") { echo " selected=\"selected\""; } echo ">Title</option>
+			<option value=\"rand\""; if ($default_simple_announcement_with_exclusion_3 === "rand") { echo " selected=\"selected\""; } echo ">Random</option>
 		</select>
 		</label>	
 		
 
 		<label for=\"simple_announcement_with_exclusion_3_2\"><span class=\"SAWE_settings_title\">Posts order:</span>
 		<select name=\"simple_announcement_with_exclusion_3_2\">
-			<option value=\"ASC\""; if ($default_simple_announcement_with_exclusion_3_2 == "ASC") { echo " selected=\"selected\""; } echo ">Ascending</option>
-			<option value=\"DESC\""; if ($default_simple_announcement_with_exclusion_3_2 == "DESC") { echo " selected=\"selected\""; } echo ">Descending</option>
+			<option value=\"ASC\""; if ($default_simple_announcement_with_exclusion_3_2 === "ASC") { echo " selected=\"selected\""; } echo ">Ascending</option>
+			<option value=\"DESC\""; if ($default_simple_announcement_with_exclusion_3_2 === "DESC") { echo " selected=\"selected\""; } echo ">Descending</option>
 		</select>
 		</label>
 		
@@ -274,8 +279,8 @@
 			echo "
 			<label for=\"simple_announcement_with_exclusion_4\"><span class=\"SAWE_settings_title\">Thumbnails?</span>
 			<select name=\"simple_announcement_with_exclusion_4\">
-				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_4 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_4 == "no") { echo " selected=\"selected\""; } echo ">No</option>
+				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_4 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_4 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 			</select>
 			</label>
 			";
@@ -284,40 +289,51 @@
 		echo "
 			<label for=\"simple_announcement_with_exclusion_4_2\"><span class=\"SAWE_settings_title\">Show titles?</span>
 			<select name=\"simple_announcement_with_exclusion_4_2\">
-				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_4_2 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_4_2 == "no") { echo " selected=\"selected\""; } echo ">No</option>
+				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_4_2 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_4_2 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 			</select>
 			</label>
 				<label for=\"simple_announcement_with_exclusion_4_3\"><span class=\"SAWE_settings_title\">Show excerpt, content, or nothing?</span>
 			<select name=\"simple_announcement_with_exclusion_4_3\">
-				<option value=\"nothing\""; if ($default_simple_announcement_with_exclusion_4_3 == "nothing") { echo " selected=\"selected\""; } echo ">Nothing</option>
-				<option value=\"excerpt\""; if ($default_simple_announcement_with_exclusion_4_3 == "excerpt") { echo " selected=\"selected\""; } echo ">Excerpt</option>
-				<option value=\"content\""; if ($default_simple_announcement_with_exclusion_4_3 == "content") { echo " selected=\"selected\""; } echo ">Content</option>
+				<option value=\"nothing\""; if ($default_simple_announcement_with_exclusion_4_3 === "nothing") { echo " selected=\"selected\""; } echo ">Nothing</option>
+				<option value=\"excerpt\""; if ($default_simple_announcement_with_exclusion_4_3 === "excerpt") { echo " selected=\"selected\""; } echo ">Excerpt</option>
+				<option value=\"content\""; if ($default_simple_announcement_with_exclusion_4_3 === "content") { echo " selected=\"selected\""; } echo ">Content</option>
 			</select>
 			</label>
 
 			 <label for=\"simple_announcement_with_exclusion_5\"><span class=\"SAWE_settings_title\">Exclude posts from main loop?:</span>
 			 <select name=\"simple_announcement_with_exclusion_5\">
-			 	<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_5 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-			 	<option value=\"no\""; if ($default_simple_announcement_with_exclusion_5 == "no") { echo " selected=\"selected\""; } echo ">No</option>
-				<option value=\"frontcat\""; if ($default_simple_announcement_with_exclusion_5 == "frontcat") { echo " selected=\"selected\""; } echo ">Main &amp; Category</option>
-				<option value=\"fronttag\""; if ($default_simple_announcement_with_exclusion_5 == "fronttag") { echo " selected=\"selected\""; } echo ">Main &amp; Tag</option>
-				<option value=\"everywhere\""; if ($default_simple_announcement_with_exclusion_5 == "everywhere") { echo " selected=\"selected\""; } echo ">Everywhere</option>
+			 	<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_5 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+			 	<option value=\"no\""; if ($default_simple_announcement_with_exclusion_5 === "no") { echo " selected=\"selected\""; } echo ">No</option>
+				<option value=\"frontcat\""; if ($default_simple_announcement_with_exclusion_5 === "frontcat") { echo " selected=\"selected\""; } echo ">Main &amp; Category</option>
+				<option value=\"fronttag\""; if ($default_simple_announcement_with_exclusion_5 === "fronttag") { echo " selected=\"selected\""; } echo ">Main &amp; Tag</option>
+				<option value=\"everywhere\""; if ($default_simple_announcement_with_exclusion_5 === "everywhere") { echo " selected=\"selected\""; } echo ">Everywhere</option>
 				
 			 </select>
 			 </label>
 
 			<label for=\"simple_announcement_with_exclusion_6\"><span class=\"SAWE_settings_title\">Include default CSS?:</span>
 			<select name=\"simple_announcement_with_exclusion_6\">
-				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_6 == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_6 == "no") { echo " selected=\"selected\""; } echo ">No</option>
+				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_6 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 			</select>
-			</label>
+			</label>";
 
-			<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\"><span class=\"SAWE_settings_title\">Delete options on deactivation?:</span>
+// Paging function not yet implemented.
+//
+//			<label for=\"simple_announcement_with_exclusion_7\"><span class=\"SAWE_settings_title\">Paged?:</span>
+//			<select name=\"simple_announcement_with_exclusion_7\">
+//				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_7 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+//				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_7 === "no") { echo " selected=\"selected\""; } echo ">No</option>
+//			</select>
+//			</label>			
+//
+// Will be Soon.
+			
+			echo "<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\"><span class=\"SAWE_settings_title\">Delete options on deactivation?:</span>
 			<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
-				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_delete_on_deactivate == "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_delete_on_deactivate == "no") { echo " selected=\"selected\""; } echo ">No</option>
+				<option value=\"yes\""; if ($default_simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+				<option value=\"no\""; if ($default_simple_announcement_with_exclusion_delete_on_deactivate === "no") { echo " selected=\"selected\""; } echo ">No</option>
 			</select>
 			</label>
 			
@@ -383,14 +399,13 @@
 				<div class=\"SAWEsection\">
 					<div class=\"faq\">
 
-					<div class=\"divclassname\">
+					<div>
 					<p><strong><u>Div class name (optional)</u></strong><br />
 					This setting is an optional one.  Simply put, it will give the widget created 
 					a div class name of your choosing so that you may style it yourself with your 
 					theme's CSS.</p>
 					</div>
-
-					<div class=\"posttype\">
+					<div>
 					<p><strong><u>What kind of post type</u></strong><br />
 					You are able to choose from either your post tags, post categories, or post formats.  
 					If post formats are not enabled by your theme or a plugin, SAWE will enable <strong>all</strong> 
@@ -403,55 +418,45 @@
 					with each option, so that you may plan appropriately for how many posts to show in the option below (<em>Number 
 					of posts</em>).</p>
 					</div>
-					
-					<div class=\"numberofposts\">
+					<div>
 					<p><strong><u>Number of posts</u></strong><br />
 					Here, you may define how many posts are shown.  This number may be as high as you wish it to be, or as low 
 					as you want.</p>
 					</div>
-					
-					<div class=\"orderby\">
+					<div>
 					<p><strong><u>Order by</u></strong><br />
 					You may order your posts by date, title, or randomly.					
 					</div>
-					
-					<div class=\"postsorder\">
+					<div>
 					<p><strong><u>Posts order</u></strong><br />
 					Here, you may define <strong>how</strong> your posts are ordered - in descending order, or ascending.  Descending is 
 					top to bottom, and ascending is bottom to top.  If you are planning on showing only one post at a time, top to bottom 
 					is going to be your choice (ascending will only show the first post from your chosen post type).</p>
 					</div>
-					
-					<div class=\"thumbnails\">
+					<div>
 					<p><strong><u>Thumbnails?</u></strong><br />
 					If your theme or plugins do not enable post thumbnails, SAWE enables them for you.  Here, you may choose whether or 
 					not to include post thumbnails in your new loop.</p>
 					</div>
-					
-					<div class=\"showtitles\">
+					<div>
 					<p><strong><u>Show titles?</u></strong><br />
 					Whether or not you want clickable title links to accompany your posts.  If you choose to show nothing in the following option, 
 					you may wish to have this activated.</p>
 					</div>
-					
-					<div class=\"excerptcontentnothing\">
+					<div>
 					<p><strong><u>Show excerpt, content, or nothing?</u></strong><br />
 					Here, you may select whether you want the excerpt of the post shown, the full content of the post, or nothing at all.
 					Full content is <strong>full content</strong> - links, images, and all.</p>
 					</div>
-					
-					<div class=\"exclude\">
+					<div>
 					<p><strong><u>Exclude posts from main loop?</u></strong><br />
 					Whether or not you want the posts in your new loop to be excluded from your main loop (home loop only)</p>
 					<p>Yes will exclude it from the main (home) loop only - no will leave them in the loop.  Main &amp; Category will 
 					exclude the posts from both the main loop and category loop (useful for post types and tags).  Main &amp; Tag will 
 					exclude the posts from both the main loop and the tag loop (useful for categories).  Everywhere will only show the 
 					content either in single post view or through the widget (excluded from any archive, search result, or front page).</p>
-					
-					
 					</div>
-					
-					<div class=\"includecss\">
+					<div>
 					<p><strong><u>Include default CSS?</u></strong><br />
 					The default CSS is a simple CSS file that styles the elements of the new loop.  It styles the following elements: 
 					#SAWE_shortcode, #SAWE_widget, #SAWE_shortcode img, #SAWE_widget img, #SAWE_shortcode p, #SAWE_widget p.</p>
@@ -460,30 +465,21 @@
 					elements (so as to separate them from thumbnails and title links), and give a 5px margin.</p>
 					<p>Completely optional, and provided as a convenience.</p>
 					</div>
-					
-					<div class=\"deactivation\">
+					<div>
 					<p><strong><u>Delete options on deactivation?</u></strong><br />
 					SAWE stores its settings in the options table of your Wordpress installation.  If this option is set to no, 
 					even if you deactivate it and delete it, the options will remain (should want to reinstall for whatever reason).  
 					However, should you want to completely uninstall (and delete these options from your installation database), 
 					set this option to <strong>yes</strong> before you deactivate the plugin and uninstall it.</p>
 					</div>
-					
 					</div>
 					</div>
-					
-					
-				
-				
 				</div>		
-
-				
 				<div class=\"SAWEsection\">
 				<div class=\"options\">
 				<blockquote>
-				
 					";
-						
+			
 					if ($_REQUEST["submit"]) { 
 						update_simple_announcement_with_exclusions();
 					}
@@ -491,10 +487,8 @@
 					
 				echo "</blockquote>
 
-				
-				
 				<div class=\"SAWE_information\" id=\"preview\">
-				PREVIEW<hr />
+				<h3>Preview</h3>
 				";
 			$SAWE_0_sc = ( get_option("simple_announcement_with_exclusion_0") );
 			$SAWE_1_sc = ( get_option("simple_announcement_with_exclusion_1") );
@@ -509,36 +503,46 @@
 			$SAWE_4_3_sc = ( get_option("simple_announcement_with_exclusion_4_3") );
 			$SAWE_5_sc = ( get_option("simple_announcement_with_exclusion_5") );
 			$SAWE_6_sc = ( get_option("simple_announcement_with_exclusion_6") );
+			$SAWE_7_sc = ( get_option("simple_announcement_with_exclusion_7") );
 			
 			if ($SAWE_1_sc != "" && $SAWE_2_sc != "" && $SAWE_3_sc != "") {
 				echo "<div class=\"";
-				if ($SAWE_0_w != "") { echo "$SAWE_0_sc"; }
+				if ($SAWE_0_sc != "") { echo "$SAWE_0_sc"; }
 				echo "\" id=\"SAWE_shortcode\">";
-				global $post;
-				$tmp_post = $post;
-				
-					if ($SAWE_1_sc == "cat") {
-						$args = array(
-						"cat" => $SAWE_1_1_sc, 
-						"numberposts" => $SAWE_2_sc, 
-						"order" => $SAWE_3_2_sc, 
-						"orderby" => $SAWE_3_sc
-						);
+
+					if ($SAWE_7_sc === "yes") {
+						$SAWE_paged_widget = (get_query_var('paged')) ? get_query_var('paged') : 1;
 					}
-					elseif ($SAWE_1_sc == "tag") {
+					if ($SAWE_7_sc === "no") {
+						$SAWE_paged_widget = '';
+					}				
+				
+				
+					if ($SAWE_1_sc === "cat") {
 						$args = array(
-						"tag__in" => $SAWE_1_2_sc,
-						"numberposts" => $SAWE_2_sc, 
+						"paged" => $SAWE_paged_widget,
+						"cat" => $SAWE_1_1_sc, 
+						"posts_per_page" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
 						"orderby" => $SAWE_3_sc 
 						);
 					}
-					elseif ($SAWE_1_sc == "post-format") {
+					elseif ($SAWE_1_sc === "tag") {
 						$args = array(
-						"numberposts" => $SAWE_2_sc, 
+						"paged" => $SAWE_paged_widget,
+						"tag__in" => $SAWE_1_2_sc,
+						"posts_per_page" => $SAWE_2_sc, 
+						"order" => $SAWE_3_2_sc, 
+						"orderby" => $SAWE_3_sc 
+						);
+					}
+					elseif ($SAWE_1_sc === "post-format") {
+						$args = array(
+						"paged" => $SAWE_paged_widget,
+						"posts_per_page" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
 						"orderby" => $SAWE_3_sc,
-						'tax_query' => array(
+						"tax_query" => array(
 							array(
 							  'taxonomy' => 'post_format',
 							  'field'    => 'slug',
@@ -548,27 +552,30 @@
 						)
 						);
 					}
-					
-				$lastposts = get_posts( $args );
-				foreach($lastposts as $post) : setup_postdata($post); 
+				
 
-				if ($SAWE_4_sc == "yes") { 
+				$SAWE_widget_query = new WP_Query( $args );
+				if ($SAWE_widget_query->have_posts()) : 
+				while ($SAWE_widget_query->have_posts()) : $SAWE_widget_query->the_post();
+
+				if ($SAWE_4_sc === "yes") { 
 					if ( has_post_thumbnail() ) { ?>
 					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_post_thumbnail( "thumbnail" ); ?></a><br />
 					<?php } 			
 				}
 				
-				if ($SAWE_4_2_sc == "yes") { ?>
+				if ($SAWE_4_2_sc === "yes") { ?>
 					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 				<?php }
 				
-				if ($SAWE_4_3_sc == "excerpt") {
+				if ($SAWE_4_3_sc === "excerpt") {
 					the_excerpt();
-				} elseif ($SAWE_4_3_sc == "content") {
+				} elseif ($SAWE_4_3_sc === "content") {
 					the_content();
-				}				
+				}
 				
-				endforeach;
+				endwhile;
+				endif;				
 				
 				if ($SAWE_0_sc != "") { 
 					echo "</div>"; 
@@ -583,9 +590,6 @@
 				</div>
 				</blockquote>
 				</div>
-				
-				
-				
 			";			
 	}
 	
@@ -628,38 +632,46 @@
 			$SAWE_4_3_w = ( get_option("simple_announcement_with_exclusion_4_3") );
 			$SAWE_5_w = ( get_option("simple_announcement_with_exclusion_5") );
 			$SAWE_6_w = ( get_option("simple_announcement_with_exclusion_6") );
+			$SAWE_7_w = ( get_option("simple_announcement_with_exclusion_7") );
 			
 			if ($SAWE_1_w != "" && $SAWE_2_w != "" && $SAWE_3_w != "") {
 				echo "<div class=\"";
 				if ($SAWE_0_w != "") { echo "$SAWE_0_w"; }
 				echo "\" id=\"SAWE_widget\">";
-				global $post;
-				$tmp_post = $post;
 				
-				 
+					if ($SAWE_7_w === "yes") {
+						$SAWE_paged_widget = (get_query_var('paged')) ? get_query_var('paged') : 1;
+					}
+					if ($SAWE_7_w === "no") {
+						$SAWE_paged_widget = '';
+					}				
 				
-					if ($SAWE_1_w == "cat") {
+				
+					if ($SAWE_1_w === "cat") {
 						$args = array(
+						"paged" => $SAWE_paged_widget,
 						"cat" => $SAWE_1_1_w, 
-						"numberposts" => $SAWE_2_w, 
+						"posts_per_page" => $SAWE_2_w, 
 						"order" => $SAWE_3_2_w, 
 						"orderby" => $SAWE_3_w 
 						);
 					}
-					elseif ($SAWE_1_w == "tag") {
+					elseif ($SAWE_1_w === "tag") {
 						$args = array(
+						"paged" => $SAWE_paged_widget,
 						"tag__in" => $SAWE_1_2_w,
-						"numberposts" => $SAWE_2_w, 
+						"posts_per_page" => $SAWE_2_w, 
 						"order" => $SAWE_3_2_w, 
 						"orderby" => $SAWE_3_w 
 						);
 					}
-					elseif ($SAWE_1_w == "post-format") {
+					elseif ($SAWE_1_w === "post-format") {
 						$args = array(
-						"numberposts" => $SAWE_2_w, 
+						"paged" => $SAWE_paged_widget,
+						"posts_per_page" => $SAWE_2_w, 
 						"order" => $SAWE_3_2_w, 
 						"orderby" => $SAWE_3_w,
-						'tax_query' => array(
+						"tax_query" => array(
 							array(
 							  'taxonomy' => 'post_format',
 							  'field'    => 'slug',
@@ -671,32 +683,36 @@
 					}
 				
 
-				$lastposts = get_posts( $args );
-				foreach($lastposts as $post) : setup_postdata($post); 
+				$SAWE_widget_query = new WP_Query( $args );
+				if ($SAWE_widget_query->have_posts()) : 
+				while ($SAWE_widget_query->have_posts()) : $SAWE_widget_query->the_post();
 
-				if ($SAWE_4_w == "yes") { 
+				if ($SAWE_4_w === "yes") { 
 					if ( has_post_thumbnail() ) { ?>
 					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_post_thumbnail( "thumbnail" ); ?></a><br />
 					<?php } 			
 				}
 				
-				if ($SAWE_4_2_w == "yes") { ?>
+				if ($SAWE_4_2_w === "yes") { ?>
 					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 				<?php }
 				
-				if ($SAWE_4_3_w == "excerpt") {
+				if ($SAWE_4_3_w === "excerpt") {
 					the_excerpt();
-				} elseif ($SAWE_4_3_w == "content") {
+				} elseif ($SAWE_4_3_w === "content") {
 					the_content();
 				}
 				
-				endforeach;
+				endwhile;
 				
+
+				
+				endif;
+
 				if ($SAWE_0_w != "") { 
 					echo "</div>"; 
 				} 
 				
-				$post = $tmp_post;
 				echo $after_widget ;
 			}
 
@@ -733,36 +749,45 @@
 			$SAWE_4_3_sc = ( get_option("simple_announcement_with_exclusion_4_3") );
 			$SAWE_5_sc = ( get_option("simple_announcement_with_exclusion_5") );
 			$SAWE_6_sc = ( get_option("simple_announcement_with_exclusion_6") );
+			$SAWE_7_sc = ( get_option("simple_announcement_with_exclusion_7") );
 			
 			if ($SAWE_1_sc != "" && $SAWE_2_sc != "" && $SAWE_3_sc != "") {
 				echo "<div class=\"";
-				if ($SAWE_0_w != "") { echo "$SAWE_0_sc"; }
+				if ($SAWE_0_sc != "") { echo "$SAWE_0_sc"; }
 				echo "\" id=\"SAWE_shortcode\">";
-				global $post;
-				$tmp_post = $post;
-				
-					if ($SAWE_1_sc == "cat") {
-						$args = array(
-						"cat" => $SAWE_1_1_sc, 
-						"numberposts" => $SAWE_2_sc, 
-						"order" => $SAWE_3_2_sc, 
-						"orderby" => $SAWE_3_sc
-						);
+						if ($SAWE_7_sc === "yes") {
+						$SAWE_paged_widget = (get_query_var('paged')) ? get_query_var('paged') : 1;
 					}
-					elseif ($SAWE_1_sc == "tag") {
+					if ($SAWE_7_sc === "no") {
+						$SAWE_paged_widget = '';
+					}				
+				
+				
+					if ($SAWE_1_sc === "cat") {
 						$args = array(
-						"tag__in" => $SAWE_1_2_sc,
-						"numberposts" => $SAWE_2_sc, 
+						"paged" => $SAWE_paged_widget,
+						"cat" => $SAWE_1_1_sc, 
+						"posts_per_page" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
 						"orderby" => $SAWE_3_sc 
 						);
 					}
-					elseif ($SAWE_1_sc == "post-format") {
+					elseif ($SAWE_1_sc === "tag") {
 						$args = array(
-						"numberposts" => $SAWE_2_sc, 
+						"paged" => $SAWE_paged_scidget,
+						"tag__in" => $SAWE_1_2_sc,
+						"posts_per_page" => $SAWE_2_sc, 
+						"order" => $SAWE_3_2_sc, 
+						"orderby" => $SAWE_3_sc 
+						);
+					}
+					elseif ($SAWE_1_sc === "post-format") {
+						$args = array(
+						"paged" => $SAWE_paged_widget,
+						"posts_per_page" => $SAWE_2_sc, 
 						"order" => $SAWE_3_2_sc, 
 						"orderby" => $SAWE_3_sc,
-						'tax_query' => array(
+						"tax_query" => array(
 							array(
 							  'taxonomy' => 'post_format',
 							  'field'    => 'slug',
@@ -772,27 +797,29 @@
 						)
 						);
 					}
-					
-				$lastposts = get_posts( $args );
-				foreach($lastposts as $post) : setup_postdata($post); 
 
-				if ($SAWE_4_sc == "yes") { 
+				$SAWE_widget_query = new WP_Query( $args );
+				if ($SAWE_widget_query->have_posts()) : 
+				while ($SAWE_widget_query->have_posts()) : $SAWE_widget_query->the_post();
+
+				if ($SAWE_4_sc === "yes") { 
 					if ( has_post_thumbnail() ) { ?>
 					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_post_thumbnail( "thumbnail" ); ?></a><br />
 					<?php } 			
 				}
 				
-				if ($SAWE_4_2_sc == "yes") { ?>
+				if ($SAWE_4_2_sc === "yes") { ?>
 					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 				<?php }
 				
-				if ($SAWE_4_3_sc == "excerpt") {
+				if ($SAWE_4_3_sc === "excerpt") {
 					the_excerpt();
-				} elseif ($SAWE_4_3_sc == "content") {
+				} elseif ($SAWE_4_3_sc === "content") {
 					the_content();
-				}				
+				}
 				
-				endforeach;
+				endwhile;
+				endif;
 				
 				if ($SAWE_0_sc != "") { 
 					echo "</div>"; 
@@ -818,39 +845,39 @@
 		$SAWE_1_2_fh = ( get_option("simple_announcement_with_exclusion_1_2") );
 		$SAWE_5_fh = ( get_option("simple_announcement_with_exclusion_5") );
 
-		if ( $SAWE_5_fh == "yes" ) {
-		if ( $query->is_home() && $query->is_main_query() && $SAWE_1_fh == "cat") {
+		if ( $SAWE_5_fh === "yes" ) {
+		if ( $query->is_home() && $query->is_main_query() && $SAWE_1_fh === "cat") {
 			$query->set( "category__not_in", $SAWE_1_1_fh );
 		}
 		
-		if ( $query->is_home() && $query->is_main_query() && $SAWE_1_fh == "tag") {
+		if ( $query->is_home() && $query->is_main_query() && $SAWE_1_fh === "tag") {
 			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
 		}
 		}
 		
-		if ( $SAWE_5_fh == "frontcat" ) {
-		if ( $query->is_home && $SAWE_1_fh == "cat" || $query->is_category && $SAWE_1_fh == "cat") {
+		if ( $SAWE_5_fh === "frontcat" ) {
+		if ( $query->is_home && $SAWE_1_fh === "cat" || $query->is_category && $SAWE_1_fh === "cat") {
 			$query->set( "category__not_in", $SAWE_1_1_fh );
 		}
-		if ( $query->is_home && $SAWE_1_fh == "tag" || $query->is_category && $SAWE_1_fh == "tag") {
+		if ( $query->is_home && $SAWE_1_fh === "tag" || $query->is_category && $SAWE_1_fh === "tag") {
 			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
 		}
 		}
 
-		if ( $SAWE_5_fh == "fronttag" ) {
-		if ( $query->is_home && $SAWE_1_fh == "cat" || $query->is_tag && $SAWE_1_fh == "cat") {
+		if ( $SAWE_5_fh === "fronttag" ) {
+		if ( $query->is_home && $SAWE_1_fh === "cat" || $query->is_tag && $SAWE_1_fh === "cat") {
 			$query->set( "category__not_in", $SAWE_1_1_fh );
 		}
-		if ( $query->is_home && $SAWE_1_fh == "tag" || $query->is_tag && $SAWE_1_fh == "tag") {
+		if ( $query->is_home && $SAWE_1_fh === "tag" || $query->is_tag && $SAWE_1_fh === "tag") {
 			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
 		}
 		}		
 
-		if ( $SAWE_5_fh == "everywhere" ) {
-		if ( $query->is_home && $SAWE_1_fh == "cat" || $query->is_archive && $query->is_main_query() && $SAWE_1_fh == "cat" || $query->is_search  && $query->is_main_query() && $SAWE_1_fh == "cat") {
+		if ( $SAWE_5_fh === "everywhere" ) {
+		if ( $query->is_home && $SAWE_1_fh === "cat" || $query->is_archive && $query->is_main_query() && $SAWE_1_fh === "cat" || $query->is_search  && $query->is_main_query() && $SAWE_1_fh === "cat") {
 			$query->set( "category__not_in", $SAWE_1_1_fh );
 		}
-		if ( $query->is_home && $SAWE_1_fh == "tag" || $query->is_archive && $query->is_main_query() && $SAWE_1_fh == "tag" || $query->is_search  && $query->is_main_query() && $SAWE_1_fh == "tag") {
+		if ( $query->is_home && $SAWE_1_fh === "tag" || $query->is_archive && $query->is_main_query() && $SAWE_1_fh === "tag" || $query->is_search  && $query->is_main_query() && $SAWE_1_fh === "tag") {
 			$query->set( "tag__not_in", array($SAWE_1_2_fh) );
 		}
 		}				
@@ -862,7 +889,7 @@
 	$SAWE_1_3_hh = ( get_option("simple_announcement_with_exclusion_1_3") );
 	$SAWE_5_hh = ( get_option("simple_announcement_with_exclusion_5") );
 	
-	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "yes" && $SAWE_1_hh == "post-format") {
+	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh === "yes" && $SAWE_1_hh === "post-format") {
 		$tax_query = array( array(
 			'taxonomy' => 'post_format',
 			'field' => 'slug',
@@ -872,7 +899,7 @@
 		$query->set( 'tax_query', $tax_query );
 	}
 
-	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "fronttag" && $SAWE_1_hh == "post-format" ||  $query->is_tag() && $SAWE_5_hh == "fronttag" && $SAWE_1_hh == "post-format") {
+	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh === "fronttag" && $SAWE_1_hh === "post-format" ||  $query->is_tag() && $SAWE_5_hh === "fronttag" && $SAWE_1_hh === "post-format") {
 		$tax_query = array( array(
 			'taxonomy' => 'post_format',
 			'field' => 'slug',
@@ -882,7 +909,7 @@
 		$query->set( 'tax_query', $tax_query );
 	}	
 	
-	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "frontcat" && $SAWE_1_hh == "post-format" ||  $query->is_category() && $SAWE_5_hh == "frontcat" && $SAWE_1_hh == "post-format") {
+	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh === "frontcat" && $SAWE_1_hh === "post-format" ||  $query->is_category() && $SAWE_5_hh === "frontcat" && $SAWE_1_hh === "post-format") {
 		$tax_query = array( array(
 			'taxonomy' => 'post_format',
 			'field' => 'slug',
@@ -892,7 +919,7 @@
 		$query->set( 'tax_query', $tax_query );
 	}	
 	
-	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format" ||  $query->is_archive() && $query->is_main_query() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format" ||  $query->is_search() && $query->is_main_query() && $SAWE_5_hh == "everywhere" && $SAWE_1_hh == "post-format") {
+	if( $query->is_main_query() && $query->is_home() && $SAWE_5_hh === "everywhere" && $SAWE_1_hh === "post-format" ||  $query->is_archive() && $query->is_main_query() && $SAWE_5_hh === "everywhere" && $SAWE_1_hh === "post-format" ||  $query->is_search() && $query->is_main_query() && $SAWE_5_hh === "everywhere" && $SAWE_1_hh === "post-format") {
 		$tax_query = array( array(
 			'taxonomy' => 'post_format',
 			'field' => 'slug',
@@ -906,6 +933,5 @@
 	
 	add_action( "pre_get_posts", "SAWE_filter_home" );	
 	add_action( "pre_get_posts", "SAWE_exclude_formats" );
-	
-	
+
 ?>
