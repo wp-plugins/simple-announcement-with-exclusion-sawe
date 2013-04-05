@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: widget, category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 3
+Stable tag: 3.1
 
 Set aside a category to show in a widget, hide it from the feed.
 
@@ -26,7 +26,8 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
-= 3 =
+= 3 / 3.1 =
+* 3.1 - style.css fixed
 * Cleaned up code
 * Options CSS should only load on the SAWE options page.
 * Moved FAQ off of plugin page and over to papercaves.com/SAWE

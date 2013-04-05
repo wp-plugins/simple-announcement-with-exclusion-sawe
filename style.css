@@ -1,6 +1,6 @@
 /********************************************************************/
 /*	Simple Announcement With Exclusion Styles for the options page 
-	Version: 2.3                                                   */
+	Version: 2.4                                                   */
 /******************************************************************/
 .SAWE_container {
 	width: 450px;
@@ -8,13 +8,20 @@
 	line-height: 17px;
 }
 
-.SAWE_container .SAWE_settings input[type="text"], .SAWE_container .SAWE_settings input[type="select"] {
+input[type="text"], input[type="select"] {
 	float: right;
-	width: 100px !important;
 }
-.SAWE_container .SAWE_settings input[type="text"]:hover, .SAWE_container .SAWE_settings input[type="select"]:hover {
+input[type="text"]:hover, input[type="select"]:hover {
 	cursor: pointer;
 }
+
+select {
+	float: right;
+}
+label {
+	display: block;
+}
+
 .SAWE_settings  {
 	padding: 5px;
 }
@@ -32,25 +39,7 @@
 .SAWE_container label:hover {
 	opacity: 1;
 }
-.faq {
-	clear: both; 
-	margin-top: 10px;
-}
-.faq div {
-	padding: 0 0 0 15px;
-}
-.faq div p {
-	padding: 10px;
-	opacity: .7;
-}
-.faq div p:hover {
-	opacity: 1;
-}
-.faq div p u {
-	clear: both; 
-	display: block; 
-	height: 20px;
-}
+
 #preview {
 	padding: 10px;
 	border: 1px solid #bbbbbb;
