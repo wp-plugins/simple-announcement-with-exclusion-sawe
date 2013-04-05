@@ -479,8 +479,7 @@
 				
 
 			}				
-				echo "</div></div></div></div>
-				</blockquote></div>";			
+				echo "</div></div></div></div></div></div>";			
 	}
 	
 	
