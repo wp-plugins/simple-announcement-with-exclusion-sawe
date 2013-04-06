@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: widget, category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 3.2
+Stable tag: 3.3
 
 Set aside a category to show in a widget, hide it from the feed.
 
@@ -26,6 +26,10 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
+= 3.3 =
+* WP-Pagenavi no longer needed for pagination.  
+* Current bug with pagination: on widget, going to page 1 is impossible.
+
 = 3 / 3.1 / 3.2 =
 * 3.2 - trailing div taken out - last time I update at 2 in the morning, I promise.
 * 3.1 - style.css fixed
