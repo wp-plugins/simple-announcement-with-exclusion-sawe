@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 	Description: Designate a category for announcements to show in a shortcode while excluding it from the main loop.
-	Version: 4.1
+	Version: 4.2
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -154,6 +154,10 @@
 			delete_option("simple_announcement_with_exclusion_8_1");
 			delete_option("simple_announcement_with_exclusion_8_2");
 			delete_option("simple_announcement_with_exclusion_delete_on_deactivate");
+			global $wpdb;
+			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+			$wpdb->query("TRUNCATE TABLE $SAWE_table_name");
+			$wpdb->query("DROP TABLE $SAWE_table_name");
 		}
 	}
 // ------------------------------------------------------------------------
@@ -354,7 +358,7 @@
 		<label for=\"simple_announcement_with_exclusion_8_2\">Next
 			<input type=\"text\" name=\"simple_announcement_with_exclusion_8_2\" value=\"",$simple_announcement_with_exclusion_8_2,"\" />
 		</label>				
-		<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\">Uninstall
+		<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\" class=\"uninstall\">Uninstall
 		<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
 			<option value=\"yes\""; if ($simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 			<option value=\"no\""; if ($simple_announcement_with_exclusion_delete_on_deactivate === "no") { echo " selected=\"selected\""; } echo ">No</option>
@@ -507,10 +511,6 @@
 		<div class=\"item\">
 		<p><em>Saved SAWEs</em><br />shortcode <strong>[SAWE config_id=\"#\"]<br />
 		(where # is the <strong>ID</strong> of the save)</strong></p>
-		<p><strong>ID</strong> &mdash; <br />
-		[type] [subtype] [amount] [by] [order]<br />
-		[thumbs] [titles] [show]<br />
-		[paged] [Previous] [Next]</p>
 		</div>";
 		global $wpdb;
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -531,22 +531,78 @@
 			 $sawePAGED = $SAWE_table_admin->sawePAGED;
 			 $sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
 			 $saweNEXT = $SAWE_table_admin->saweNEXT;
-			 echo 
-			 "<div class=\"item\">
+			echo 
+			"<div class=\"item\">
 			 <strong>",$SAWE_table_admin->saweID,"</strong> &mdash; <br />
-			",$saweAMOUNT," ",$saweTYPE," ",$saweCAT,$saweTAG,$saweFORMAT," ",$saweBY," ",$saweORDER, "<br />",
-			$saweTHUMBS," ",$saweTITLES," ",$saweSHOW,"<br />", 
-			$sawePAGED, " ",$sawePREVIOUS," ",$saweNEXT," ";
+			Show $saweAMOUNT ";
+			if ($saweAMOUNT === '1') { 
+				echo "item"; 
+			} elseif ($saweAMOUNT >= '1') { 
+				echo "items"; 
+			} else {
+				echo "nothing";
+			}			
+			echo " (";
+			if ($saweTHUMBS === "yes") { echo "Thumbnails, "; }
+			elseif ($saweTHUMBS === "no") { echo "No thumbnails,  "; }
+			if ($saweTITLES === "yes") { echo "titles, "; }
+			elseif ($saweTITLES === "no") { echo "No titles, "; }
+			if ($saweSHOW === "excerpt") { echo "and post excerpt  "; }
+			elseif ($saweSHOW === "content") { echo "full post content"; }
+			elseif ($saweSHOW === "nothing") { echo "no post content"; }
+			echo ")";
+			
+			if ($sawePAGED === "yes") { echo ", paged, "; }
+			elseif ($sawePAGED === "no") { echo ", non-paged, "; }
+			
+			if ($saweORDER === "ASC") { echo "in ascending order"; }
+			elseif ($saweORDER === "DESC") { echo "in descending order"; }
+			
+			if ($saweBY === "date") { echo " by date, "; }
+			elseif ($saweBY === "title") { echo " by title, "; }
+			elseif ($saweBY === "random") { echo " randomly, "; }
+			
+			echo "from the ";
+			if ($saweTYPE === "cat") { echo "category ",get_the_category_by_id($saweCAT); }
+			elseif ($saweTYPE === "tag") { echo "tag "; 
+				$sawe_tags =  get_categories('taxonomy=post_tag'); 
+				foreach ($sawe_tags as $sawe_tag) {
+					if ($sawe_tag->cat_ID === $saweTAG) {
+					echo $sawe_tag->cat_name;
+					} else {}
+				}
+			}
+			elseif ($saweTYPE === "post-format") { 
+				if ($saweFORMAT === "post-format-aside") { echo "aside"; }
+				elseif ($saweFORMAT === "post-format-gallery") { echo "gallery"; }
+				elseif ($saweFORMAT === "post-format-link") { echo "link"; }
+				elseif ($saweFORMAT === "post-format-image") { echo "image"; }
+				elseif ($saweFORMAT === "post-format-quote") { echo "quote"; }
+				elseif ($saweFORMAT === "post-format-status") { echo "status"; }
+				elseif ($saweFORMAT === "post-format-video") { echo "video"; }
+				elseif ($saweFORMAT === "post-format-audio") { echo "audio"; }
+				elseif ($saweFORMAT === "post-format-chat") { echo "chat"; }
+				echo " post format ";
+			}
+			if ($saweDIV != "") { echo "in the div labeled $saweDIV (#SAWE_shortcode) "; }
+			elseif ($saweDIV === "") { echo "in the div labeled #SAWE_shortcode (no custom class) "; }
+			if ($saweNEXT != "" || $sawePREVIOUS != "") {
+				echo ", with navigation links marked as follows:  ";
+				if ($saweNEXT != "") { echo "Next $saweNEXT."; }
+				elseif ($saweNEXT === "") { echo "Next (has no custom title). "; }
+				if ($sawePREVIOUS !="") { echo "and Previous $sawePREVIOUS."; }
+				elseif ($sawePREVIOUS === "") { echo "and Previous (has no custom title)."; }
+			}
 			if(isset($_POST[$sawe_this_ID])){
 				echo "
 				<form method=\"post\" class=\"SAWE_item_form\">
-				<input type=\"submit\" name=\"yes_$sawe_this_ID\" value=\"[X]\">
+				<input type=\"submit\" name=\"yes_$sawe_this_ID\" value=\"[Are you sure?]\">
 				</form>";
 			}
 			if(!isset($_POST[$sawe_this_ID])){
 				echo "
 				<form method=\"post\" class=\"SAWE_item_form\">
-				<input type=\"submit\" name=\"$sawe_this_ID\" value=\"[x]\">
+				<input type=\"submit\" name=\"$sawe_this_ID\" value=\"[Delete this save state?]\">
 				</form>
 				";
 			}
