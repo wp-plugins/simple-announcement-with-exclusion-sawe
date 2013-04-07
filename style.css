@@ -1,46 +1,8 @@
-/********************************************************************/
-/*	Simple Announcement With Exclusion Styles for the options page 
-	Version: 2.4                                                   */
-/******************************************************************/
-.SAWE_container {
-	width: 450px;
-	font-size: 15px;
-	line-height: 17px;
-}
-
-input[type="text"], input[type="select"] {
-	float: right;
-}
-input[type="text"]:hover, input[type="select"]:hover {
-	cursor: pointer;
-}
-
-select {
-	float: right;
-}
-label {
-	display: block;
-}
-
-.SAWE_settings  {
-	padding: 5px;
-}
-
-#information .navigation  {
-	width: 100%;
-	margin: 15px 0 15px 0;
-}
-
-.SAWE_container label {
-	clear: both; 
-	margin: 15px 0 15px 0;
-	opacity: .7;
-}
-.SAWE_container label:hover {
-	opacity: 1;
-}
-
-#preview {
-	padding: 10px;
-	border: 1px solid #bbbbbb;
-}
+/*	Simple Announcement With Exclusion Styles for the options page  */
+.papercaves_plugin_container {width:450px;font-size:15px;line-height:17px;}
+.papercaves_plugin_container form,.papercaves_plugin_container p {padding:5px 0 0 15px;border-left: 1px solid #bbb;}
+input[type="text"],select {float:right;width:200px;margin:-5px 0 0 0;}
+input[type="submit"]{display:block;width:100%;}
+input:hover{cursor: pointer;}
+label {display:block;padding:15px 0 0 0;margin:15px 0 15px 0;opacity:.7;}
+label:hover{opacity:1;}
