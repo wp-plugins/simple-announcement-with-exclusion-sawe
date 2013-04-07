@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 	Description: Designate a category for announcements to show in a shortcode while excluding it from the main loop.
-	Version: 4
+	Version: 4.1
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -33,6 +33,7 @@
 	------------------------------------------------------------------------*/
 // 	Initialize plugin, register hooks and add actions
 	register_activation_hook( __FILE__, "simple_announcement_with_exclusion_install" );
+	register_activation_hook( __FILE__, "simple_announcement_with_exclusion_table" );
 	register_deactivation_hook( __FILE__, "simple_announcement_with_exclusion_uninstall" );
 	add_theme_support( 'post-formats', array( 'aside', 'gallery','link','image','quote','status','video','audio','chat' ) );
 	add_shortcode("sawe", "SAWE_shortcode");
@@ -60,6 +61,37 @@
 	}	
 	global $wp_rewrite;
 	if ($wp_rewrite->permalink_structure == '') { $permalinks = "default"; } else { $permalinks = "pretty"; }
+	function simple_announcement_with_exclusion_table() {
+	
+	// Create table for separate [sawe] loops to be shown via [sawe id='#']
+		global $wpdb;
+		$SAWE_db_version = '1';
+		
+		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+		
+			$SAWE_sql = "CREATE TABLE $SAWE_table_name (
+			saweID INT( 11 ) NOT NULL PRIMARY KEY AUTO_INCREMENT , 
+			saweDIV TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweTYPE TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweCAT TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweTAG TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweFORMAT TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweAMOUNT TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweBY TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweORDER TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweTHUMBS TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweTITLES TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweSHOW TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			sawePAGED TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			sawePREVIOUS TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			saweNEXT TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+			);";
+		
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $SAWE_sql );
+		add_option( "SAWE_db_version", $SAWE_db_version );
+		
+	}	
 	$simple_announcement_with_exclusion_0 = get_option("simple_announcement_with_exclusion_0");
 	$simple_announcement_with_exclusion_1 = get_option("simple_announcement_with_exclusion_1");
 	$simple_announcement_with_exclusion_1_1 = get_option("simple_announcement_with_exclusion_1_1");
@@ -147,23 +179,25 @@
 		global $simple_announcement_with_exclusion_8_2;
 		global $simple_announcement_with_exclusion_delete_on_deactivate;	
 		// Only update if request isn't empty and request isn't the same as it was before
-		if ($_REQUEST["simple_announcement_with_exclusion_0"] != "" && $_REQUEST["simple_announcement_with_exclusion_0"] != "$simple_announcement_with_exclusion_0") { update_option("simple_announcement_with_exclusion_0",$_REQUEST["simple_announcement_with_exclusion_0"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_1"] != "$simple_announcement_with_exclusion_1") { update_option("simple_announcement_with_exclusion_1",$_REQUEST["simple_announcement_with_exclusion_1"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_1_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_1"] != "$simple_announcement_with_exclusion_1_1") { update_option("simple_announcement_with_exclusion_1_1",$_REQUEST["simple_announcement_with_exclusion_1_1"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_1_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_2"] != "$simple_announcement_with_exclusion_1_2") { update_option("simple_announcement_with_exclusion_1_2",$_REQUEST["simple_announcement_with_exclusion_1_2"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_1_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_3"] != "$simple_announcement_with_exclusion_1_3") { update_option("simple_announcement_with_exclusion_1_3",$_REQUEST["simple_announcement_with_exclusion_1_3"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_2"] != "$simple_announcement_with_exclusion_2") { update_option("simple_announcement_with_exclusion_2",$_REQUEST["simple_announcement_with_exclusion_2"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_3"] != "$simple_announcement_with_exclusion_3") { update_option("simple_announcement_with_exclusion_3",$_REQUEST["simple_announcement_with_exclusion_3"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_3_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_3_2"] != "$simple_announcement_with_exclusion_3_2") { update_option("simple_announcement_with_exclusion_3_2",$_REQUEST["simple_announcement_with_exclusion_3_2"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_4"] != "" && $_REQUEST["simple_announcement_with_exclusion_4"] != "$simple_announcement_with_exclusion_4") { update_option("simple_announcement_with_exclusion_4",$_REQUEST["simple_announcement_with_exclusion_4"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_4_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_4_2"] != "$simple_announcement_with_exclusion_4_2") { update_option("simple_announcement_with_exclusion_4_2",$_REQUEST["simple_announcement_with_exclusion_4_2"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_4_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_4_3"] != "$simple_announcement_with_exclusion_4_3") { update_option("simple_announcement_with_exclusion_4_3",$_REQUEST["simple_announcement_with_exclusion_4_3"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_5"] != "" && $_REQUEST["simple_announcement_with_exclusion_5"] != "$simple_announcement_with_exclusion_5") { update_option("simple_announcement_with_exclusion_5",$_REQUEST["simple_announcement_with_exclusion_5"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_6"] != "" && $_REQUEST["simple_announcement_with_exclusion_6"] != "$simple_announcement_with_exclusion_6") { update_option("simple_announcement_with_exclusion_6",$_REQUEST["simple_announcement_with_exclusion_6"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_7"] != "" && $_REQUEST["simple_announcement_with_exclusion_7"] != "$simple_announcement_with_exclusion_7") { update_option("simple_announcement_with_exclusion_7",$_REQUEST["simple_announcement_with_exclusion_7"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_8_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_8_1"] != "$simple_announcement_with_exclusion_8_1") { update_option("simple_announcement_with_exclusion_8_1",$_REQUEST["simple_announcement_with_exclusion_8_1"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_8_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_8_2"] != "$simple_announcement_with_exclusion_8_2") { update_option("simple_announcement_with_exclusion_8_2",$_REQUEST["simple_announcement_with_exclusion_8_2"]); }
-		if ($_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "" && $_REQUEST["simple_announcement_with_exclusion_0"] != "$simple_announcement_with_exclusion_delete_on_deactivate") { update_option("simple_announcement_with_exclusion_delete_on_deactivate",$_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"]); }
+		if(isset($_POST['submit'])){
+			if ($_REQUEST["simple_announcement_with_exclusion_0"] != "" && $_REQUEST["simple_announcement_with_exclusion_0"] != "$simple_announcement_with_exclusion_0") { update_option("simple_announcement_with_exclusion_0",$_REQUEST["simple_announcement_with_exclusion_0"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_1"] != "$simple_announcement_with_exclusion_1") { update_option("simple_announcement_with_exclusion_1",$_REQUEST["simple_announcement_with_exclusion_1"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_1_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_1"] != "$simple_announcement_with_exclusion_1_1") { update_option("simple_announcement_with_exclusion_1_1",$_REQUEST["simple_announcement_with_exclusion_1_1"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_1_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_2"] != "$simple_announcement_with_exclusion_1_2") { update_option("simple_announcement_with_exclusion_1_2",$_REQUEST["simple_announcement_with_exclusion_1_2"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_1_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_3"] != "$simple_announcement_with_exclusion_1_3") { update_option("simple_announcement_with_exclusion_1_3",$_REQUEST["simple_announcement_with_exclusion_1_3"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_2"] != "$simple_announcement_with_exclusion_2") { update_option("simple_announcement_with_exclusion_2",$_REQUEST["simple_announcement_with_exclusion_2"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_3"] != "$simple_announcement_with_exclusion_3") { update_option("simple_announcement_with_exclusion_3",$_REQUEST["simple_announcement_with_exclusion_3"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_3_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_3_2"] != "$simple_announcement_with_exclusion_3_2") { update_option("simple_announcement_with_exclusion_3_2",$_REQUEST["simple_announcement_with_exclusion_3_2"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_4"] != "" && $_REQUEST["simple_announcement_with_exclusion_4"] != "$simple_announcement_with_exclusion_4") { update_option("simple_announcement_with_exclusion_4",$_REQUEST["simple_announcement_with_exclusion_4"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_4_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_4_2"] != "$simple_announcement_with_exclusion_4_2") { update_option("simple_announcement_with_exclusion_4_2",$_REQUEST["simple_announcement_with_exclusion_4_2"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_4_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_4_3"] != "$simple_announcement_with_exclusion_4_3") { update_option("simple_announcement_with_exclusion_4_3",$_REQUEST["simple_announcement_with_exclusion_4_3"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_5"] != "" && $_REQUEST["simple_announcement_with_exclusion_5"] != "$simple_announcement_with_exclusion_5") { update_option("simple_announcement_with_exclusion_5",$_REQUEST["simple_announcement_with_exclusion_5"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_6"] != "" && $_REQUEST["simple_announcement_with_exclusion_6"] != "$simple_announcement_with_exclusion_6") { update_option("simple_announcement_with_exclusion_6",$_REQUEST["simple_announcement_with_exclusion_6"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_7"] != "" && $_REQUEST["simple_announcement_with_exclusion_7"] != "$simple_announcement_with_exclusion_7") { update_option("simple_announcement_with_exclusion_7",$_REQUEST["simple_announcement_with_exclusion_7"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_8_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_8_1"] != "$simple_announcement_with_exclusion_8_1") { update_option("simple_announcement_with_exclusion_8_1",$_REQUEST["simple_announcement_with_exclusion_8_1"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_8_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_8_2"] != "$simple_announcement_with_exclusion_8_2") { update_option("simple_announcement_with_exclusion_8_2",$_REQUEST["simple_announcement_with_exclusion_8_2"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "" && $_REQUEST["simple_announcement_with_exclusion_0"] != "$simple_announcement_with_exclusion_delete_on_deactivate") { update_option("simple_announcement_with_exclusion_delete_on_deactivate",$_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"]); }
+		}
 	}
 // ------------------------------------------------------------------------
 // The form for the options page.	
@@ -196,25 +230,31 @@
 					elements.filter('.' + value).show(); // show the ones we want
 				}
 			}).trigger('change'); // Setup the initial states
+		jQuery('#chooseposttype_new').bind('change', function () {
+				var elements = jQuery('div.posttypeselection_new').children().hide(); // hide all the elements
+				var value = jQuery(this).val();
+		
+				if (value.length) { // if somethings' selected
+					elements.filter('.' + value).show(); // show the ones we want
+				}
+			}).trigger('change'); // Setup the initial states
 		});		
 		</script>
 		<form method=\"post\">
-		<label for=\"simple_announcement_with_exclusion_0\">Div class name (optional):
+		<label>Shortcode Config &mdash; [sawe]</label>
+		<label for=\"simple_announcement_with_exclusion_0\">Div
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_0\" value=\"",$simple_announcement_with_exclusion_0,"\" />
 		</label>
-		<label for=\"simple_announcement_with_exclusion_1\">What kind of post type:
+		<label for=\"simple_announcement_with_exclusion_1\">Type
 		<select name=\"simple_announcement_with_exclusion_1\" id=\"chooseposttype\">
-		<option value=\"\">Choose a post type</option>
 		<option value=\"cat\"";if ($simple_announcement_with_exclusion_1 === "cat") { echo " selected=\"selected\""; } echo ">Category</option>
 		<option value=\"tag\"";if ($simple_announcement_with_exclusion_1 === "tag") { echo " selected=\"selected\""; } echo ">Tag</option>
 		<option value=\"post-format\"";if ($simple_announcement_with_exclusion_1 === "post-format") { echo " selected=\"selected\""; } echo ">Post format</option>
 		</select>
-		</label>";
-		echo "<div class=\"posttypeselection\">";
-		// If option value cat is selected
-		echo "<label for=\"simple_announcement_with_exclusion_1_1\" class=\"cat\">Category:
-		<select name=\"simple_announcement_with_exclusion_1_1\">
-		<option value=\"\"></option>";
+		</label>
+		<div class=\"posttypeselection\">
+		<label for=\"simple_announcement_with_exclusion_1_1\" class=\"cat\">
+		<select name=\"simple_announcement_with_exclusion_1_1\">";
 				$sawe_tags =  get_categories('taxonomy=category'); 
 				foreach ($sawe_tags as $sawe_tag) {
 					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
@@ -223,12 +263,10 @@
 				}
 		echo "</select>
 		</label>
-		</div>";
-		echo "<div class=\"posttypeselection\">";
-		// If option value tag is selected
-		echo "<label for=\"simple_announcement_with_exclusion_1_2\" class=\"tag\">Tag:
-		<select name=\"simple_announcement_with_exclusion_1_2\">
-		<option value=\"\"></option>";
+		</div>
+		<div class=\"posttypeselection\">
+		<label for=\"simple_announcement_with_exclusion_1_2\" class=\"tag\">
+		<select name=\"simple_announcement_with_exclusion_1_2\">";
 				$sawe_tags =  get_categories('taxonomy=post_tag'); 
 				foreach ($sawe_tags as $sawe_tag) {
 					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
@@ -239,12 +277,9 @@
 		</select>
 		</label>
 		</div>
-		<div class=\"posttypeselection\">";
-		// If option value post-format is selected
-		echo "
-		<label for=\"simple_announcement_with_exclusion_1_3\" class=\"post-format\">Post format:
+		<div class=\"posttypeselection\">
+		<label for=\"simple_announcement_with_exclusion_1_3\" class=\"post-format\">
 		<select name=\"simple_announcement_with_exclusion_1_3\">
-		<option value=\"\"></option>
 		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
 		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
 		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
@@ -257,42 +292,42 @@
 		</select>
 		</label>
 		</div>
-		<label for=\"simple_announcement_with_exclusion_2\">Number of posts:
+		<label for=\"simple_announcement_with_exclusion_2\">Amount
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_2\" value=\"",$simple_announcement_with_exclusion_2,"\" />
 		</label>
-		<label for=\"simple_announcement_with_exclusion_3\">Order by:
+		<label for=\"simple_announcement_with_exclusion_3\">By
 		<select name=\"simple_announcement_with_exclusion_3\">
 			<option value=\"date\""; if ($simple_announcement_with_exclusion_3 === "date") { echo " selected=\"selected\""; } echo ">Date</option>
 			<option value=\"title\""; if ($simple_announcement_with_exclusion_3 === "title") { echo " selected=\"selected\""; } echo ">Title</option>
 			<option value=\"rand\""; if ($simple_announcement_with_exclusion_3 === "rand") { echo " selected=\"selected\""; } echo ">Random</option>
 		</select>
 		</label>	
-		<label for=\"simple_announcement_with_exclusion_3_2\">Posts order:
+		<label for=\"simple_announcement_with_exclusion_3_2\">Order
 		<select name=\"simple_announcement_with_exclusion_3_2\">
 			<option value=\"ASC\""; if ($simple_announcement_with_exclusion_3_2 === "ASC") { echo " selected=\"selected\""; } echo ">Ascending</option>
 			<option value=\"DESC\""; if ($simple_announcement_with_exclusion_3_2 === "DESC") { echo " selected=\"selected\""; } echo ">Descending</option>
 		</select>
 		</label>
-		<label for=\"simple_announcement_with_exclusion_4\">Thumbnails?
+		<label for=\"simple_announcement_with_exclusion_4\">Thumbs
 		<select name=\"simple_announcement_with_exclusion_4\">
 			<option value=\"yes\""; if ($simple_announcement_with_exclusion_4 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 			<option value=\"no\""; if ($simple_announcement_with_exclusion_4 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 		</select>
 		</label>
-		<label for=\"simple_announcement_with_exclusion_4_2\">Show titles?
+		<label for=\"simple_announcement_with_exclusion_4_2\">Titles
 		<select name=\"simple_announcement_with_exclusion_4_2\">
 			<option value=\"yes\""; if ($simple_announcement_with_exclusion_4_2 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 			<option value=\"no\""; if ($simple_announcement_with_exclusion_4_2 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 		</select>
 		</label>
-			<label for=\"simple_announcement_with_exclusion_4_3\">Show excerpt, content, or nothing?
+			<label for=\"simple_announcement_with_exclusion_4_3\">Show
 		<select name=\"simple_announcement_with_exclusion_4_3\">
 			<option value=\"nothing\""; if ($simple_announcement_with_exclusion_4_3 === "nothing") { echo " selected=\"selected\""; } echo ">Nothing</option>
 			<option value=\"excerpt\""; if ($simple_announcement_with_exclusion_4_3 === "excerpt") { echo " selected=\"selected\""; } echo ">Excerpt</option>
 			<option value=\"content\""; if ($simple_announcement_with_exclusion_4_3 === "content") { echo " selected=\"selected\""; } echo ">Content</option>
 		</select>
 		</label>
-		 <label for=\"simple_announcement_with_exclusion_5\">Exclude posts from main loop?:
+		 <label for=\"simple_announcement_with_exclusion_5\">Exclude
 		 <select name=\"simple_announcement_with_exclusion_5\">
 		 	<option value=\"yes\""; if ($simple_announcement_with_exclusion_5 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 		 	<option value=\"no\""; if ($simple_announcement_with_exclusion_5 === "no") { echo " selected=\"selected\""; } echo ">No</option>
@@ -301,32 +336,228 @@
 			<option value=\"everywhere\""; if ($simple_announcement_with_exclusion_5 === "everywhere") { echo " selected=\"selected\""; } echo ">Everywhere</option>
 		 </select>
 		 </label>
-		<label for=\"simple_announcement_with_exclusion_6\">Include default CSS?:
+		<label for=\"simple_announcement_with_exclusion_6\">CSS
 		<select name=\"simple_announcement_with_exclusion_6\">
 			<option value=\"yes\""; if ($simple_announcement_with_exclusion_6 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 			<option value=\"no\""; if ($simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 		</select>
 		</label>
-		<label for=\"simple_announcement_with_exclusion_7\">Paged?:
+		<label for=\"simple_announcement_with_exclusion_7\">Paged
 			<select name=\"simple_announcement_with_exclusion_7\">
 				<option value=\"yes\""; if ($simple_announcement_with_exclusion_7 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 				<option value=\"no\""; if ($simple_announcement_with_exclusion_7 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 			</select>
 		</label>
-		<label for=\"simple_announcement_with_exclusion_8_1\">Previous link content:
+		<label for=\"simple_announcement_with_exclusion_8_1\">Previous
 			<input type=\"text\" name=\"simple_announcement_with_exclusion_8_1\" value=\"",$simple_announcement_with_exclusion_8_1,"\" />
 		</label>
-		<label for=\"simple_announcement_with_exclusion_8_2\">Next link content:
+		<label for=\"simple_announcement_with_exclusion_8_2\">Next
 			<input type=\"text\" name=\"simple_announcement_with_exclusion_8_2\" value=\"",$simple_announcement_with_exclusion_8_2,"\" />
 		</label>				
-		<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\">Delete options on deactivation?:
+		<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\">Uninstall
 		<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
 			<option value=\"yes\""; if ($simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 			<option value=\"no\""; if ($simple_announcement_with_exclusion_delete_on_deactivate === "no") { echo " selected=\"selected\""; } echo ">No</option>
 		</select>
 		</label>
-		<input type=\"submit\" name=\"submit\" value=\"Save\" />
+		<label><input type=\"submit\" name=\"submit\" value=\"Save\" /></label>
 		</form>";
+		//--- 
+		// Form to add additional loops
+		//---
+		echo "<form method=\"post\">
+		<label>Multi-Config &mdash; [sawe]</label>
+		<label for=\"simple_announcement_with_exclusion_0_new\">Div
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_0_new\" />
+		</label>
+		<label for=\"simple_announcement_with_exclusion_1_new\">Type
+		<select name=\"simple_announcement_with_exclusion_1_new\" id=\"chooseposttype_new\">
+		<option value=\"cat\">Category</option>
+		<option value=\"tag\">Tag</option>
+		<option value=\"post-format\">Post format</option>
+		</select>
+		</label>
+		<div class=\"posttypeselection_new\">
+		<label for=\"simple_announcement_with_exclusion_1_1_new\" class=\"cat\">
+		<select name=\"simple_announcement_with_exclusion_1_1_new\">
+		<option value=\"\"></option>";
+				$sawe_tags =  get_categories('taxonomy=category'); 
+				foreach ($sawe_tags as $sawe_tag) {
+					echo "<option value=\"",$sawe_tag->cat_ID,"\">",$sawe_tag->cat_name," - ",$sawe_tag->category_count,"</option>";
+				}
+		echo "</select>
+		</label>
+		</div>
+		<div class=\"posttypeselection_new\">
+		<label for=\"simple_announcement_with_exclusion_1_2_new\" class=\"tag\">
+		<select name=\"simple_announcement_with_exclusion_1_2_new\">
+		<option value=\"\"></option>";
+				$sawe_tags =  get_categories('taxonomy=post_tag'); 
+				foreach ($sawe_tags as $sawe_tag) {
+					echo "<option value=\"",$sawe_tag->cat_ID,"\">",$sawe_tag->cat_name," - ",$sawe_tag->category_count,"</option>";
+				}
+		echo "
+		</select>
+		</label>
+		</div>
+		<div class=\"posttypeselection_new\">
+		<label for=\"simple_announcement_with_exclusion_1_3_new\" class=\"post-format\">
+		<select name=\"simple_announcement_with_exclusion_1_3_new\">
+		<option value=\"\"></option>
+		<option value=\"post-format-aside\">Aside</option>
+		<option value=\"post-format-gallery\">Gallery</option>
+		<option value=\"post-format-link\">Link</option>
+		<option value=\"post-format-image\">Image</option>
+		<option value=\"post-format-quote\">Quote</option>
+		<option value=\"post-format-status\">Status</option>
+		<option value=\"post-format-video\">Video</option>
+		<option value=\"post-format-audio\">Audio</option>
+		<option value=\"post-format-chat\">Chat</option>
+		</select>
+		</label>
+		</div>
+		<label for=\"simple_announcement_with_exclusion_2_new\">Amount
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_2_new\" />
+		</label>
+		<label for=\"simple_announcement_with_exclusion_3_new\">By
+		<select name=\"simple_announcement_with_exclusion_3_new\">
+			<option value=\"date\">Date</option>
+			<option value=\"title\">Title</option>
+			<option value=\"rand\">Random</option>
+		</select>
+		</label>	
+		<label for=\"simple_announcement_with_exclusion_3_2_new\">Order
+		<select name=\"simple_announcement_with_exclusion_3_2_new\">
+			<option value=\"ASC\">Ascending</option>
+			<option value=\"DESC\">Descending</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_4_new\">Thumbs
+		<select name=\"simple_announcement_with_exclusion_4_new\">
+			<option value=\"yes\">Yes</option>
+			<option value=\"no\">No</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_4_2_new\">Titles
+		<select name=\"simple_announcement_with_exclusion_4_2_new\">
+			<option value=\"yes\">Yes</option>
+			<option value=\"no\">No</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_4_3_new\">Show
+		<select name=\"simple_announcement_with_exclusion_4_3_new\">
+			<option value=\"nothing\">Nothing</option>
+			<option value=\"excerpt\">Excerpt</option>
+			<option value=\"content\">Content</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_7_new\">Paged
+			<select name=\"simple_announcement_with_exclusion_7_new\">
+				<option value=\"yes\">Yes</option>
+				<option value=\"no\">No</option>
+			</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_8_1_new\">Previous
+			<input type=\"text\" name=\"simple_announcement_with_exclusion_8_1_new\" />
+		</label>
+		<label for=\"simple_announcement_with_exclusion_8_2_new\">Next
+			<input type=\"text\" name=\"simple_announcement_with_exclusion_8_2_new\" />
+		</label>				
+		<label><input type=\"submit\" name=\"submit_new\" value=\"Save New\" /></label>";
+		if(!isset($_POST['dropConfigs'])){
+			echo "
+			<label><input type=\"submit\" name=\"dropConfigs\" value=\"Delete all saves\" /></label>
+			";
+		}			 
+		if(isset($_POST['dropConfigs'])){
+			echo "
+			<label><input type=\"submit\" name=\"dropConfigsyes\" value=\"Can't be undone\" /></label>
+			";		
+		}
+		echo "</form>";
+		if(isset($_POST['dropConfigsyes'])){
+			global $wpdb;
+			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+			$sawe_current = plugin_basename(__FILE__);
+			$wpdb->query("TRUNCATE TABLE $SAWE_table_name");
+			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
+		}			 
+		if(isset($_POST['submit_new'])){
+		global $wpdb;
+		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+		$saweDIV = $_REQUEST["simple_announcement_with_exclusion_0_new"];
+		$saweTYPE = $_REQUEST["simple_announcement_with_exclusion_1_new"];
+		$saweCAT = $_REQUEST["simple_announcement_with_exclusion_1_1_new"];
+		$saweTAG = $_REQUEST["simple_announcement_with_exclusion_1_2_new"];
+		$saweFORMAT = $_REQUEST["simple_announcement_with_exclusion_1_3_new"];
+		$saweAMOUNT = $_REQUEST["simple_announcement_with_exclusion_2_new"];
+		$saweBY = $_REQUEST["simple_announcement_with_exclusion_3_new"];
+		$saweORDER = $_REQUEST["simple_announcement_with_exclusion_3_2_new"];
+		$saweTHUMBS = $_REQUEST["simple_announcement_with_exclusion_4_new"];
+		$saweTITLES = $_REQUEST["simple_announcement_with_exclusion_4_2_new"];
+		$saweSHOW = $_REQUEST["simple_announcement_with_exclusion_4_3_new"];
+		$sawePAGED = $_REQUEST["simple_announcement_with_exclusion_7_new"];
+		$sawePREVIOUS = $_REQUEST["simple_announcement_with_exclusion_8_1_new"];
+		$saweNEXT = $_REQUEST["simple_announcement_with_exclusion_8_2_new"];
+		$wpdb->query("INSERT INTO $SAWE_table_name 
+		( saweID, saweDIV, saweTYPE, saweCAT, saweTAG, saweFORMAT, saweAMOUNT, saweBY, saweORDER, saweTHUMBS, saweTITLES, saweSHOW, sawePAGED, sawePREVIOUS, saweNEXT ) VALUES 
+		('', '$saweDIV', '$saweTYPE', '$saweCAT', '$saweTAG', '$saweFORMAT', '$saweAMOUNT', '$saweBY', '$saweORDER', '$saweTHUMBS', '$saweTITLES', '$saweSHOW', '$sawePAGED', '$sawePREVIOUS', '$saweNEXT')") ;
+		}
+		echo "<div class=\"SAWE\">
+		<div class=\"item\">
+		<p><em>Saved SAWEs</em><br />shortcode <strong>[SAWE config_id=\"#\"]<br />
+		(where # is the <strong>ID</strong> of the save)</strong></p>
+		<p><strong>ID</strong> &mdash; <br />
+		[type] [subtype] [amount] [by] [order]<br />
+		[thumbs] [titles] [show]<br />
+		[paged] [Previous] [Next]</p>
+		</div>";
+		global $wpdb;
+		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+		$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
+			foreach ($SAWE_table_ad as $SAWE_table_admin) {
+			 $sawe_this_ID = $SAWE_table_admin->saweID;
+			 $saweDIV = $SAWE_table_admin->saweDIV;
+			 $saweTYPE = $SAWE_table_admin->saweTYPE;
+			 $saweCAT = $SAWE_table_admin->saweCAT;
+			 $saweTAG = $SAWE_table_admin->saweTAG;
+			 $saweFORMAT = $SAWE_table_admin->saweFORMAT;
+			 $saweAMOUNT = $SAWE_table_admin->saweAMOUNT;
+			 $saweBY = $SAWE_table_admin->saweBY;
+			 $saweORDER = $SAWE_table_admin->saweORDER;
+			 $saweTHUMBS = $SAWE_table_admin->saweTHUMBS;
+			 $saweTITLES = $SAWE_table_admin->saweTITLES;
+			 $saweSHOW = $SAWE_table_admin->saweSHOW;
+			 $sawePAGED = $SAWE_table_admin->sawePAGED;
+			 $sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
+			 $saweNEXT = $SAWE_table_admin->saweNEXT;
+			 echo 
+			 "<div class=\"item\">
+			 <strong>",$SAWE_table_admin->saweID,"</strong> &mdash; <br />
+			",$saweAMOUNT," ",$saweTYPE," ",$saweCAT,$saweTAG,$saweFORMAT," ",$saweBY," ",$saweORDER, "<br />",
+			$saweTHUMBS," ",$saweTITLES," ",$saweSHOW,"<br />", 
+			$sawePAGED, " ",$sawePREVIOUS," ",$saweNEXT," ";
+			if(isset($_POST[$sawe_this_ID])){
+				echo "
+				<form method=\"post\" class=\"SAWE_item_form\">
+				<input type=\"submit\" name=\"yes_$sawe_this_ID\" value=\"[X]\">
+				</form>";
+			}
+			if(!isset($_POST[$sawe_this_ID])){
+				echo "
+				<form method=\"post\" class=\"SAWE_item_form\">
+				<input type=\"submit\" name=\"$sawe_this_ID\" value=\"[x]\">
+				</form>
+				";
+			}
+			echo "</div>";
+			if(isset($_POST['yes_'.$sawe_this_ID])){
+					$sawe_current = plugin_basename(__FILE__);
+					$wpdb->query("DELETE FROM $SAWE_table_name WHERE saweID = '$sawe_this_ID'");
+					echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
+			}			 
+		}			
+		 echo "</div>";
 	}
 // ------------------------------------------------------------------------
 // SAWE-002
@@ -344,7 +575,7 @@
 // ------------------------------------------------------------------------
 // SAWE-003
 // Shortcode (for displaying wherever)
-	function SAWE_shortcode() {
+	function SAWE_shortcode( $atts, $content = null ) {
 		if (!is_admin() ) {
 			global $simple_announcement_with_exclusion_0;
 			global $simple_announcement_with_exclusion_1;
@@ -363,96 +594,213 @@
 			global $simple_announcement_with_exclusion_8_1;
 			global $simple_announcement_with_exclusion_8_2;
 			global $permalinks;
-			if ($simple_announcement_with_exclusion_1 != "") {
-				if ($simple_announcement_with_exclusion_7 === "yes") {
-					$paged_shortcode = (get_query_var('paged')) ? get_query_var('paged') : 1;
-				}
-				if ($simple_announcement_with_exclusion_7 === "no") {
-					$paged_shortcode = '';
-				}
-				echo "<div class=\"";
-				if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
-				echo "\" id=\"SAWE_shortcode\">";
-				if ($simple_announcement_with_exclusion_1 === "cat") {
-					$SAWE_shortcode = new WP_Query( array(
-					"cat" => $simple_announcement_with_exclusion_1_1, 
-					"paged" => $paged_shortcode,
-					"posts_per_page" => $simple_announcement_with_exclusion_2, 
-					"order" => $simple_announcement_with_exclusion_3_2, 
-					"orderby" => $simple_announcement_with_exclusion_3 
-					));
-				}
-				elseif ($simple_announcement_with_exclusion_1 === "tag") {
-					$SAWE_shortcode = new WP_Query(array(
-					"tag__in" => $simple_announcement_with_exclusion_1_2,
-					"paged" => $paged_shortcode,
-					"posts_per_page" => $simple_announcement_with_exclusion_2, 
-					"order" => $simple_announcement_with_exclusion_3_2, 
-					"orderby" => $simple_announcement_with_exclusion_3 
-					));
-				}
-				elseif ($simple_announcement_with_exclusion_1 === "post-format") {
-					$SAWE_shortcode = new WP_Query(array(
-					"paged" => $paged_shortcode,
-					"posts_per_page" => $simple_announcement_with_exclusion_2, 
-					"order" => $simple_announcement_with_exclusion_3_2, 
-					"orderby" => $simple_announcement_with_exclusion_3,
-					"tax_query" => array(
-						array(
-						'taxonomy' => 'post_format',
-						'field'    => 'slug',
-						'terms'    => array( $simple_announcement_with_exclusion_1_3 ),
-						'operator' => 'IN'
+			extract(shortcode_atts(array(
+				'config_id' => '',
+			), $atts));
+			if(empty($config_id)) {
+				if ($simple_announcement_with_exclusion_1 != "") {
+					if ($simple_announcement_with_exclusion_7 === "yes") {
+						$paged_shortcode = (get_query_var('paged')) ? get_query_var('paged') : 1;
+					}
+					if ($simple_announcement_with_exclusion_7 === "no") {
+						$paged_shortcode = '';
+					}
+					echo "<div class=\"";
+					if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
+					echo "\" id=\"SAWE_shortcode\">";
+					if ($simple_announcement_with_exclusion_1 === "cat") {
+						$SAWE_shortcode = new WP_Query( array(
+						"cat" => $simple_announcement_with_exclusion_1_1, 
+						"paged" => $paged_shortcode,
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3 
+						));
+					}
+					elseif ($simple_announcement_with_exclusion_1 === "tag") {
+						$SAWE_shortcode = new WP_Query(array(
+						"tag__in" => $simple_announcement_with_exclusion_1_2,
+						"paged" => $paged_shortcode,
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3 
+						));
+					}
+					elseif ($simple_announcement_with_exclusion_1 === "post-format") {
+						$SAWE_shortcode = new WP_Query(array(
+						"paged" => $paged_shortcode,
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3,
+						"tax_query" => array(
+							array(
+							'taxonomy' => 'post_format',
+							'field'    => 'slug',
+							'terms'    => array( $simple_announcement_with_exclusion_1_3 ),
+							'operator' => 'IN'
+							)
 						)
-					)
-					));
-				}
-				// The shortcode loop
-				while ($SAWE_shortcode->have_posts()) : $SAWE_shortcode->the_post();
-				global $post;
-				if ($simple_announcement_with_exclusion_4 === "yes") { 
-					if ( has_post_thumbnail() ) { 
-						echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
-							",the_post_thumbnail( "thumbnail" ),"</a><br />";
-					} 			
-				}
-				if ($simple_announcement_with_exclusion_4_2 === "yes") { 
-						echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
-				}
-				if ($simple_announcement_with_exclusion_4_3 === "excerpt") { the_excerpt(); 
-				} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
-				endwhile;
-				if ($simple_announcement_with_exclusion_7 === "yes") {
-					if ( (function_exists("wp_pagenavi")) ) {
-						echo "<p>";
-						wp_pagenavi(array( 'query' => $SAWE_shortcode ) );
-						echo "</p>";
-					} else { 
-						$big = 999999999;
-						if ($permalinks === "default") {
-							echo "<p>",paginate_links( array(
-								'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-								'format' => '?paged=%#%',
-								'current' => max( 1, get_query_var('paged') ),
-								'total' => $SAWE_shortcode->max_num_pages,
-								'prev_text' => __($simple_announcement_with_exclusion_8_1),
-								'next_text' => __($simple_announcement_with_exclusion_8_2)
-							) ),"</p>";
-						}
-						if ($permalinks === "pretty") {
-							echo "<p>",paginate_links( array(
-								'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-								'format' => '/paged/%#%',
-								'current' => max( 1, get_query_var('paged') ),
-								'total' => $SAWE_shortcode->max_num_pages,
-								'prev_text' => __($simple_announcement_with_exclusion_8_1),
-								'next_text' => __($simple_announcement_with_exclusion_8_2)
-							) ),"</p>";
+						));
+					}
+					// The shortcode loop
+					while ($SAWE_shortcode->have_posts()) : $SAWE_shortcode->the_post();
+					global $post;
+					if ($simple_announcement_with_exclusion_4 === "yes") { 
+						if ( has_post_thumbnail() ) { 
+							echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
+								",the_post_thumbnail( "thumbnail" ),"</a><br />";
+						} 			
+					}
+					if ($simple_announcement_with_exclusion_4_2 === "yes") { 
+							echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
+					}
+					if ($simple_announcement_with_exclusion_4_3 === "excerpt") { the_excerpt(); 
+					} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
+					endwhile;
+					if ($simple_announcement_with_exclusion_7 === "yes") {
+						if ( (function_exists("wp_pagenavi")) ) {
+							echo "<p>";
+							wp_pagenavi(array( 'query' => $SAWE_shortcode ) );
+							echo "</p>";
+						} else { 
+							$big = 999999999;
+							if ($permalinks === "default") {
+								echo "<p>",paginate_links( array(
+									'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+									'format' => '?paged=%#%',
+									'current' => max( 1, get_query_var('paged') ),
+									'total' => $SAWE_shortcode->max_num_pages,
+									'prev_text' => __($simple_announcement_with_exclusion_8_1),
+									'next_text' => __($simple_announcement_with_exclusion_8_2)
+								) ),"</p>";
+							}
+							if ($permalinks === "pretty") {
+								echo "<p>",paginate_links( array(
+									'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+									'format' => '/paged/%#%',
+									'current' => max( 1, get_query_var('paged') ),
+									'total' => $SAWE_shortcode->max_num_pages,
+									'prev_text' => __($simple_announcement_with_exclusion_8_1),
+									'next_text' => __($simple_announcement_with_exclusion_8_2)
+								) ),"</p>";
+							}
 						}
 					}
+					wp_reset_postdata();
+					echo "</div>";
 				}
-				wp_reset_postdata();
-				if ($simple_announcement_with_exclusion_0 != "") { echo "</div>"; }
+			} else {
+				global $wpdb;
+				$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+				$SAWE_table_grab = $wpdb->get_results ("SELECT * FROM $SAWE_table_name WHERE saweID = $config_id LIMIT 1");
+				foreach ($SAWE_table_grab as $SAWE_table_grabbed) {
+					$sawe_this_ID = $SAWE_table_grabbed->saweID;
+					$saweDIV = $SAWE_table_grabbed->saweDIV;
+					$saweTYPE = $SAWE_table_grabbed->saweTYPE;
+					$saweCAT = $SAWE_table_grabbed->saweCAT;
+					$saweTAG = $SAWE_table_grabbed->saweTAG;
+					$saweFORMAT = $SAWE_table_grabbed->saweFORMAT;
+					$saweAMOUNT = $SAWE_table_grabbed->saweAMOUNT;
+					$saweBY = $SAWE_table_grabbed->saweBY;
+					$saweORDER = $SAWE_table_grabbed->saweORDER;
+					$saweTHUMBS = $SAWE_table_grabbed->saweTHUMBS;
+					$saweTITLES = $SAWE_table_grabbed->saweTITLES;
+					$saweSHOW = $SAWE_table_grabbed->saweSHOW;
+					$sawePAGED = $SAWE_table_grabbed->sawePAGED;
+					$sawePREVIOUS = $SAWE_table_grabbed->sawePREVIOUS;
+					$saweNEXT = $SAWE_table_grabbed->saweNEXT;
+					if ($saweTYPE != "") {
+						if ($sawePAGED === "yes") {
+							$pagednewShortcode = (get_query_var('paged')) ? get_query_var('paged') : 1;
+						}
+						if ($sawePAGED === "no") {
+							$pagednewShortcode = '';
+						}
+						echo "<div class=\"";
+						if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
+						echo "\" id=\"SAWE_shortcode\">";
+						if ($saweTYPE === "cat") {
+							$newShortcode = new WP_Query( array(
+							"cat" => $saweCAT, 
+							"paged" => $pagednewShortcode,
+							"posts_per_page" => $saweAMOUNT, 
+							"order" => $saweORDER, 
+							"orderby" => $saweBY 
+							));
+						}
+						elseif ($saweTYPE === "tag") {
+							$newShortcode = new WP_Query(array(
+							"tag__in" => $saweTAG,
+							"paged" => $pagednewShortcode,
+							"posts_per_page" => $saweAMOUNT, 
+							"order" => $saweORDER, 
+							"orderby" => $saweBY 
+							));
+						}
+						elseif ($saweTYPE === "post-format") {
+							$newShortcode = new WP_Query(array(
+							"paged" => $pagednewShortcode,
+							"posts_per_page" => $saweAMOUNT, 
+							"order" => $saweORDER, 
+							"orderby" => $saweBY,
+							"tax_query" => array(
+								array(
+								'taxonomy' => 'post_format',
+									'field'    => 'slug',
+									'terms'    => array( $saweFORMAT ),
+									'operator' => 'IN'
+									)
+								)
+							));
+						}
+						// The shortcode loop
+						while ($newShortcode->have_posts()) : $newShortcode->the_post();
+						global $post;
+						if ($saweTHUMBS === "yes") { 
+							if ( has_post_thumbnail() ) { 
+								echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
+									",the_post_thumbnail( "thumbnail" ),"</a><br />";
+							} 			
+						}
+						if ($saweTITLES === "yes") { 
+								echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
+						}
+						if ($saweSHOW === "excerpt") { the_excerpt(); 
+						} elseif ($saweSHOW === "content") { the_content(); }
+						endwhile;
+						if ($sawePAGED === "yes") {
+							if ( (function_exists("wp_pagenavi")) ) {
+								echo "<p>";
+								wp_pagenavi(array( 'query' => $newShortcode ) );
+								echo "</p>";
+							} else { 
+								$big = 999999999;
+								if ($permalinks === "default") {
+									echo "<p>",paginate_links( array(
+										'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+										'format' => '?paged=%#%',
+										'current' => max( 1, get_query_var('paged') ),
+										'total' => $newShortcode->max_num_pages,
+										'prev_text' => __($sawePREVIOUS),
+										'next_text' => __($saweNEXT)
+									) ),"</p>";
+								}
+								if ($permalinks === "pretty") {
+									echo "<p>",paginate_links( array(
+										'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+										'format' => '/paged/%#%',
+										'current' => max( 1, get_query_var('paged') ),
+										'total' => $newShortcode->max_num_pages,
+										'prev_text' => __($sawePREVIOUS),
+										'next_text' => __($saweNEXT)
+									) ),"</p>";
+								}
+							}
+						}
+						wp_reset_postdata();
+						echo "</div>";
+					}
+				}
 			}
 		}
 	}

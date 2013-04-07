@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4
+Stable tag: 4.1
 
 Set aside a category/tag/post-format to show via shortcode ( [sawe] ) and hide it from the feed.
 
@@ -26,7 +26,9 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
-= 4 =
+= 4 / 4.1 =
+* 4.1 -> Save different [sawe] instances, and display them wherever using [sawe config_id="#"] (where # is the ID of the saved configuration).
+* Saved instances will not be ommited from the loop. (But possible for a future update).
 * Widget removed (because it wouldn't behave nicely with, well, anything.)
 * WP-Pagenavi support added ( falls onto default pagination if WP-Pagenavi plugin not present)
 

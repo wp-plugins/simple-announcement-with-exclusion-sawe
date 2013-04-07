@@ -1,8 +1,15 @@
 /*	Simple Announcement With Exclusion Styles for the options page  */
-.papercaves_plugin_container {width:450px;font-size:15px;line-height:17px;}
-.papercaves_plugin_container form,.papercaves_plugin_container p {padding:5px 0 0 15px;border-left: 1px solid #bbb;}
-input[type="text"],select {float:right;width:200px;margin:-5px 0 0 0;}
+.papercaves_plugin_container {width:100%;font-size:15px;line-height:17px;}
+.papercaves_plugin_container p {padding:5px 0 0 15px;border-left: 1px solid #bbb;}
+.papercaves_plugin_container form {width:185px;overflow:auto;border: 1px solid #bbb;padding:5px;float:left;margin:0 5px 0 5px;display:block;}
+
+.SAWE {width:250px;float:left;margin:0 5px 0 0;display:block;padding:5px;}
+.item {display:block;border:1px solid #bbb;padding:5px;margin:5px 0 0 5px;width:250px;}
+.SAWE form{width:25px;float:right;border:0;margin:-40px 0 0px 0;}
+
+input[type="text"],select{float:right;width:75px;margin:-5px 0 0 0;}
+.formPart { float: left; width: 150px; }
 input[type="submit"]{display:block;width:100%;}
 input:hover{cursor: pointer;}
-label {display:block;padding:15px 0 0 0;margin:15px 0 15px 0;opacity:.7;}
+label {display:block;padding:15px 0 0 0;opacity:.7;width:180px;float:left;}
 label:hover{opacity:1;}
