@@ -2,28 +2,10 @@
 /*	Simple Announcement With Exclusion Styles Default Styles       
 	Version: 1.4 												   */
 /******************************************************************/
-
-#SAWE_shortcode, #SAWE_widget {
-	padding: 5px;
-	margin: auto; 
-	width: 95%;
-	overflow: hidden;
-}
-
-#SAWE_shortcode img, #SAWE_widget img {
-	width: 100%; 
-	display: block; 
-	margin-bottom: 2px;
-	clear: both; 
-}
-
-#SAWE_shortcode p, #SAWE_widget p {
-	clear: both; 
-	font-size: 95%;
-	line-height: 96%;
-	margin-top: 5px;
-}
-a.SAWE_shortcode_title,a.SAWE_widget_title { display: block;}
+#SAWE_shortcode {padding: 5px;margin: auto; width: 95%;overflow: hidden;}
+#SAWE_shortcode img {width: 100%; display: block; margin-bottom: 2px;clear: both; }
+#SAWE_shortcode p {clear: both; font-size: 95%;line-height: 96%;margin-top: 5px;}
+a.SAWE_shortcode_title { display: block;}
 .SAWE_post_navigation { clear: both; margin: 10px 0 10px 0; }
 .SAWE_left { float: left; }
 .SAWE_right { float: right; }

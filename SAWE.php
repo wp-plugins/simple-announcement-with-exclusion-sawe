@@ -1,45 +1,41 @@
 <?php
-//	Plugin Name: Simple Announcement With Exclusion (SAWE)
-//	Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
-//	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-//	Version: 3.3.2
-//	Author: Matthew Trevino
-//	Author URI: http://papercaves.com
-//	License: A "Slug" license name e.g. GPL2
-//	------------------------------------------------------------------------
-//	Copyright 2013  Matthew Trevino  (boyevul@gmail.com)
-//
-//  This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License, version 2, as 
-//  published by the Free Software Foundation.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-//  ------------------------------------------------------------------------
-//	Contents -
-//		Initialize plugin, register hooks and add actions
-//		SAWE-000 Enqueue necessary files for this plugin to function, install the plugin properly
-//				Delete information when plugin is deactivated (and the option to delete is set properly)
-//		SAWE-001 Options settings validation
-//		SAWE-002 Options page creation / page content
-//		SAWE-003 Widget / Front page exclusion
-//		SAWE-004 Shortcode (for displaying wherever)
-//  ------------------------------------------------------------------------
+/*
+	Plugin Name: Simple Announcement With Exclusion (SAWE)
+	Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
+	Description: Designate a category for announcements to show in a shortcode while excluding it from the main loop.
+	Version: 4
+	Author: Matthew Trevino
+	Author URI: http://papercaves.com
+	License: A "Slug" license name e.g. GPL2
+	------------------------------------------------------------------------
+	Copyright 2013  Matthew Trevino  (boyevul@gmail.com)
+
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License, version 2, as 
+	published by the Free Software Foundation.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+	------------------------------------------------------------------------
+	Contents -
+		Initialize plugin, register hooks and add actions
+		SAWE-000 Enqueue necessary files for this plugin to function, install the plugin properly
+				Delete information when plugin is deactivated (and the option to delete is set properly)
+		SAWE-001 Options settings validation
+		SAWE-002 Options page creation / page content
+		SAWE-003 Shortcode (for displaying wherever)
+	------------------------------------------------------------------------*/
 // 	Initialize plugin, register hooks and add actions
 	register_activation_hook( __FILE__, "simple_announcement_with_exclusion_install" );
 	register_deactivation_hook( __FILE__, "simple_announcement_with_exclusion_uninstall" );
 	add_theme_support( 'post-formats', array( 'aside', 'gallery','link','image','quote','status','video','audio','chat' ) );
 	add_shortcode("sawe", "SAWE_shortcode");
-	add_action( "widgets_init", "SAWEWidgetInit" );
-		function SAWEWidgetInit() {
-		register_widget( "SAWEWidget" );
-	}	
 	add_action( "pre_get_posts", "SAWE_filter_home" );	
 	add_action( "pre_get_posts", "SAWE_exclude_formats" );
 	add_action("admin_menu", "simple_announcement_with_exclusion_add_options_page");
@@ -347,128 +343,6 @@
 	}
 // ------------------------------------------------------------------------
 // SAWE-003
-// Widget / Front page exclusion
-// Create the widget for placement wherever.
-	class SAWEWidget extends WP_Widget {
-		function SAWEWidget() {
-			parent::WP_Widget( false, $name = "Simple Announcement With Exclusion" );
-		}
-		function widget( $args, $instance ) {
-			extract( $args );
-			$title = apply_filters( "widget_title", $instance["title"] );
-			echo $before_widget;
-			if ($title) {
-				echo $before_title . $title . $after_title;
-			}
-			global $simple_announcement_with_exclusion_0;
-			global $simple_announcement_with_exclusion_1;
-			global $simple_announcement_with_exclusion_1_1;
-			global $simple_announcement_with_exclusion_1_2;
-			global $simple_announcement_with_exclusion_1_3;
-			global $simple_announcement_with_exclusion_2;
-			global $simple_announcement_with_exclusion_3;
-			global $simple_announcement_with_exclusion_3_2;
-			global $simple_announcement_with_exclusion_4;
-			global $simple_announcement_with_exclusion_4_2;
-			global $simple_announcement_with_exclusion_4_3;
-			global $simple_announcement_with_exclusion_5;
-			global $simple_announcement_with_exclusion_6;
-			global $simple_announcement_with_exclusion_7;
-			global $simple_announcement_with_exclusion_8_1;
-			global $simple_announcement_with_exclusion_8_2;
-			global $permalinks;
-			if ($simple_announcement_with_exclusion_1 != "") {
-				if ($simple_announcement_with_exclusion_7 === "yes") {
-					$paged_widget = isset( $_GET['SAWEPage'] ) ? absint( $_GET['SAWEPage']) : 1;
-				}
-				if ($simple_announcement_with_exclusion_7 === "no") {
-					$paged_widget = '';
-				}
-				echo "<div class=\"";
-				if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
-				echo "\" id=\"SAWE_widget\">";
-				if ($simple_announcement_with_exclusion_1 === "cat" || $simple_announcement_with_exclusion_1 === "tag") {
-					$tag = $simple_announcement_with_exclusion_1_2;
-					$cat = $simple_announcement_with_exclusion_1_1;
-					$SAWE_widget = new WP_Query( array(
-					"paged" => $paged_widget,
-					"tag__in" => $tag,
-					"cat__in" => $cat, 
-					"posts_per_page" => $simple_announcement_with_exclusion_2, 
-					"order" => $simple_announcement_with_exclusion_3_2, 
-					"orderby" => $simple_announcement_with_exclusion_3, 
-					));
-				}
-				elseif ($simple_announcement_with_exclusion_1 === "post-format") {
-					$SAWE_widget = new WP_Query(array(
-					"paged" => $paged_widget,
-					"posts_per_page" => $simple_announcement_with_exclusion_2, 
-					"order" => $simple_announcement_with_exclusion_3_2, 
-					"orderby" => $simple_announcement_with_exclusion_3,
-					"tax_query" => array(
-						array(
-						  'taxonomy' => 'post_format',
-						  'field'    => 'slug',
-						  'terms'    => array( $simple_announcement_with_exclusion_1_3 ),
-						  'operator' => 'IN'
-						)
-					)
-					));
-				}
-				// The widget loop
-				while ($SAWE_widget->have_posts()) : $SAWE_widget->the_post();
-				global $post;
-				if ($simple_announcement_with_exclusion_4 === "yes") { 
-					if ( has_post_thumbnail() ) { 
-						echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
-								",the_post_thumbnail( "thumbnail" ),"</a><br />";
-						} 			
-				}
-				if ($simple_announcement_with_exclusion_4_2 === "yes") { 
-						echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
-				}
-				if ($simple_announcement_with_exclusion_4_3 === "excerpt") { the_excerpt(); 
-				} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
-				endwhile;
-				if ($simple_announcement_with_exclusion_7 === "yes") {
-					$totalPages = $SAWE_widget->max_num_pages;
-					if ($permalinks === "default" ) {
-						$SAWE_widget_pagination = array(
-							'base'  => '%_%',
-							'format'  => '?SAWEPage=%#%',
-							'current' => $paged_widget,
-							'total'   => $totalPages,
-							'prev_text' => __($simple_announcement_with_exclusion_8_1),
-							'next_text' => __($simple_announcement_with_exclusion_8_2)
-						);
-						echo "<p>",paginate_links( $SAWE_widget_pagination ),"</p>";
-						
-					}
-					if ($permalinks === "pretty" ) {
-						$SAWE_widget_pagination = array(
-							'base'  => '%_%',
-							'format'  => '/SAWEPage/%#%',
-							'current' => $paged_widget,
-							'total'   => $totalPages,
-							'prev_text' => __($simple_announcement_with_exclusion_8_1),
-							'next_text' => __($simple_announcement_with_exclusion_8_2)
-						);
-						echo "<p>",paginate_links( $SAWE_widget_pagination ),"</p>";
-					}		
-				}
-			}
-			echo "</div>";
-			echo $after_widget ;
-			function SAWEupdate( $new_instance, $old_instance ) {
-				return $new_instance;
-			}
-			function SAWEform( $instance ) {
-				$title = esc_attr( $instance["title"] );
-			}
-		}
-	}
-// ------------------------------------------------------------------------
-// SAWE-004
 // Shortcode (for displaying wherever)
 	function SAWE_shortcode() {
 		if (!is_admin() ) {
@@ -549,26 +423,32 @@
 				} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
 				endwhile;
 				if ($simple_announcement_with_exclusion_7 === "yes") {
-					$big = 999999999;
-					if ($permalinks === "default") {
-						echo "<p>",paginate_links( array(
-							'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-							'format' => '?paged=%#%',
-							'current' => max( 1, get_query_var('paged') ),
-							'total' => $SAWE_shortcode->max_num_pages,
-							'prev_text' => __($simple_announcement_with_exclusion_8_1),
-							'next_text' => __($simple_announcement_with_exclusion_8_2)
-						) ),"</p>";
-					}
-					if ($permalinks === "pretty") {
-						echo "<p>",paginate_links( array(
-							'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-							'format' => '/paged/%#%',
-							'current' => max( 1, get_query_var('paged') ),
-							'total' => $SAWE_shortcode->max_num_pages,
-							'prev_text' => __($simple_announcement_with_exclusion_8_1),
-							'next_text' => __($simple_announcement_with_exclusion_8_2)
-						) ),"</p>";
+					if ( (function_exists("wp_pagenavi")) ) {
+						echo "<p>";
+						wp_pagenavi(array( 'query' => $SAWE_shortcode ) );
+						echo "</p>";
+					} else { 
+						$big = 999999999;
+						if ($permalinks === "default") {
+							echo "<p>",paginate_links( array(
+								'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+								'format' => '?paged=%#%',
+								'current' => max( 1, get_query_var('paged') ),
+								'total' => $SAWE_shortcode->max_num_pages,
+								'prev_text' => __($simple_announcement_with_exclusion_8_1),
+								'next_text' => __($simple_announcement_with_exclusion_8_2)
+							) ),"</p>";
+						}
+						if ($permalinks === "pretty") {
+							echo "<p>",paginate_links( array(
+								'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+								'format' => '/paged/%#%',
+								'current' => max( 1, get_query_var('paged') ),
+								'total' => $SAWE_shortcode->max_num_pages,
+								'prev_text' => __($simple_announcement_with_exclusion_8_1),
+								'next_text' => __($simple_announcement_with_exclusion_8_2)
+							) ),"</p>";
+						}
 					}
 				}
 				wp_reset_postdata();

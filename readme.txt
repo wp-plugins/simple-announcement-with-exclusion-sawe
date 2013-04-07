@@ -1,15 +1,15 @@
 === Simple Announcement With Exclusion ===
 Contributors: Matthew Trevino
-Tags: widget, category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar
+Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 3.3.2
+Stable tag: 4
 
-Set aside a category to show in a widget, hide it from the feed.
+Set aside a category/tag/post-format to show via shortcode ( [sawe] ) and hide it from the feed.
 
 == Description ==
 
-SAWE is a plugin to set aside a single category as an announcements section (or aside, or updates, or whatever) and display it via shortcode ( [sawe] ) or widget, with the option of also excluding posts from this category from showing up on the main feed.
+SAWE is a plugin to set aside a single category as an announcements section (or aside, or updates, or whatever) and display it via shortcode ( [sawe] ), with the option of also excluding posts from this category from showing up on the main feed.
 
 == Installation ==
 
@@ -26,6 +26,10 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
+= 4 =
+* Widget removed (because it wouldn't behave nicely with, well, anything.)
+* WP-Pagenavi support added ( falls onto default pagination if WP-Pagenavi plugin not present)
+
 = 3.3 / 3.3.1 / 3.3.2 =
 * 3.3.2 - Further cleaned up code / stylesheet.
 * 3.3.1 - fixed bug that caused php errors when plugin was activated for the first time and no initial parameters had been set.
