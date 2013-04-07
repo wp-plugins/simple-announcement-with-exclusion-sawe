@@ -3,7 +3,7 @@
 	Plugin Name: Simple Announcement With Exclusion (SAWE)
 	Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 	Description: Designate a category for announcements to show in a widget while excluding it from the main loop.
-	Version: 3.3
+	Version: 3.3.1
 	Author: Matthew Trevino
 	Author URI: http://papercaves.com
 	License: A "Slug" license name e.g. GPL2
@@ -449,6 +449,119 @@
 				global $simple_announcement_with_exclusion_6;
 				global $simple_announcement_with_exclusion_7;
 				global $simple_announcement_with_exclusion_delete_on_deactivate;	
+				if ($simple_announcement_with_exclusion_1 != "") { 
+					if ($simple_announcement_with_exclusion_7 === "yes") {
+						$paged_widget = isset( $_GET['SAWEPage'] ) ? (int) $_GET['SAWEPage'] : 1;
+					}
+					if ($simple_announcement_with_exclusion_7 === "no") {
+						$paged_widget = '';
+					}
+					echo "<div class=\"";
+					if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
+					echo "\" id=\"SAWE_widget\">";
+					if ($simple_announcement_with_exclusion_1 === "cat") {
+						$SAWE_widget = new WP_Query( array(
+						"paged" => $paged_widget,
+						"cat" => $simple_announcement_with_exclusion_1_1, 
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3 
+						));
+					}
+					elseif ($simple_announcement_with_exclusion_1 === "tag") {
+						$SAWE_widget = new WP_Query(array(
+						"paged" => $paged_widget,
+						"tag__in" => $simple_announcement_with_exclusion_1_2,
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3 
+						));
+					}
+					elseif ($simple_announcement_with_exclusion_1 === "post-format") {
+						$SAWE_widget = new WP_Query(array(
+						"paged" => $paged_widget,
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3,
+						"tax_query" => array(
+							array(
+							  'taxonomy' => 'post_format',
+							  'field'    => 'slug',
+							  'terms'    => array( $simple_announcement_with_exclusion_1_3 ),
+							  'operator' => 'IN'
+							)
+						)
+						));
+					}
+					// The widget loop
+					while ($SAWE_widget->have_posts()) : $SAWE_widget->the_post();
+					global $post;
+					if ($simple_announcement_with_exclusion_4 === "yes") { 
+						if ( has_post_thumbnail() ) { 
+							echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
+								",the_post_thumbnail( "thumbnail" ),"</a><br />";
+						} 			
+					}
+					if ($simple_announcement_with_exclusion_4_2 === "yes") { 
+							echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
+					}
+					if ($simple_announcement_with_exclusion_4_3 === "excerpt") { the_excerpt(); 
+					} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
+					endwhile;
+					if ($simple_announcement_with_exclusion_7 === "yes") {
+						$SAWE_widget_pagination = array(
+							'format'  => '?page=simple_announcement_with_exclusion&SAWEPage=%#%',
+							'current' => $paged_widget,
+							'total'   => $SAWE_widget->max_num_pages
+						);
+						echo "<p>",paginate_links( $SAWE_widget_pagination ),"</p>";
+					}
+				}
+				echo "</div>";
+				echo "</div></div></div></div></div>";			
+	}
+	
+	
+	
+	
+
+// SAWE-003
+// Widget / Front page exclusion
+// Create the widget for placement wherever.
+	class SAWEWidget extends WP_Widget {
+		function SAWEWidget() {
+			parent::WP_Widget( false, $name = "Simple Announcement With Exclusion" );
+		}
+
+		function widget( $args, $instance ) {
+			extract( $args );
+			$title = apply_filters( "widget_title", $instance["title"] );
+
+			echo $before_widget;
+		
+			if ($title) {
+				echo $before_title . $title . $after_title;
+			}
+		
+			global $simple_announcement_with_exclusion_0;
+			global $simple_announcement_with_exclusion_1;
+			global $simple_announcement_with_exclusion_1_1;
+			global $simple_announcement_with_exclusion_1_2;
+			global $simple_announcement_with_exclusion_1_3;
+			global $simple_announcement_with_exclusion_2;
+			global $simple_announcement_with_exclusion_3;
+			global $simple_announcement_with_exclusion_3_2;
+			global $simple_announcement_with_exclusion_4;
+			global $simple_announcement_with_exclusion_4_2;
+			global $simple_announcement_with_exclusion_4_3;
+			global $simple_announcement_with_exclusion_5;
+			global $simple_announcement_with_exclusion_6;
+			global $simple_announcement_with_exclusion_7;
+			global $simple_announcement_with_exclusion_8_1;
+			global $simple_announcement_with_exclusion_8_2;
+			global $simple_announcement_with_exclusion_delete_on_deactivate;	
+			global $permalinks;
+			if ($simple_announcement_with_exclusion_1 != "") {
 				if ($simple_announcement_with_exclusion_7 === "yes") {
 					$paged_widget = isset( $_GET['SAWEPage'] ) ? (int) $_GET['SAWEPage'] : 1;
 				}
@@ -498,8 +611,8 @@
 				if ($simple_announcement_with_exclusion_4 === "yes") { 
 					if ( has_post_thumbnail() ) { 
 						echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
-							",the_post_thumbnail( "thumbnail" ),"</a><br />";
-					} 			
+								",the_post_thumbnail( "thumbnail" ),"</a><br />";
+						} 			
 				}
 				if ($simple_announcement_with_exclusion_4_2 === "yes") { 
 						echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
@@ -508,146 +621,37 @@
 				} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
 				endwhile;
 				if ($simple_announcement_with_exclusion_7 === "yes") {
-					$SAWE_widget_pagination = array(
-						'format'  => '?page=simple_announcement_with_exclusion&SAWEPage=%#%',
-						'current' => $paged_widget,
-						'total'   => $SAWE_widget->max_num_pages
-					);
-					echo "<p>",paginate_links( $SAWE_widget_pagination ),"</p>";
-				}
-				if ($simple_announcement_with_exclusion_0 != "") { echo "</div>"; }
-				echo "</div></div></div></div></div>";			
-	}
-	
-	
-	
-	
-
-// SAWE-003
-// Widget / Front page exclusion
-// Create the widget for placement wherever.
-	class SAWEWidget extends WP_Widget {
-		function SAWEWidget() {
-			parent::WP_Widget( false, $name = "Simple Announcement With Exclusion" );
-		}
-
-		function widget( $args, $instance ) {
-			extract( $args );
-			$title = apply_filters( "widget_title", $instance["title"] );
-
-			echo $before_widget;
-		
-			if ($title) {
-				echo $before_title . $title . $after_title;
-			}
-		
-			global $simple_announcement_with_exclusion_0;
-			global $simple_announcement_with_exclusion_1;
-			global $simple_announcement_with_exclusion_1_1;
-			global $simple_announcement_with_exclusion_1_2;
-			global $simple_announcement_with_exclusion_1_3;
-			global $simple_announcement_with_exclusion_2;
-			global $simple_announcement_with_exclusion_3;
-			global $simple_announcement_with_exclusion_3_2;
-			global $simple_announcement_with_exclusion_4;
-			global $simple_announcement_with_exclusion_4_2;
-			global $simple_announcement_with_exclusion_4_3;
-			global $simple_announcement_with_exclusion_5;
-			global $simple_announcement_with_exclusion_6;
-			global $simple_announcement_with_exclusion_7;
-			global $simple_announcement_with_exclusion_8_1;
-			global $simple_announcement_with_exclusion_8_2;
-			global $simple_announcement_with_exclusion_delete_on_deactivate;	
-			global $permalinks;
-			if ($simple_announcement_with_exclusion_7 === "yes") {
-				$paged_widget = isset( $_GET['SAWEPage'] ) ? (int) $_GET['SAWEPage'] : 1;
-			}
-			if ($simple_announcement_with_exclusion_7 === "no") {
-				$paged_widget = '';
-			}
-			echo "<div class=\"";
-			if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
-			echo "\" id=\"SAWE_widget\">";
-			if ($simple_announcement_with_exclusion_1 === "cat") {
-				$SAWE_widget = new WP_Query( array(
-				"paged" => $paged_widget,
-				"cat" => $simple_announcement_with_exclusion_1_1, 
-				"posts_per_page" => $simple_announcement_with_exclusion_2, 
-				"order" => $simple_announcement_with_exclusion_3_2, 
-				"orderby" => $simple_announcement_with_exclusion_3 
-				));
-			}
-			elseif ($simple_announcement_with_exclusion_1 === "tag") {
-				$SAWE_widget = new WP_Query(array(
-				"paged" => $paged_widget,
-				"tag__in" => $simple_announcement_with_exclusion_1_2,
-				"posts_per_page" => $simple_announcement_with_exclusion_2, 
-				"order" => $simple_announcement_with_exclusion_3_2, 
-				"orderby" => $simple_announcement_with_exclusion_3 
-				));
-			}
-			elseif ($simple_announcement_with_exclusion_1 === "post-format") {
-				$SAWE_widget = new WP_Query(array(
-				"paged" => $paged_widget,
-				"posts_per_page" => $simple_announcement_with_exclusion_2, 
-				"order" => $simple_announcement_with_exclusion_3_2, 
-				"orderby" => $simple_announcement_with_exclusion_3,
-				"tax_query" => array(
-					array(
-					  'taxonomy' => 'post_format',
-					  'field'    => 'slug',
-					  'terms'    => array( $simple_announcement_with_exclusion_1_3 ),
-					  'operator' => 'IN'
-					)
-				)
-				));
-			}
-			// The widget loop
-			while ($SAWE_widget->have_posts()) : $SAWE_widget->the_post();
-			global $post;
-			if ($simple_announcement_with_exclusion_4 === "yes") { 
-				if ( has_post_thumbnail() ) { 
-					echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
-							",the_post_thumbnail( "thumbnail" ),"</a><br />";
-					} 			
-			}
-			if ($simple_announcement_with_exclusion_4_2 === "yes") { 
-					echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
-			}
-			if ($simple_announcement_with_exclusion_4_3 === "excerpt") { the_excerpt(); 
-			} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
-			endwhile;
-			if ($simple_announcement_with_exclusion_7 === "yes") {
-				
-				$currentPage = max(1, $_GET['SAWEPage']);
-				$totalPages = $SAWE_widget->max_num_pages;
-				
-				if ($permalinks === "default" ) {
-					$SAWE_widget_pagination = array(
-						'base'  => '%_%',
-						'format'  => '?SAWEPage=%#%',
-						'current' => $currentPage,
-						'total'   => $totalPages,
-						'prev_text' => __($simple_announcement_with_exclusion_8_1),
-						'next_text' => __($simple_announcement_with_exclusion_8_2)
-					);
-					echo "<p>",paginate_links( $SAWE_widget_pagination ),"</p>";
 					
+					$currentPage = max(1, $_GET['SAWEPage']);
+					$totalPages = $SAWE_widget->max_num_pages;
+					
+					if ($permalinks === "default" ) {
+						$SAWE_widget_pagination = array(
+							'base'  => '%_%',
+							'format'  => '?SAWEPage=%#%',
+							'current' => $currentPage,
+							'total'   => $totalPages,
+							'prev_text' => __($simple_announcement_with_exclusion_8_1),
+							'next_text' => __($simple_announcement_with_exclusion_8_2)
+						);
+						echo "<p>",paginate_links( $SAWE_widget_pagination ),"</p>";
+						
+					}
+					if ($permalinks === "pretty" ) {
+						$SAWE_widget_pagination = array(
+							'base'  => '%_%',
+							'format'  => '/SAWEPage/%#%',
+							'current' => $currentPage,
+							'total'   => $totalPages,
+							'prev_text' => __($simple_announcement_with_exclusion_8_1),
+							'next_text' => __($simple_announcement_with_exclusion_8_2)
+						);
+						echo "<p>",paginate_links( $SAWE_widget_pagination ),"</p>";
+						wp_reset_postdata();
+					}		
 				}
-				if ($permalinks === "pretty" ) {
-					$SAWE_widget_pagination = array(
-						'base'  => '%_%',
-						'format'  => '/SAWEPage/%#%',
-						'current' => $currentPage,
-						'total'   => $totalPages,
-						'prev_text' => __($simple_announcement_with_exclusion_8_1),
-						'next_text' => __($simple_announcement_with_exclusion_8_2)
-					);
-					echo "<p>",paginate_links( $SAWE_widget_pagination ),"</p>";
-					wp_reset_postdata();
-				}				
 			}
-			if ($simple_announcement_with_exclusion_0 != "") { echo "</div>"; } 
+			echo "</div>";
 			echo $after_widget ;
 			function SAWEupdate( $new_instance, $old_instance ) {
 				return $new_instance;
@@ -682,89 +686,91 @@
 			global $simple_announcement_with_exclusion_8_2;
 			global $simple_announcement_with_exclusion_delete_on_deactivate;				
 			global $permalinks;
-			if ($simple_announcement_with_exclusion_7 === "yes") {
-				$paged_shortcode = (get_query_var('paged')) ? get_query_var('paged') : 1;
-			}
-			if ($simple_announcement_with_exclusion_7 === "no") {
-				$paged_shortcode = '';
-			}
-				echo "<div class=\"";
-				if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
-				echo "\" id=\"SAWE_shortcode\">";
-				if ($simple_announcement_with_exclusion_1 === "cat") {
-					$SAWE_shortcode = new WP_Query( array(
-					"cat" => $simple_announcement_with_exclusion_1_1, 
-					"paged" => $paged_shortcode,
-					"posts_per_page" => $simple_announcement_with_exclusion_2, 
-					"order" => $simple_announcement_with_exclusion_3_2, 
-					"orderby" => $simple_announcement_with_exclusion_3 
-					));
-				}
-				elseif ($simple_announcement_with_exclusion_1 === "tag") {
-					$SAWE_shortcode = new WP_Query(array(
-					"tag__in" => $simple_announcement_with_exclusion_1_2,
-					"paged" => $paged_shortcode,
-					"posts_per_page" => $simple_announcement_with_exclusion_2, 
-					"order" => $simple_announcement_with_exclusion_3_2, 
-					"orderby" => $simple_announcement_with_exclusion_3 
-					));
-				}
-				elseif ($simple_announcement_with_exclusion_1 === "post-format") {
-					$SAWE_shortcode = new WP_Query(array(
-					"paged" => $paged_shortcode,
-					"posts_per_page" => $simple_announcement_with_exclusion_2, 
-					"order" => $simple_announcement_with_exclusion_3_2, 
-					"orderby" => $simple_announcement_with_exclusion_3,
-					"tax_query" => array(
-						array(
-						  'taxonomy' => 'post_format',
-						  'field'    => 'slug',
-						  'terms'    => array( $simple_announcement_with_exclusion_1_3 ),
-						  'operator' => 'IN'
-						)
-					)
-					));
-				}
-				// The shortcode loop
-				while ($SAWE_shortcode->have_posts()) : $SAWE_shortcode->the_post();
-				global $post;
-				if ($simple_announcement_with_exclusion_4 === "yes") { 
-					if ( has_post_thumbnail() ) { 
-						echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
-							",the_post_thumbnail( "thumbnail" ),"</a><br />";
-					} 			
-				}
-				if ($simple_announcement_with_exclusion_4_2 === "yes") { 
-						echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
-				}
-				if ($simple_announcement_with_exclusion_4_3 === "excerpt") { the_excerpt(); 
-				} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
-				endwhile;
+			if ($simple_announcement_with_exclusion_1 != "") {
 				if ($simple_announcement_with_exclusion_7 === "yes") {
-					$big = 999999999; // need an unlikely integer
-					if ($permalinks === "default") {
-						echo paginate_links( array(
-							'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-							'format' => '?paged=%#%',
-							'current' => max( 1, get_query_var('paged') ),
-							'total' => $SAWE_shortcode->max_num_pages,
-							'prev_text' => __($simple_announcement_with_exclusion_8_1),
-							'next_text' => __($simple_announcement_with_exclusion_8_2)
-						) );
-					}
-					if ($permalinks === "pretty") {
-						echo paginate_links( array(
-							'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-							'format' => '/paged/%#%',
-							'current' => max( 1, get_query_var('paged') ),
-							'total' => $SAWE_shortcode->max_num_pages,
-							'prev_text' => __($simple_announcement_with_exclusion_8_1),
-							'next_text' => __($simple_announcement_with_exclusion_8_2)
-						) );
-					}
+					$paged_shortcode = (get_query_var('paged')) ? get_query_var('paged') : 1;
 				}
-				wp_reset_postdata();
-				if ($simple_announcement_with_exclusion_0 != "") { echo "</div>"; }
+				if ($simple_announcement_with_exclusion_7 === "no") {
+					$paged_shortcode = '';
+				}
+					echo "<div class=\"";
+					if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
+					echo "\" id=\"SAWE_shortcode\">";
+					if ($simple_announcement_with_exclusion_1 === "cat") {
+						$SAWE_shortcode = new WP_Query( array(
+						"cat" => $simple_announcement_with_exclusion_1_1, 
+						"paged" => $paged_shortcode,
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3 
+						));
+					}
+					elseif ($simple_announcement_with_exclusion_1 === "tag") {
+						$SAWE_shortcode = new WP_Query(array(
+						"tag__in" => $simple_announcement_with_exclusion_1_2,
+						"paged" => $paged_shortcode,
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3 
+						));
+					}
+					elseif ($simple_announcement_with_exclusion_1 === "post-format") {
+						$SAWE_shortcode = new WP_Query(array(
+						"paged" => $paged_shortcode,
+						"posts_per_page" => $simple_announcement_with_exclusion_2, 
+						"order" => $simple_announcement_with_exclusion_3_2, 
+						"orderby" => $simple_announcement_with_exclusion_3,
+						"tax_query" => array(
+							array(
+							'taxonomy' => 'post_format',
+							'field'    => 'slug',
+							'terms'    => array( $simple_announcement_with_exclusion_1_3 ),
+							'operator' => 'IN'
+							)
+						)
+						));
+					}
+					// The shortcode loop
+					while ($SAWE_shortcode->have_posts()) : $SAWE_shortcode->the_post();
+					global $post;
+					if ($simple_announcement_with_exclusion_4 === "yes") { 
+						if ( has_post_thumbnail() ) { 
+							echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
+								",the_post_thumbnail( "thumbnail" ),"</a><br />";
+						} 			
+					}
+					if ($simple_announcement_with_exclusion_4_2 === "yes") { 
+							echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
+					}
+					if ($simple_announcement_with_exclusion_4_3 === "excerpt") { the_excerpt(); 
+					} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
+					endwhile;
+					if ($simple_announcement_with_exclusion_7 === "yes") {
+						$big = 999999999; // need an unlikely integer
+						if ($permalinks === "default") {
+							echo paginate_links( array(
+								'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+								'format' => '?paged=%#%',
+								'current' => max( 1, get_query_var('paged') ),
+								'total' => $SAWE_shortcode->max_num_pages,
+								'prev_text' => __($simple_announcement_with_exclusion_8_1),
+								'next_text' => __($simple_announcement_with_exclusion_8_2)
+							) );
+						}
+						if ($permalinks === "pretty") {
+							echo paginate_links( array(
+								'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+								'format' => '/paged/%#%',
+								'current' => max( 1, get_query_var('paged') ),
+								'total' => $SAWE_shortcode->max_num_pages,
+								'prev_text' => __($simple_announcement_with_exclusion_8_1),
+								'next_text' => __($simple_announcement_with_exclusion_8_2)
+							) );
+						}
+					}
+					wp_reset_postdata();
+					if ($simple_announcement_with_exclusion_0 != "") { echo "</div>"; }
+				}
 		}
 	}
 	
