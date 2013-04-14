@@ -3,13 +3,17 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.2
+Stable tag: 4.2.1
 
-Set aside a category/tag/post-format to show via shortcode ( [sawe] ) and hide it from the feed.
+Set aside a category/tag/post-format to show via shortcode ( [sawe] ) and hide it from the loop.
 
 == Description ==
 
-SAWE is a plugin to set aside a single category as an announcements section (or aside, or updates, or whatever) and display it via shortcode ( [sawe] ), with the option of also excluding posts from this category from showing up on the main feed.
+SAWE is a plugin to set aside a single category as an announcements section (or aside, or updates, or whatever) 
+and display it via shortcode ( [sawe] ), with the option of also excluding posts from this category from showing 
+up on the main loop.
+
+You may also save separate instances (called 'saves states') to show wherever, using a modified form of the shortcode.
 
 == Installation ==
 
@@ -26,6 +30,10 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
+= 4.2.1 =
+* Various errors fixed (php related errors)
+* Various wording fixed (descriptions)
+
 = 4.2 = 
 * Save states are now human readable (when you look at each one, it's obvious as to what they do).  
 * If uninstall is set to "yes", deactivating plugin will now delete the save state table as well.
