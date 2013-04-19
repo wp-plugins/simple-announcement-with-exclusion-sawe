@@ -3,7 +3,7 @@
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 Description: Designate a category for announcements to show in a shortcode while excluding it from the main loop.
-Version: 4.2.1
+Version: 4.3
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2
@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ------------------------------------------------------------------------*/
-//	Last Updated April 13th, 2013 at 8:12 PM
+//	Last Updated April 18th, 2013 at 11:41 PM
 
 
 
@@ -46,7 +46,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	add_theme_support( 'post-formats', array( 'aside', 'gallery','link','image','quote','status','video','audio','chat' ) );		
 	add_shortcode("sawe", "SAWE_shortcode");																						
 	add_action( "pre_get_posts", "SAWE_filter_home" );																				
-	add_action( "pre_get_posts", "SAWE_exclude_formats" );																			
 	add_action("admin_menu", "simple_announcement_with_exclusion_add_options_page");												
 	
 	function simple_announcement_with_exclusion_settings_link($links) { 															
@@ -92,7 +91,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			saweSHOW TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 			sawePAGED TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 			sawePREVIOUS TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-			saweNEXT TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+			saweNEXT TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL 
 			);";
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $SAWE_sql );
@@ -101,44 +100,50 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 //  Primary loop [sawe] options
 	function simple_announcement_with_exclusion_install() {																			
-		add_option("simple_announcement_with_exclusion_0","","Wrapper");
-		add_option("simple_announcement_with_exclusion_1","","post-type");
-		add_option("simple_announcement_with_exclusion_1_1","","cat");
-		add_option("simple_announcement_with_exclusion_1_2","","tag");
-		add_option("simple_announcement_with_exclusion_1_3","","post-format");
-		add_option("simple_announcement_with_exclusion_2","3","Option 2");
-		add_option("simple_announcement_with_exclusion_3","","Option 3");
-		add_option("simple_announcement_with_exclusion_3_2","","Option 3.2");
-		add_option("simple_announcement_with_exclusion_4","no","Option 4");
-		add_option("simple_announcement_with_exclusion_4_2","yes","Option 4.2");
-		add_option("simple_announcement_with_exclusion_4_3","nothing","Option 4.3");
-		add_option("simple_announcement_with_exclusion_5","yes","Option 5");
+		// Delete deprecated options from 4.2.1
+		delete_option("simple_announcement_with_exclusion_0","","Wrapper");
+		delete_option("simple_announcement_with_exclusion_1","","post-type");
+		delete_option("simple_announcement_with_exclusion_1_1","","cat");
+		delete_option("simple_announcement_with_exclusion_1_2","","tag");
+		delete_option("simple_announcement_with_exclusion_1_3","","post-format");
+		delete_option("simple_announcement_with_exclusion_2","3","Option 2");
+		delete_option("simple_announcement_with_exclusion_3","","Option 3");
+		delete_option("simple_announcement_with_exclusion_3_2","","Option 3.2");
+		delete_option("simple_announcement_with_exclusion_4","no","Option 4");
+		delete_option("simple_announcement_with_exclusion_4_2","yes","Option 4.2");
+		delete_option("simple_announcement_with_exclusion_4_3","nothing","Option 4.3");
+		delete_option("simple_announcement_with_exclusion_5","yes","Option 5");
+		delete_option("simple_announcement_with_exclusion_7","no","Option 7");
+		delete_option("simple_announcement_with_exclusion_8_1","Previous","Option 8.1");
+		delete_option("simple_announcement_with_exclusion_8_2","Next","Option 8.2");
 		add_option("simple_announcement_with_exclusion_6","no","Option 6");
-		add_option("simple_announcement_with_exclusion_7","no","Option 7");
-		add_option("simple_announcement_with_exclusion_8_1","Previous","Option 8.1");
-		add_option("simple_announcement_with_exclusion_8_2","Next","Option 8.2");
+		add_option("simple_announcement_with_exclusion_9","","Categories front");
+		add_option("simple_announcement_with_exclusion_9_2","","Categories front and tag");
+		add_option("simple_announcement_with_exclusion_9_3","","Categories everywhere");
+		add_option("simple_announcement_with_exclusion_9_4","","tags front");
+		add_option("simple_announcement_with_exclusion_9_5","","tags front and category");
+		add_option("simple_announcement_with_exclusion_9_7","","tags everywhere");		
+		add_option("simple_announcement_with_exclusion_9_8","","format everywhere");		
+		add_option("simple_announcement_with_exclusion_9_9","","format everywhere");		
+		add_option("simple_announcement_with_exclusion_9_10","","format everywhere");		
+		add_option("simple_announcement_with_exclusion_9_11","","format everywhere");		
 		add_option("simple_announcement_with_exclusion_delete_on_deactivate","no","Delete on deactivate?");
 	}
 
 //	Uninstallation procedure	
 	function simple_announcement_with_exclusion_uninstall() {
 		if ( get_option("simple_announcement_with_exclusion_delete_on_deactivate") === "yes") {
-			delete_option("simple_announcement_with_exclusion_0");
-			delete_option("simple_announcement_with_exclusion_1");
-			delete_option("simple_announcement_with_exclusion_1_1");
-			delete_option("simple_announcement_with_exclusion_1_2");
-			delete_option("simple_announcement_with_exclusion_1_3");
-			delete_option("simple_announcement_with_exclusion_2");
-			delete_option("simple_announcement_with_exclusion_3");
-			delete_option("simple_announcement_with_exclusion_3_2");
-			delete_option("simple_announcement_with_exclusion_4");
-			delete_option("simple_announcement_with_exclusion_4_2");
-			delete_option("simple_announcement_with_exclusion_4_3");
-			delete_option("simple_announcement_with_exclusion_5");
 			delete_option("simple_announcement_with_exclusion_6");
-			delete_option("simple_announcement_with_exclusion_7");
-			delete_option("simple_announcement_with_exclusion_8_1");
-			delete_option("simple_announcement_with_exclusion_8_2");
+			delete_option("simple_announcement_with_exclusion_9");
+			delete_option("simple_announcement_with_exclusion_9_2");
+			delete_option("simple_announcement_with_exclusion_9_3");
+			delete_option("simple_announcement_with_exclusion_9_4");
+			delete_option("simple_announcement_with_exclusion_9_5");
+			delete_option("simple_announcement_with_exclusion_9_7");
+			delete_option("simple_announcement_with_exclusion_9_8");
+			delete_option("simple_announcement_with_exclusion_9_9");
+			delete_option("simple_announcement_with_exclusion_9_10");
+			delete_option("simple_announcement_with_exclusion_9_11");
 			delete_option("simple_announcement_with_exclusion_delete_on_deactivate");
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -147,22 +152,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		}
 	}
 	
-	$simple_announcement_with_exclusion_0 = get_option("simple_announcement_with_exclusion_0");										
-	$simple_announcement_with_exclusion_1 = get_option("simple_announcement_with_exclusion_1");
-	$simple_announcement_with_exclusion_1_1 = get_option("simple_announcement_with_exclusion_1_1");
-	$simple_announcement_with_exclusion_1_2 = get_option("simple_announcement_with_exclusion_1_2");
-	$simple_announcement_with_exclusion_1_3 = get_option("simple_announcement_with_exclusion_1_3");
-	$simple_announcement_with_exclusion_2 = get_option("simple_announcement_with_exclusion_2");
-	$simple_announcement_with_exclusion_3 = get_option("simple_announcement_with_exclusion_3");
-	$simple_announcement_with_exclusion_3_2 = get_option("simple_announcement_with_exclusion_3_2");
-	$simple_announcement_with_exclusion_4 = get_option("simple_announcement_with_exclusion_4");
-	$simple_announcement_with_exclusion_4_2 = get_option("simple_announcement_with_exclusion_4_2");
-	$simple_announcement_with_exclusion_4_3 = get_option("simple_announcement_with_exclusion_4_3");
-	$simple_announcement_with_exclusion_5 = get_option("simple_announcement_with_exclusion_5");
 	$simple_announcement_with_exclusion_6 = get_option("simple_announcement_with_exclusion_6");
-	$simple_announcement_with_exclusion_7 = get_option("simple_announcement_with_exclusion_7");
-	$simple_announcement_with_exclusion_8_1 = get_option("simple_announcement_with_exclusion_8_1");
-	$simple_announcement_with_exclusion_8_2 = get_option("simple_announcement_with_exclusion_8_2");
+	$simple_announcement_with_exclusion_9 = get_option("simple_announcement_with_exclusion_9");
+	$simple_announcement_with_exclusion_9_2 = get_option("simple_announcement_with_exclusion_9_2");
+	$simple_announcement_with_exclusion_9_3 = get_option("simple_announcement_with_exclusion_9_3");
+	$simple_announcement_with_exclusion_9_4 = get_option("simple_announcement_with_exclusion_9_4");
+	$simple_announcement_with_exclusion_9_5 = get_option("simple_announcement_with_exclusion_9_5");
+	$simple_announcement_with_exclusion_9_7 = get_option("simple_announcement_with_exclusion_9_7");
+	$simple_announcement_with_exclusion_9_8 = get_option("simple_announcement_with_exclusion_9_8");
+	$simple_announcement_with_exclusion_9_9 = get_option("simple_announcement_with_exclusion_9_9");
+	$simple_announcement_with_exclusion_9_10 = get_option("simple_announcement_with_exclusion_9_10");
+	$simple_announcement_with_exclusion_9_11 = get_option("simple_announcement_with_exclusion_9_11");
 	$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");	
 	
 	
@@ -178,42 +178,32 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //	Update options (main loop) if requested
 //	---------------------------------------------------------------------	
 	function update_simple_announcement_with_exclusions() {
-		global $simple_announcement_with_exclusion_0;
-		global $simple_announcement_with_exclusion_1;
-		global $simple_announcement_with_exclusion_1_1;
-		global $simple_announcement_with_exclusion_1_2;
-		global $simple_announcement_with_exclusion_1_3;
-		global $simple_announcement_with_exclusion_2;
-		global $simple_announcement_with_exclusion_3;
-		global $simple_announcement_with_exclusion_3_2;
-		global $simple_announcement_with_exclusion_4;
-		global $simple_announcement_with_exclusion_4_2;
-		global $simple_announcement_with_exclusion_4_3;
-		global $simple_announcement_with_exclusion_5;
 		global $simple_announcement_with_exclusion_6;
-		global $simple_announcement_with_exclusion_7;
-		global $simple_announcement_with_exclusion_8_1;
-		global $simple_announcement_with_exclusion_8_2;
+		global $simple_announcement_with_exclusion_9;
+		global $simple_announcement_with_exclusion_9_2;
+		global $simple_announcement_with_exclusion_9_3;
+		global $simple_announcement_with_exclusion_9_4;
+		global $simple_announcement_with_exclusion_9_5;
+		global $simple_announcement_with_exclusion_9_7;
+		global $simple_announcement_with_exclusion_9_8;
+		global $simple_announcement_with_exclusion_9_9;
+		global $simple_announcement_with_exclusion_9_10;
+		global $simple_announcement_with_exclusion_9_11;
 		global $simple_announcement_with_exclusion_delete_on_deactivate;	
 // 	Only update if request isn't empty and request isn't the same as it was before
 		if(isset($_POST['submit'])){
-			if ($_REQUEST["simple_announcement_with_exclusion_0"] != "" && $_REQUEST["simple_announcement_with_exclusion_0"] != "$simple_announcement_with_exclusion_0") { update_option("simple_announcement_with_exclusion_0",$_REQUEST["simple_announcement_with_exclusion_0"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_1"] != "$simple_announcement_with_exclusion_1") { update_option("simple_announcement_with_exclusion_1",$_REQUEST["simple_announcement_with_exclusion_1"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_1_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_1"] != "$simple_announcement_with_exclusion_1_1") { update_option("simple_announcement_with_exclusion_1_1",$_REQUEST["simple_announcement_with_exclusion_1_1"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_1_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_2"] != "$simple_announcement_with_exclusion_1_2") { update_option("simple_announcement_with_exclusion_1_2",$_REQUEST["simple_announcement_with_exclusion_1_2"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_1_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_3"] != "$simple_announcement_with_exclusion_1_3") { update_option("simple_announcement_with_exclusion_1_3",$_REQUEST["simple_announcement_with_exclusion_1_3"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_2"] != "$simple_announcement_with_exclusion_2") { update_option("simple_announcement_with_exclusion_2",$_REQUEST["simple_announcement_with_exclusion_2"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_3"] != "$simple_announcement_with_exclusion_3") { update_option("simple_announcement_with_exclusion_3",$_REQUEST["simple_announcement_with_exclusion_3"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_3_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_3_2"] != "$simple_announcement_with_exclusion_3_2") { update_option("simple_announcement_with_exclusion_3_2",$_REQUEST["simple_announcement_with_exclusion_3_2"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_4"] != "" && $_REQUEST["simple_announcement_with_exclusion_4"] != "$simple_announcement_with_exclusion_4") { update_option("simple_announcement_with_exclusion_4",$_REQUEST["simple_announcement_with_exclusion_4"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_4_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_4_2"] != "$simple_announcement_with_exclusion_4_2") { update_option("simple_announcement_with_exclusion_4_2",$_REQUEST["simple_announcement_with_exclusion_4_2"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_4_3"] != "" && $_REQUEST["simple_announcement_with_exclusion_4_3"] != "$simple_announcement_with_exclusion_4_3") { update_option("simple_announcement_with_exclusion_4_3",$_REQUEST["simple_announcement_with_exclusion_4_3"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_5"] != "" && $_REQUEST["simple_announcement_with_exclusion_5"] != "$simple_announcement_with_exclusion_5") { update_option("simple_announcement_with_exclusion_5",$_REQUEST["simple_announcement_with_exclusion_5"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_6"] != "" && $_REQUEST["simple_announcement_with_exclusion_6"] != "$simple_announcement_with_exclusion_6") { update_option("simple_announcement_with_exclusion_6",$_REQUEST["simple_announcement_with_exclusion_6"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_7"] != "" && $_REQUEST["simple_announcement_with_exclusion_7"] != "$simple_announcement_with_exclusion_7") { update_option("simple_announcement_with_exclusion_7",$_REQUEST["simple_announcement_with_exclusion_7"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_8_1"] != "" && $_REQUEST["simple_announcement_with_exclusion_8_1"] != "$simple_announcement_with_exclusion_8_1") { update_option("simple_announcement_with_exclusion_8_1",$_REQUEST["simple_announcement_with_exclusion_8_1"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_8_2"] != "" && $_REQUEST["simple_announcement_with_exclusion_8_2"] != "$simple_announcement_with_exclusion_8_2") { update_option("simple_announcement_with_exclusion_8_2",$_REQUEST["simple_announcement_with_exclusion_8_2"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "" && $_REQUEST["simple_announcement_with_exclusion_0"] != "$simple_announcement_with_exclusion_delete_on_deactivate") { update_option("simple_announcement_with_exclusion_delete_on_deactivate",$_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_6"] != "$simple_announcement_with_exclusion_6") { update_option("simple_announcement_with_exclusion_6",$_REQUEST["simple_announcement_with_exclusion_6"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9"] != "$simple_announcement_with_exclusion_9") { update_option("simple_announcement_with_exclusion_9",$_REQUEST["simple_announcement_with_exclusion_9"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_2"] != "$simple_announcement_with_exclusion_9_2") { update_option("simple_announcement_with_exclusion_9_2",$_REQUEST["simple_announcement_with_exclusion_9_2"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_3"] != "$simple_announcement_with_exclusion_9_3") { update_option("simple_announcement_with_exclusion_9_3",$_REQUEST["simple_announcement_with_exclusion_9_3"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_4"] != "$simple_announcement_with_exclusion_9_4") { update_option("simple_announcement_with_exclusion_9_4",$_REQUEST["simple_announcement_with_exclusion_9_4"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_5"] != "$simple_announcement_with_exclusion_9_5") { update_option("simple_announcement_with_exclusion_9_5",$_REQUEST["simple_announcement_with_exclusion_9_5"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_7"] != "$simple_announcement_with_exclusion_9_7") { update_option("simple_announcement_with_exclusion_9_7",$_REQUEST["simple_announcement_with_exclusion_9_7"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_8"] != "$simple_announcement_with_exclusion_9_8") { update_option("simple_announcement_with_exclusion_9_8",$_REQUEST["simple_announcement_with_exclusion_9_8"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_9"] != "$simple_announcement_with_exclusion_9_9") { update_option("simple_announcement_with_exclusion_9_9",$_REQUEST["simple_announcement_with_exclusion_9_9"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_10"] != "$simple_announcement_with_exclusion_9_10") { update_option("simple_announcement_with_exclusion_9_10",$_REQUEST["simple_announcement_with_exclusion_9_10"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_11"] != "$simple_announcement_with_exclusion_9_11") { update_option("simple_announcement_with_exclusion_9_11",$_REQUEST["simple_announcement_with_exclusion_9_11"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "" && $_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "$simple_announcement_with_exclusion_delete_on_deactivate") { update_option("simple_announcement_with_exclusion_delete_on_deactivate",$_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"]); }
 		}
 	}
 	
@@ -230,22 +220,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 	The form for the options page.	
 //	---------------------------------------------------------------------
 	function print_simple_announcement_with_exclusion_form() {
-		$simple_announcement_with_exclusion_0 = get_option("simple_announcement_with_exclusion_0");
-		$simple_announcement_with_exclusion_1 = get_option("simple_announcement_with_exclusion_1");
-		$simple_announcement_with_exclusion_1_1 = get_option("simple_announcement_with_exclusion_1_1");
-		$simple_announcement_with_exclusion_1_2 = get_option("simple_announcement_with_exclusion_1_2");
-		$simple_announcement_with_exclusion_1_3 = get_option("simple_announcement_with_exclusion_1_3");
-		$simple_announcement_with_exclusion_2 = get_option("simple_announcement_with_exclusion_2");
-		$simple_announcement_with_exclusion_3 = get_option("simple_announcement_with_exclusion_3");
-		$simple_announcement_with_exclusion_3_2 = get_option("simple_announcement_with_exclusion_3_2");
-		$simple_announcement_with_exclusion_4 = get_option("simple_announcement_with_exclusion_4");
-		$simple_announcement_with_exclusion_4_2 = get_option("simple_announcement_with_exclusion_4_2");
-		$simple_announcement_with_exclusion_4_3 = get_option("simple_announcement_with_exclusion_4_3");
-		$simple_announcement_with_exclusion_5 = get_option("simple_announcement_with_exclusion_5");
 		$simple_announcement_with_exclusion_6 = get_option("simple_announcement_with_exclusion_6");
-		$simple_announcement_with_exclusion_7 = get_option("simple_announcement_with_exclusion_7");
-		$simple_announcement_with_exclusion_8_1 = get_option("simple_announcement_with_exclusion_8_1");
-		$simple_announcement_with_exclusion_8_2 = get_option("simple_announcement_with_exclusion_8_2");
+		$simple_announcement_with_exclusion_9 = get_option("simple_announcement_with_exclusion_9");
+		$simple_announcement_with_exclusion_9_2 = get_option("simple_announcement_with_exclusion_9_2");
+		$simple_announcement_with_exclusion_9_3 = get_option("simple_announcement_with_exclusion_9_3");
+		$simple_announcement_with_exclusion_9_4 = get_option("simple_announcement_with_exclusion_9_4");
+		$simple_announcement_with_exclusion_9_5 = get_option("simple_announcement_with_exclusion_9_5");
+		$simple_announcement_with_exclusion_9_7 = get_option("simple_announcement_with_exclusion_9_7");
+		$simple_announcement_with_exclusion_9_8 = get_option("simple_announcement_with_exclusion_9_8");
+		$simple_announcement_with_exclusion_9_9 = get_option("simple_announcement_with_exclusion_9_9");
+		$simple_announcement_with_exclusion_9_10 = get_option("simple_announcement_with_exclusion_9_10");
+		$simple_announcement_with_exclusion_9_11 = get_option("simple_announcement_with_exclusion_9_11");
 		$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");	
 		echo "
 		<script type=\"text/javascript\">
@@ -271,138 +256,112 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		
 		<form method=\"post\">
 		
-		<label>Main config</label>
-		<label for=\"simple_announcement_with_exclusion_0\">Div
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_0\" value=\"",$simple_announcement_with_exclusion_0,"\" />
-		</label>
+		<label><u>Exclusion config</u></label>
 		
 		<label for=\"simple_announcement_with_exclusion_1\">Type
 		<select name=\"simple_announcement_with_exclusion_1\" id=\"chooseposttype\">
-		<option value=\"cat\"";if ($simple_announcement_with_exclusion_1 === "cat") { echo " selected=\"selected\""; } echo ">Category</option>
-		<option value=\"tag\"";if ($simple_announcement_with_exclusion_1 === "tag") { echo " selected=\"selected\""; } echo ">Tag</option>
-		<option value=\"post-format\"";if ($simple_announcement_with_exclusion_1 === "post-format") { echo " selected=\"selected\""; } echo ">Post format</option>
+		<option value=\"cat\">Category</option>
+		<option value=\"tag\">Tag</option>
+		<option value=\"post-format\">Post format</option>
 		</select>
 		</label>
-		
+			
+		<label class=\"divider\"><u>Exclude from these pages</u>:</label>
 		<div class=\"posttypeselection\">
-		<label for=\"simple_announcement_with_exclusion_1_1\" class=\"cat\">
-		<select name=\"simple_announcement_with_exclusion_1_1\">
-		<option value=\"\"></option>";
-				$sawe_tags =  get_categories('taxonomy=category'); 
-				foreach ($sawe_tags as $sawe_tag) {
-					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
-					if ($sawe_tag->cat_ID === $simple_announcement_with_exclusion_1_1) { echo " selected=\"selected\""; }
-					echo ">",$sawe_tag->cat_name," - ",$sawe_tag->category_count,"</option>";
-				}
-		echo "</select>
+		<div class=\"cat\">
+		<label for=\"simple_announcement_with_exclusion_9\">Front only
+		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9,"\" name=\"simple_announcement_with_exclusion_9\" />
 		</label>
+		<label for=\"simple_announcement_with_exclusion_9_2\">Tag
+		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_2,"\" name=\"simple_announcement_with_exclusion_9_2\" />
+		</label>
+		<label for=\"simple_announcement_with_exclusion_9_3\">Search
+		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_3,"\" name=\"simple_announcement_with_exclusion_9_3\" />
+		</label>
+		</div>
 		</div>
 		
 		<div class=\"posttypeselection\">
-		<label for=\"simple_announcement_with_exclusion_1_2\" class=\"tag\">
-		<select name=\"simple_announcement_with_exclusion_1_2\">
-		<option value=\"\"></option>";
-				$sawe_tags =  get_categories('taxonomy=post_tag'); 
-				foreach ($sawe_tags as $sawe_tag) {
-					echo "<option value=\"",$sawe_tag->cat_ID,"\"";
-					if ($sawe_tag->cat_ID === $simple_announcement_with_exclusion_1_2) { echo " selected=\"selected\""; }
-					echo ">",$sawe_tag->cat_name," - ",$sawe_tag->category_count,"</option>";
-				}
-		echo "
-		</select>
+		<div class=\"tag\">
+		<label for=\"simple_announcement_with_exclusion_9_4\">Front only
+		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_4,"\" name=\"simple_announcement_with_exclusion_9_4\" />
 		</label>
+		<label for=\"simple_announcement_with_exclusion_9_5\">Category
+		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_5,"\" name=\"simple_announcement_with_exclusion_9_5\" />
+		</label>
+		<label for=\"simple_announcement_with_exclusion_9_7\">Search
+		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_7,"\" name=\"simple_announcement_with_exclusion_9_7\" />
+		</label>
+		</div>
 		</div>
 		
 		<div class=\"posttypeselection\">
-		<label for=\"simple_announcement_with_exclusion_1_3\" class=\"post-format\">
-		<select name=\"simple_announcement_with_exclusion_1_3\">
+		<div class=\"post-format\">
+		<label for=\"simple_announcement_with_exclusion_9_8\" class=\"post-format\">Front only
+		<select name=\"simple_announcement_with_exclusion_9_8\">
 		<option value=\"\"></option>
-		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
-		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
-		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
-		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
-		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
-		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
-		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
-		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
-		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_1_3 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
+		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
+		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
+		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
+		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
+		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
+		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
+		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
+		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
+		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_9_9\" class=\"post-format\">Category
+		<select name=\"simple_announcement_with_exclusion_9_9\">
+		<option value=\"\"></option>
+		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
+		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
+		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
+		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
+		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
+		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
+		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
+		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
+		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
+		</select>
+		</label>		
+		<label for=\"simple_announcement_with_exclusion_9_10\" class=\"post-format\">Tag
+		<select name=\"simple_announcement_with_exclusion_9_10\">
+		<option value=\"\"></option>
+		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
+		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
+		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
+		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
+		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
+		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
+		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
+		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
+		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_9_11\" class=\"post-format\">Search
+		<select name=\"simple_announcement_with_exclusion_9_11\">
+		<option value=\"\"></option>
+		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
+		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
+		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
+		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
+		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
+		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
+		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
+		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
+		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
 		</select>
 		</label>
 		</div>
+		</div>
 		
-		<label for=\"simple_announcement_with_exclusion_2\">Amount
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_2\" value=\"",$simple_announcement_with_exclusion_2,"\" />
-		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_3\">By
-		<select name=\"simple_announcement_with_exclusion_3\">
-			<option value=\"date\""; if ($simple_announcement_with_exclusion_3 === "date") { echo " selected=\"selected\""; } echo ">Date</option>
-			<option value=\"title\""; if ($simple_announcement_with_exclusion_3 === "title") { echo " selected=\"selected\""; } echo ">Title</option>
-			<option value=\"rand\""; if ($simple_announcement_with_exclusion_3 === "rand") { echo " selected=\"selected\""; } echo ">Random</option>
-		</select>
-		</label>	
-		
-		<label for=\"simple_announcement_with_exclusion_3_2\">Order
-		<select name=\"simple_announcement_with_exclusion_3_2\">
-			<option value=\"ASC\""; if ($simple_announcement_with_exclusion_3_2 === "ASC") { echo " selected=\"selected\""; } echo ">Ascending</option>
-			<option value=\"DESC\""; if ($simple_announcement_with_exclusion_3_2 === "DESC") { echo " selected=\"selected\""; } echo ">Descending</option>
-		</select>
-		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_4\">Thumbs
-		<select name=\"simple_announcement_with_exclusion_4\">
-			<option value=\"yes\""; if ($simple_announcement_with_exclusion_4 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-			<option value=\"no\""; if ($simple_announcement_with_exclusion_4 === "no") { echo " selected=\"selected\""; } echo ">No</option>
-		</select>
-		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_4_2\">Titles
-		<select name=\"simple_announcement_with_exclusion_4_2\">
-			<option value=\"yes\""; if ($simple_announcement_with_exclusion_4_2 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-			<option value=\"no\""; if ($simple_announcement_with_exclusion_4_2 === "no") { echo " selected=\"selected\""; } echo ">No</option>
-		</select>
-		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_4_3\">Show
-		<select name=\"simple_announcement_with_exclusion_4_3\">
-			<option value=\"nothing\""; if ($simple_announcement_with_exclusion_4_3 === "nothing") { echo " selected=\"selected\""; } echo ">Nothing</option>
-			<option value=\"excerpt\""; if ($simple_announcement_with_exclusion_4_3 === "excerpt") { echo " selected=\"selected\""; } echo ">Excerpt</option>
-			<option value=\"content\""; if ($simple_announcement_with_exclusion_4_3 === "content") { echo " selected=\"selected\""; } echo ">Content</option>
-		</select>
-		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_5\">Exclude
-		<select name=\"simple_announcement_with_exclusion_5\">
-			<option value=\"yes\""; if ($simple_announcement_with_exclusion_5 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-		 	<option value=\"no\""; if ($simple_announcement_with_exclusion_5 === "no") { echo " selected=\"selected\""; } echo ">No</option>
-			<option value=\"frontcat\""; if ($simple_announcement_with_exclusion_5 === "frontcat") { echo " selected=\"selected\""; } echo ">Main &amp; Category</option>
-			<option value=\"fronttag\""; if ($simple_announcement_with_exclusion_5 === "fronttag") { echo " selected=\"selected\""; } echo ">Main &amp; Tag</option>
-			<option value=\"everywhere\""; if ($simple_announcement_with_exclusion_5 === "everywhere") { echo " selected=\"selected\""; } echo ">Everywhere</option>
-		</select>
-		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_6\">CSS
+		<label for=\"simple_announcement_with_exclusion_6\" class=\"divider\">CSS
 		<select name=\"simple_announcement_with_exclusion_6\">
 			<option value=\"yes\""; if ($simple_announcement_with_exclusion_6 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
 			<option value=\"no\""; if ($simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 		</select>
 		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_7\">Paged
-			<select name=\"simple_announcement_with_exclusion_7\">
-				<option value=\"yes\""; if ($simple_announcement_with_exclusion_7 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-				<option value=\"no\""; if ($simple_announcement_with_exclusion_7 === "no") { echo " selected=\"selected\""; } echo ">No</option>
-			</select>
-		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_8_1\">Previous
-			<input type=\"text\" name=\"simple_announcement_with_exclusion_8_1\" value=\"",$simple_announcement_with_exclusion_8_1,"\" />
-		</label>
-		
-		<label for=\"simple_announcement_with_exclusion_8_2\">Next
-			<input type=\"text\" name=\"simple_announcement_with_exclusion_8_2\" value=\"",$simple_announcement_with_exclusion_8_2,"\" />
-		</label>				
-		
 		<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\" class=\"uninstall\">Uninstall
 		<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
 			<option value=\"yes\""; if ($simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
@@ -416,9 +375,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 	Form to add additional loops
 //	---------------------------------------------------------------------
 		echo "
-		<form method=\"post\">
+
 		
-		<label>Save states</label>
+		<div class=\"SAWEleft\">
+
+		<form method=\"post\">
+		<label><u>Save states</u></label>
 		<label for=\"simple_announcement_with_exclusion_0_new\">Div
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_0_new\" />
 		</label>
@@ -570,10 +532,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			$saweNEXT = $_REQUEST["simple_announcement_with_exclusion_8_2_new"];
 			$wpdb->query("INSERT INTO $SAWE_table_name 
 			( saweID, saweDIV, saweTYPE, saweCAT, saweTAG, saweFORMAT, saweAMOUNT, saweBY, saweORDER, saweTHUMBS, saweTITLES, saweSHOW, sawePAGED, sawePREVIOUS, saweNEXT ) VALUES 
-			('', '$saweDIV', '$saweTYPE', '$saweCAT', '$saweTAG', '$saweFORMAT', '$saweAMOUNT', '$saweBY', '$saweORDER', '$saweTHUMBS', '$saweTITLES', '$saweSHOW', '$sawePAGED', '$sawePREVIOUS', '$saweNEXT')") ;
+			('', '$saweDIV', '$saweTYPE', '$saweCAT', '$saweTAG', '$saweFORMAT', '$saweAMOUNT', '$saweBY', '$saweORDER', '$saweTHUMBS', '$saweTITLES', '$saweSHOW', '$sawePAGED', '$sawePREVIOUS', '$saweNEXT' )") ;
 		}
 		
-		echo "<div class=\"SAWE\">";
+		echo "</div><div class=\"SAWE\">";
 		
 		global $wpdb;
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -647,15 +609,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				elseif ($saweFORMAT === "post-format-chat") { echo "chat"; }
 				echo " post format ";
 			}
-			if ($saweDIV != "") { echo "in the div labeled $saweDIV (#SAWE_shortcode) "; }
-			elseif ($saweDIV === "") { echo "in the div labeled #SAWE_shortcode (no custom class) "; }
+			if ($saweDIV != "") { echo " in the div labeled $saweDIV (#SAWE_shortcode)"; }
+			elseif ($saweDIV === "") { echo " in the div labeled #SAWE_shortcode (no custom class)"; }
 			if ($saweNEXT != "" || $sawePREVIOUS != "") {
 				echo ", with navigation links marked as follows:  ";
 				if ($saweNEXT != "") { echo "Next $saweNEXT."; }
 				elseif ($saweNEXT === "") { echo "Next (has no custom title). "; }
 				if ($sawePREVIOUS !="") { echo "and Previous $sawePREVIOUS."; }
 				elseif ($sawePREVIOUS === "") { echo "and Previous (has no custom title)."; }
+			} else { 
+				echo "."; 
 			}
+			
+			echo "<hr />";
+			
+			if ( $saweCAT != "" || $saweTAG != "" ) {
+				echo "Exclusion ID: <strong>" . $saweCAT . $saweTAG . "</strong>";
+			}
+			
 			if(isset($_POST[$sawe_this_ID])){
 				echo "
 				<form method=\"post\" class=\"SAWE_item_form\">
@@ -713,128 +684,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				$permalinks = "pretty"; 
 			}
 			
-			global 																		
-				$simple_announcement_with_exclusion_0,
-				$simple_announcement_with_exclusion_1,
-				$simple_announcement_with_exclusion_1_1,
-				$simple_announcement_with_exclusion_1_2,
-				$simple_announcement_with_exclusion_1_3,
-				$simple_announcement_with_exclusion_2,
-				$simple_announcement_with_exclusion_3,
-				$simple_announcement_with_exclusion_3_2,
-				$simple_announcement_with_exclusion_4,
-				$simple_announcement_with_exclusion_4_2,
-				$simple_announcement_with_exclusion_4_3,
-				$simple_announcement_with_exclusion_5,
-				$simple_announcement_with_exclusion_6,
-				$simple_announcement_with_exclusion_7,
-				$simple_announcement_with_exclusion_8_1,
-				$simple_announcement_with_exclusion_8_2;
-			
-			extract(shortcode_atts(array(												
+			extract(shortcode_atts(array(
 				'config_id' => '',
 			), $atts));
 			
 			if(empty($config_id)) {	
-				if ($simple_announcement_with_exclusion_1 != "") {
-					if ($simple_announcement_with_exclusion_7 === "yes") {
-						$paged_shortcode = (get_query_var('paged')) ? get_query_var('paged') : 1;
-					}
-					if ($simple_announcement_with_exclusion_7 === "no") {
-						$paged_shortcode = '';
-					}
-					echo "<div class=\"";
-					if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
-					echo "\" id=\"SAWE_shortcode\">";
-					
-					if (
-						$simple_announcement_with_exclusion_1 === "cat"
-					) {
-						$SAWE_shortcode = new WP_Query( array(
-						"cat" => $simple_announcement_with_exclusion_1_1, 
-						"paged" => $paged_shortcode,
-						"posts_per_page" => $simple_announcement_with_exclusion_2, 
-						"order" => $simple_announcement_with_exclusion_3_2, 
-						"orderby" => $simple_announcement_with_exclusion_3 
-						));
-					}
-					elseif (
-						$simple_announcement_with_exclusion_1 === "tag"
-					) {
-						$SAWE_shortcode = new WP_Query(array(
-						"tag__in" => $simple_announcement_with_exclusion_1_2,
-						"paged" => $paged_shortcode,
-						"posts_per_page" => $simple_announcement_with_exclusion_2, 
-						"order" => $simple_announcement_with_exclusion_3_2, 
-						"orderby" => $simple_announcement_with_exclusion_3 
-						));
-					}
-					elseif (
-						$simple_announcement_with_exclusion_1 === "post-format"
-					) {
-						$SAWE_shortcode = new WP_Query(array(
-						"paged" => $paged_shortcode,
-						"posts_per_page" => $simple_announcement_with_exclusion_2, 
-						"order" => $simple_announcement_with_exclusion_3_2, 
-						"orderby" => $simple_announcement_with_exclusion_3,
-						"tax_query" => array(
-							array(
-							'taxonomy' => 'post_format',
-							'field'    => 'slug',
-							'terms'    => array( $simple_announcement_with_exclusion_1_3 ),
-							'operator' => 'IN'
-							)
-						)
-						));
-					}
-					
-					// The shortcode loop
-					while ($SAWE_shortcode->have_posts()) : $SAWE_shortcode->the_post();
-					global $post;
-					if ($simple_announcement_with_exclusion_4 === "yes") { 
-						if ( has_post_thumbnail() ) { 
-							echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
-								",the_post_thumbnail( "thumbnail" ),"</a><br />";
-						} 			
-					}
-					if ($simple_announcement_with_exclusion_4_2 === "yes") { 
-							echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
-					}
-					if ($simple_announcement_with_exclusion_4_3 === "excerpt") { the_excerpt(); 
-					} elseif ($simple_announcement_with_exclusion_4_3 === "content") { the_content(); }
-					endwhile;
-					if ($simple_announcement_with_exclusion_7 === "yes") {
-						if ( (function_exists("wp_pagenavi")) ) {
-							echo "<p>";
-							wp_pagenavi(array( 'query' => $SAWE_shortcode ) );
-							echo "</p>";
-						} else { 
-							$big = 999999999;
-							if ($permalinks === "default") {
-								echo "<p>",paginate_links( array(
-									'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-									'format' => '?paged=%#%',
-									'current' => max( 1, get_query_var('paged') ),
-									'total' => $SAWE_shortcode->max_num_pages,
-									'prev_text' => __($simple_announcement_with_exclusion_8_1),
-									'next_text' => __($simple_announcement_with_exclusion_8_2)
-								) ),"</p>";
-							}
-							if ($permalinks === "pretty") {
-								echo "<p>",paginate_links( array(
-									'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-									'format' => '/paged/%#%',
-									'current' => max( 1, get_query_var('paged') ),
-									'total' => $SAWE_shortcode->max_num_pages,
-									'prev_text' => __($simple_announcement_with_exclusion_8_1),
-									'next_text' => __($simple_announcement_with_exclusion_8_2)
-								) ),"</p>";
-							}
-						}
-					}
-					wp_reset_postdata();
-					echo "</div>";
-				}
+				
 			} else {
 				global $wpdb;
 				$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -966,177 +821,138 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //	depending on what exclusion rules (if any) we are using.
 //	---------------------------------------------------------------------
 // 	Handle exclusion rules for categories and tags (main [sawe] loop
-	function SAWE_filter_home( $query ) {															
-		global $simple_announcement_with_exclusion_1;
-		global $simple_announcement_with_exclusion_1_1;
-		global $simple_announcement_with_exclusion_1_2;
-		global $simple_announcement_with_exclusion_5;
+	
+	function SAWE_filter_home( $query ) {	
+	
+		global $simple_announcement_with_exclusion_9;
+		global $simple_announcement_with_exclusion_9_2;
+		global $simple_announcement_with_exclusion_9_3;
+		global $simple_announcement_with_exclusion_9_4;
+		global $simple_announcement_with_exclusion_9_5;
+		global $simple_announcement_with_exclusion_9_7;
+		global $simple_announcement_with_exclusion_9_8;
+		global $simple_announcement_with_exclusion_9_9;
+		global $simple_announcement_with_exclusion_9_10;
+		global $simple_announcement_with_exclusion_9_11;
+
+		$c1 = explode(',', $simple_announcement_with_exclusion_9);
+		foreach ($c1 as &$C1) { $C1 = "".$C1.","; }
+		$c_1 = implode($c1);		
+		$c11 = explode(',', str_replace(' ', '', $c_1));
+		$t1 = explode(',', $simple_announcement_with_exclusion_9_4);
+		foreach ($t1 as &$T1) { $T1 = "".$T1.","; }
+		$t_1 = implode($t1);		
+		$t11 = explode(',', str_replace(' ', '', $t_1));
+
+		$t2 = explode(',', $simple_announcement_with_exclusion_9_5);
+		foreach ($t2 as &$T2) { $T2 = "".$T2.","; }
+		$t_2 = implode($t2);
+		$t22 = explode(',', str_replace(' ', '', $t_2));
+
+		$c3 = explode(',', $simple_announcement_with_exclusion_9_2);
+		foreach ($c3 as &$C3) { $C3 = "".$C3.","; }
+		$c_3 = implode($c3);
+		$c33 = explode(',', str_replace(' ', '', $c_3));
+
+		$c4 = explode(',', $simple_announcement_with_exclusion_9_3);
+		foreach ($c4 as &$C4) { $C4 = "".$C4.","; }
+		$c_4 = implode($c4);		
+		$c44 = explode(',', str_replace(' ', '', $c_4));
+		$t4 = explode(',', $simple_announcement_with_exclusion_9_7);
+		foreach ($t4 as &$T4) { $T4 = "".$T4.","; }
+		$t_4 = implode($t4);		
+		$t44 = explode(',', str_replace(' ', '', $t_4));
+
 		
-		if ( 
-			$query->is_main_query()																	
-		) {
-			if ( $simple_announcement_with_exclusion_5 === "yes" ) {
-				if ( 
-					$query->is_home() && 
-					$simple_announcement_with_exclusion_1 === "cat"
-				) {
-					$query->set( "category__not_in", $simple_announcement_with_exclusion_1_1 );
-				}
-				if ( 
-					$query->is_home() && 
-					$simple_announcement_with_exclusion_1 === "tag"
-				) {
-					$query->set( "tag__not_in", array($simple_announcement_with_exclusion_1_2) );
-				}
+		if ( $query->is_main_query() && !is_admin() ) {
+		
+			if ( $query->is_home() ) {
+				$tax_query = array(
+				'relation' => 'AND OR',
+				array(
+					'taxonomy' => 'category',
+					'terms' => $c11,
+					'field' => 'id',
+					'operator' => 'NOT IN'
+				),
+				array(
+					'taxonomy' => 'post_tag',
+					'terms' => $t11,
+					'field' => 'id',
+					'operator' => 'NOT IN'
+				),
+				array(
+					'taxonomy' => 'post_format',
+					'field' => 'slug',
+					'terms' => array( $simple_announcement_with_exclusion_9_8 ),
+					'operator' => 'NOT IN'
+				),
+				);
+				$query->set( 'tax_query', $tax_query );
 			}
-			if ( $simple_announcement_with_exclusion_5 === "frontcat" ) {
-				if ( 
-					$query->is_home && 
-					$simple_announcement_with_exclusion_1 === "cat" 
-					|| 
-					$query->is_category && 
-					$simple_announcement_with_exclusion_1 === "cat"
-				) {
-					$query->set( "category__not_in", $simple_announcement_with_exclusion_1_1 );
-				}
-				if ( 
-					$query->is_home && 
-					$simple_announcement_with_exclusion_1 === "tag" 
-					|| 
-					$query->is_category && 
-					$simple_announcement_with_exclusion_1 === "tag"
-				) {
-					$query->set( "tag__not_in", array($simple_announcement_with_exclusion_1_2) );
-				}
+
+			elseif ( $query->is_category()) {
+				$tax_query = array(
+					'relation' => 'AND OR',
+					array(
+						'taxonomy' => 'post_tag',
+						'terms' => $t22,
+						'field' => 'id',
+						'operator' => 'NOT IN',
+					),
+					array(
+						'taxonomy' => 'post_format',
+						'field' => 'slug',
+						'terms' => array( $simple_announcement_with_exclusion_9_9 ),
+						'operator' => 'NOT IN',
+								),
+				);
+				$query->set( 'tax_query', $tax_query );				
 			}
-			if ( $simple_announcement_with_exclusion_5 === "fronttag" ) {
-				if ( 
-					$query->is_home && 
-					$simple_announcement_with_exclusion_1 === "cat" 
-					|| 
-					$query->is_tag && 
-					$simple_announcement_with_exclusion_1 === "cat"
-				) {
-					$query->set( "category__not_in", $simple_announcement_with_exclusion_1_1 );
-				}
-				if ( 
-					$query->is_home && 
-					$simple_announcement_with_exclusion_1 === "tag" 
-					|| 
-					$query->is_tag && 
-					$simple_announcement_with_exclusion_1 === "tag"
-				) {
-					$query->set( "tag__not_in", array($simple_announcement_with_exclusion_1_2) );
-				}
+
+			elseif ( $query->is_tag() ) {
+				$tax_query = array(
+					'relation' => 'AND OR',
+					array(
+						'taxonomy' => 'category',
+						'terms' => $c33,
+						'field' => 'id',
+						'operator' => 'NOT IN',
+					),
+					array(
+						'taxonomy' => 'post_format',
+						'field' => 'slug',
+						'terms' => array( $simple_announcement_with_exclusion_9_10 ),
+						'operator' => 'NOT IN',
+								),
+				);
+				$query->set( 'tax_query', $tax_query );
 			}		
-			if ( $simple_announcement_with_exclusion_5 === "everywhere" ) {
-				if ( 
-					$query->is_home && 
-					$simple_announcement_with_exclusion_1 === "cat" 
-					|| 
-					$query->is_archive && 
-					$simple_announcement_with_exclusion_1 === "cat" 
-					|| 
-					$query->is_search  && 
-					$simple_announcement_with_exclusion_1 === "cat"
-				) {
-					$query->set( "category__not_in", $simple_announcement_with_exclusion_1_1 );
-				}
-				if ( 
-					$query->is_home && 
-					$simple_announcement_with_exclusion_1 === "tag" 
-					|| 
-					$query->is_archive && 
-					$simple_announcement_with_exclusion_1 === "tag" 
-					|| 
-					$query->is_search  && 
-					$simple_announcement_with_exclusion_1 === "tag"
-				) {
-					$query->set( "tag__not_in", array($simple_announcement_with_exclusion_1_2) );
-				}
-			}				
-		}
-	}
-//	Handle exclusion rules for post-format (main [sawe] loop
-	function SAWE_exclude_formats( $query ) {															
-		global $simple_announcement_with_exclusion_1;											
-		global $simple_announcement_with_exclusion_1_3;											
-		global $simple_announcement_with_exclusion_5;											
-		
-		if(
-			$query->is_main_query()																		
-		) {
-			if( 
-				$query->is_home() && 															
-				$simple_announcement_with_exclusion_5 === "yes" && 
-				$simple_announcement_with_exclusion_1 === "post-format"
-			) {
-				$tax_query = array( array(
-					'taxonomy' => 'post_format',
-					'field' => 'slug',
-					'terms' => array( $simple_announcement_with_exclusion_1_3 ),
-					'operator' => 'NOT IN',
-				) );
-				$query->set( 'tax_query', $tax_query );
+
+			elseif ( $query->is_search() ) {
+				$tax_query = array(
+					'relation' => 'AND OR',
+					array(
+						'taxonomy' => 'category',
+						'terms' => $c44,
+						'field' => 'id',
+						'operator' => 'NOT IN',
+					),
+					array(
+						'taxonomy' => 'post_tag',
+						'terms' => $t44,
+						'field' => 'id',
+						'operator' => 'NOT IN',
+					),
+					array(
+						'taxonomy' => 'post_format',
+						'field' => 'slug',
+						'terms' => array( $simple_announcement_with_exclusion_9_11 ),
+						'operator' => 'NOT IN',
+								),
+				);
+				$query->set( 'tax_query', $tax_query );					
 			}
-			
-			if( 
-				$query->is_home() && 
-				$simple_announcement_with_exclusion_5 === "fronttag" && 
-				$simple_announcement_with_exclusion_1 === "post-format" 
-				||  
-				$query->is_tag() && 
-				$simple_announcement_with_exclusion_5 === "fronttag" && 
-				$simple_announcement_with_exclusion_1 === "post-format"
-			) {
-				$tax_query = array( array(
-					'taxonomy' => 'post_format',
-					'field' => 'slug',
-					'terms' => array( $simple_announcement_with_exclusion_1_3 ),
-					'operator' => 'NOT IN',
-				) );
-				$query->set( 'tax_query', $tax_query );
-			}	
-			
-			if( 
-				$query->is_home() && 
-				$simple_announcement_with_exclusion_5 === "frontcat" && 
-				$simple_announcement_with_exclusion_1 === "post-format" 
-				|| 
-				$query->is_category() && 
-				$simple_announcement_with_exclusion_5 === "frontcat" && 
-				$simple_announcement_with_exclusion_1 === "post-format"
-			) {
-				$tax_query = array( array(
-					'taxonomy' => 'post_format',
-					'field' => 'slug',
-					'terms' => array( $simple_announcement_with_exclusion_1_3 ),
-					'operator' => 'NOT IN',
-				) );
-				$query->set( 'tax_query', $tax_query );
-			}	
-			
-			if( 
-				$query->is_home() && 
-				$simple_announcement_with_exclusion_5 === "everywhere" && 
-				$simple_announcement_with_exclusion_1 === "post-format" 
-				||  
-				$query->is_archive() && 
-				$simple_announcement_with_exclusion_5 === "everywhere" &&
-				$simple_announcement_with_exclusion_1 === "post-format" 
-				||  
-				$query->is_search() && 
-				$simple_announcement_with_exclusion_5 === "everywhere" && 
-				$simple_announcement_with_exclusion_1 === "post-format"
-			) {
-				$tax_query = array( array(
-					'taxonomy' => 'post_format',
-					'field' => 'slug',
-					'terms' => array( $simple_announcement_with_exclusion_1_3 ),
-					'operator' => 'NOT IN',
-				) );
-				$query->set( 'tax_query', $tax_query );
-			}	
 		}
 	}
 ?>

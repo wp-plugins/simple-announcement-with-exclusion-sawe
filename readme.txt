@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.2.1
+Stable tag: 4.3
 
 Set aside a category/tag/post-format to show via shortcode ( [sawe] ) and hide it from the loop.
 
@@ -30,6 +30,12 @@ Place the widget (optional) or use the shortcode [sawe] (optional).
 
 
 == Changelog ==
+= 4.3 =
+* Multiple exclusion rulesets are now available.
+* The main sawe loop has been taken out - you must now create individual loops for showing with the shortcode: [sawe config_id="#"] where # is the id of your desired loop.
+* You cannot exclude categories from category pages or tags from tag pages.
+* You must separate ids in the "exclude from these pages" input boxes as comma separated lists (1,2,3,...)
+
 = 4.2.1 =
 * Various errors fixed (php related errors)
 * Various wording fixed (descriptions)
