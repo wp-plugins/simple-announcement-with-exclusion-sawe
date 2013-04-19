@@ -3,7 +3,7 @@
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 Description: Designate a category for announcements to show in a shortcode while excluding it from the main loop.
-Version: 4.3
+Version: 4.3.1
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2
@@ -266,32 +266,53 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		</select>
 		</label>
 			
-		<label class=\"divider\"><u>Exclude from these pages</u>:</label>
+		<label class=\"divider\"><u>Exclude from these pages</u>:<br /><small>You may put the same id/post format in all boxes to exclude them 
+		from the designated areas.</small></label>
 		<div class=\"posttypeselection\">
 		<div class=\"cat\">
 		<label for=\"simple_announcement_with_exclusion_9\">Front only
-		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9,"\" name=\"simple_announcement_with_exclusion_9\" />
+		<textarea name=\"simple_announcement_with_exclusion_9\">$simple_announcement_with_exclusion_9</textarea>
 		</label>
 		<label for=\"simple_announcement_with_exclusion_9_2\">Tag
-		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_2,"\" name=\"simple_announcement_with_exclusion_9_2\" />
+		<textarea name=\"simple_announcement_with_exclusion_9_2\">$simple_announcement_with_exclusion_9_2</textarea>
 		</label>
-		<label for=\"simple_announcement_with_exclusion_9_3\">Search
-		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_3,"\" name=\"simple_announcement_with_exclusion_9_3\" />
+		<label for=\"simple_announcement_with_exclusion_9_3\" class=\"bottom\">Search
+		<textarea name=\"simple_announcement_with_exclusion_9_3\">$simple_announcement_with_exclusion_9_3</textarea>
 		</label>
+		
+		<div class=\"list\">";
+		$showmecats =  get_categories('taxonomy=category'); 
+			echo "<item><span class=\"listleft\">Category</span><span class=\"listright\">id</span></item><item><hr /></item>";
+		foreach ($showmecats as $catsshown) {
+			echo "<item><span class=\"listleft\">",$catsshown->cat_name,"</span><span class=\"listright\">",$catsshown->cat_ID,"</span></item>";
+		}		
+		echo "</div>
+		
+		
 		</div>
 		</div>
 		
 		<div class=\"posttypeselection\">
 		<div class=\"tag\">
 		<label for=\"simple_announcement_with_exclusion_9_4\">Front only
-		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_4,"\" name=\"simple_announcement_with_exclusion_9_4\" />
+		<textarea name=\"simple_announcement_with_exclusion_9_4\">$simple_announcement_with_exclusion_9_4</textarea>
 		</label>
 		<label for=\"simple_announcement_with_exclusion_9_5\">Category
-		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_5,"\" name=\"simple_announcement_with_exclusion_9_5\" />
+		<textarea name=\"simple_announcement_with_exclusion_9_5\">$simple_announcement_with_exclusion_9_5</textarea>
 		</label>
-		<label for=\"simple_announcement_with_exclusion_9_7\">Search
-		<input type=\"text\" value=\"",$simple_announcement_with_exclusion_9_7,"\" name=\"simple_announcement_with_exclusion_9_7\" />
+		<label for=\"simple_announcement_with_exclusion_9_7\" class=\"bottom\">Search
+		<textarea name=\"simple_announcement_with_exclusion_9_7\">$simple_announcement_with_exclusion_9_7</textarea>
 		</label>
+		<div class=\"list\">";
+		$showmetags =  get_categories('taxonomy=post_tag'); 
+			echo "<item><span class=\"listleft\">Tag</span><span class=\"listright\">id</span></item><item><hr /></item>";
+		foreach ($showmetags as $tagsshown) {
+			echo "<item><span class=\"listleft\">",$tagsshown->cat_name,"</span><span class=\"listright\">",$tagsshown->cat_ID,"</span></item>";
+		}		
+		echo "</div>
+
+		
+		
 		</div>
 		</div>
 		
@@ -374,13 +395,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //	---------------------------------------------------------------------
 // 	Form to add additional loops
 //	---------------------------------------------------------------------
-		echo "
-
-		
-		<div class=\"SAWEleft\">
+		echo "<div class=\"SAWEleft\">
 
 		<form method=\"post\">
 		<label><u>Save states</u></label>
+	
+		<label><select name=\"edit_this\" class=\"selectfull\">
+		<option value=\"\">Creating new</option><option value=\"\">-----</option><option value=\"\">Edit a save sate</option>";
+		global $wpdb;
+		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+		$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
+		foreach ($SAWE_table_ad as $SAWE_table_admin) {
+			echo "<option value=\"$SAWE_table_admin->saweID\">Save state $SAWE_table_admin->saweID</option>";
+		}		
+		
+		echo "</select></label>
 		<label for=\"simple_announcement_with_exclusion_0_new\">Div
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_0_new\" />
 		</label>
@@ -513,7 +542,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
 		}
 		
-		if(isset($_POST['submit_new'])){
+		if(isset($_POST['submit_new']) && $_REQUEST["edit_this"] === ""){
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 			$saweDIV = $_REQUEST["simple_announcement_with_exclusion_0_new"];
@@ -534,6 +563,45 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			( saweID, saweDIV, saweTYPE, saweCAT, saweTAG, saweFORMAT, saweAMOUNT, saweBY, saweORDER, saweTHUMBS, saweTITLES, saweSHOW, sawePAGED, sawePREVIOUS, saweNEXT ) VALUES 
 			('', '$saweDIV', '$saweTYPE', '$saweCAT', '$saweTAG', '$saweFORMAT', '$saweAMOUNT', '$saweBY', '$saweORDER', '$saweTHUMBS', '$saweTITLES', '$saweSHOW', '$sawePAGED', '$sawePREVIOUS', '$saweNEXT' )") ;
 		}
+
+		if(isset($_POST['submit_new']) && $_REQUEST["edit_this"] != ""){
+			$SAWE_editing_this = $_REQUEST["edit_this"];
+			global $wpdb;
+			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+			$saweDIV = $_REQUEST["simple_announcement_with_exclusion_0_new"];
+			$saweTYPE = $_REQUEST["simple_announcement_with_exclusion_1_new"];
+			$saweCAT = $_REQUEST["simple_announcement_with_exclusion_1_1_new"];
+			$saweTAG = $_REQUEST["simple_announcement_with_exclusion_1_2_new"];
+			$saweFORMAT = $_REQUEST["simple_announcement_with_exclusion_1_3_new"];
+			$saweAMOUNT = $_REQUEST["simple_announcement_with_exclusion_2_new"];
+			$saweBY = $_REQUEST["simple_announcement_with_exclusion_3_new"];
+			$saweORDER = $_REQUEST["simple_announcement_with_exclusion_3_2_new"];
+			$saweTHUMBS = $_REQUEST["simple_announcement_with_exclusion_4_new"];
+			$saweTITLES = $_REQUEST["simple_announcement_with_exclusion_4_2_new"];
+			$saweSHOW = $_REQUEST["simple_announcement_with_exclusion_4_3_new"];
+			$sawePAGED = $_REQUEST["simple_announcement_with_exclusion_7_new"];
+			$sawePREVIOUS = $_REQUEST["simple_announcement_with_exclusion_8_1_new"];
+			$saweNEXT = $_REQUEST["simple_announcement_with_exclusion_8_2_new"];
+			$wpdb->query("UPDATE $SAWE_table_name 
+			SET
+			saweDIV = '$saweDIV',  
+			saweTYPE = '$saweTYPE',  
+			saweCAT = '$saweCAT',  
+			saweTAG = '$saweTAG',  
+			saweFORMAT = '$saweFORMAT',  
+			saweAMOUNT = '$saweAMOUNT',  
+			saweBY = '$saweBY',  
+			saweORDER = '$saweORDER',  
+			saweTHUMBS = '$saweTHUMBS',  
+			saweTITLES = '$saweTITLES',  
+			saweSHOW = '$saweSHOW',  
+			sawePAGED = '$sawePAGED',  
+			sawePREVIOUS = '$sawePREVIOUS',  
+			saweNEXT = '$saweNEXT' 
+			WHERE 
+			saweID = $SAWE_editing_this
+			") ;
+		}
 		
 		echo "</div><div class=\"SAWE\">";
 		
@@ -541,21 +609,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 		$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
 		foreach ($SAWE_table_ad as $SAWE_table_admin) {
-			 $sawe_this_ID = $SAWE_table_admin->saweID;
-			 $saweDIV = $SAWE_table_admin->saweDIV;
-			 $saweTYPE = $SAWE_table_admin->saweTYPE;
-			 $saweCAT = $SAWE_table_admin->saweCAT;
-			 $saweTAG = $SAWE_table_admin->saweTAG;
-			 $saweFORMAT = $SAWE_table_admin->saweFORMAT;
-			 $saweAMOUNT = $SAWE_table_admin->saweAMOUNT;
-			 $saweBY = $SAWE_table_admin->saweBY;
-			 $saweORDER = $SAWE_table_admin->saweORDER;
-			 $saweTHUMBS = $SAWE_table_admin->saweTHUMBS;
-			 $saweTITLES = $SAWE_table_admin->saweTITLES;
-			 $saweSHOW = $SAWE_table_admin->saweSHOW;
-			 $sawePAGED = $SAWE_table_admin->sawePAGED;
-			 $sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
-			 $saweNEXT = $SAWE_table_admin->saweNEXT;
+			$sawe_this_ID = $SAWE_table_admin->saweID;
+			$saweDIV = $SAWE_table_admin->saweDIV;
+			$saweTYPE = $SAWE_table_admin->saweTYPE;
+			$saweCAT = $SAWE_table_admin->saweCAT;
+			$saweTAG = $SAWE_table_admin->saweTAG;
+			$saweFORMAT = $SAWE_table_admin->saweFORMAT;
+			$saweAMOUNT = $SAWE_table_admin->saweAMOUNT;
+			$saweBY = $SAWE_table_admin->saweBY;
+			$saweORDER = $SAWE_table_admin->saweORDER;
+			$saweTHUMBS = $SAWE_table_admin->saweTHUMBS;
+			$saweTITLES = $SAWE_table_admin->saweTITLES;
+			$saweSHOW = $SAWE_table_admin->saweSHOW;
+			$sawePAGED = $SAWE_table_admin->sawePAGED;
+			$sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
+			$saweNEXT = $SAWE_table_admin->saweNEXT;
 			echo 
 			"<div class=\"item\">
 			 <strong>[sawe config_id=\"",$SAWE_table_admin->saweID,"\"]</strong> &mdash; <br />
@@ -576,7 +644,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			elseif ($saweSHOW === "content") { echo "full post content"; }
 			elseif ($saweSHOW === "nothing") { echo "no post content"; }
 			echo ")";
-			
+				
 			if ($sawePAGED === "yes") { echo ", paged, "; }
 			elseif ($sawePAGED === "no") { echo ", non-paged, "; }
 			
@@ -633,6 +701,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				<input type=\"submit\" name=\"yes_$sawe_this_ID\" value=\"[Are you sure?]\">
 				</form>";
 			}
+			
 			if(!isset($_POST[$sawe_this_ID])){
 				echo "
 				<form method=\"post\" class=\"SAWE_item_form\">
@@ -640,31 +709,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				</form>
 				";
 			}
+			
 			echo "</div>";
+			
 			if(isset($_POST['yes_'.$sawe_this_ID])){
 					$sawe_current = plugin_basename(__FILE__);
 					$wpdb->query("DELETE FROM $SAWE_table_name WHERE saweID = '$sawe_this_ID'");
 					echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
-			}			 
-		}			
+			}		
+		}
 		 echo "</div>";
 	}
-
-
-
-
-
-
-
-
-
-	
-//	---------------------------------------------------------------------
-//	Set up the [sawe] shortcode functionality
-//  Determine if we are using the [sawe] main loop or a save state
-//  ---------------------------------------------------------------------
 	function simple_announcement_with_exclusions_page_content() { 
-		echo "<div class=\"papercaves_plugin_container\"><h2>Simple Announcement With Exclusion</h2><p>Created by Matt @ <a href=\"http://papercaves.com/\">Paper Caves</a> &mdash; <a href=\"http://papercaves.com/wordpress-plugins/sawe/\">Plugin information</a></p>";
+		echo "<div class=\"papercaves_plugin_container\"><h2>Simple Announcement With Exclusion</h2><p>Created by Matt @ <a href=\"http://papercaves.com/\">Paper Caves</a> &mdash; <a href=\"http://papercaves.com/wordpress-plugins/sawe/\">Documentation</a></p>";
 		if(isset($_POST["submit"])){
 			if ($_REQUEST["submit"]) { 
 				update_simple_announcement_with_exclusions();
@@ -673,8 +730,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		print_simple_announcement_with_exclusion_form();
 		echo "</div>";
 	}
+
 	
+	
+	
+	
+	
+	
+	
+	
+	
+//	---------------------------------------------------------------------
+//	Set up the [sawe] shortcode functionality
+//  ---------------------------------------------------------------------	
 	function SAWE_shortcode( $atts, $content = null ) {
+		ob_start();
 		if (!is_admin() ) {																
 
 			global $wp_rewrite;															
@@ -717,9 +787,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 						if ($sawePAGED === "no") {
 							$pagednewShortcode = '';
 						}
-						echo "<div class=\"";
-						if ($simple_announcement_with_exclusion_0 != "") { echo "$simple_announcement_with_exclusion_0"; }
-						echo "\" id=\"SAWE_shortcode\">";
+
 						if ($saweTYPE === "cat") {
 							$newShortcode = new WP_Query( array(
 							"cat" => $saweCAT, 
@@ -755,6 +823,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 							));
 						}
 						// The shortcode loop
+						echo "<div class=\"";
+						if ($saweDIV != "") { echo "$saweDIV"; }
+						echo "\" id=\"SAWE_shortcode $sawe_this_ID\">";						
 						while ($newShortcode->have_posts()) : $newShortcode->the_post();
 						global $post;
 						if ($saweTHUMBS === "yes") { 
@@ -798,12 +869,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 								}
 							}
 						}
-						wp_reset_postdata();
 						echo "</div>";
+						wp_reset_postdata();
 					}
 				}
 			}
 		}
+	return ob_get_clean();
 	}
 
 	

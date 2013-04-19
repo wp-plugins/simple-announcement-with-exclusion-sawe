@@ -2,6 +2,11 @@
 .papercaves_plugin_container {width:100%;font-size:15px;line-height:17px;}
 .papercaves_plugin_container p {padding:5px 0 0 15px;border-left: 1px solid #bbb;}
 .papercaves_plugin_container form {width:185px;overflow:auto;border: 1px solid #bbb;padding:5px;float:left;margin:0 5px 0 5px;display:block;}
+.list { height: 200px; overflow-x:hidden; overflow-y:auto; width:99%;clear:both;border:1px solid #bbb;}
+.list item {clear:both;display:block;opacity:.7;width:100%;height:auto;margin:2px 0 2px 0;}
+.list item:hover {opacity:1;}
+.listleft { float:left;}
+.listright { float:right; font-weight:bold;}
 .SAWE {width:250px;float:left;margin:-5px 0 0 0;display:block;padding:0px;}
 .divider {margin-top:20px;}
 .item {display:block;border:1px solid #bbb;padding:5px;margin:5px 0 5px 2px;width:250px;overflow-y:auto;overflow-x:hidden;background-color:#fff;}
@@ -16,3 +21,5 @@ input:hover{cursor: pointer;}
 label {display:block;padding:15px 0 0 0;opacity:.7;width:180px;float:left;}
 label:hover{opacity:1;}
 #save_states{height:676px;overflow-y:auto;width:280px;border:1px solid #bbb;background-color:#ccc;}
+.bottom {margin:0 0 10px 0;}
+.selectfull{width:100%;}
