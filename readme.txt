@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.3.1
+Stable tag: 4.3.2
 
 Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
 
@@ -28,15 +28,19 @@ tags, and post-formats just as easily as you can set up the save states themselv
 
 
 == Changelog ==
-= 4.3 / 4.3.1 =
-* 4.3.1
+
+= 4.3.2 =
+* Added exclusion rules for RSS.
+* Option values for exclusion sets now only called where they are needed.
+
+= 4.3.1 =
 * Shortcode output div ids given unique identifiers.
 * Shortcode output now appears where it is placed on the page/post (instead of at the top).
 * Category/tag input boxes are now textareas for easier editing.
 * A list of available tags and categories displayed for easy exclusion without having to set up a separate save state for them.
 * Added the ability to edit currently existing save states.
 
-* 4.3
+= 4.3 =
 * Multiple exclusion rulesets are now available.
 * The main sawe loop has been taken out - you must now create individual loops for showing with the shortcode: [sawe config_id="#"] where # is the id of your desired loop.
 * You cannot exclude categories from category pages or tags from tag pages.
@@ -50,43 +54,39 @@ tags, and post-formats just as easily as you can set up the save states themselv
 * Save states are now human readable (when you look at each one, it's obvious as to what they do).  
 * If uninstall is set to "yes", deactivating plugin will now delete the save state table as well.
 
-= 4 / 4.1 =
-* 4.1
+= 4.1 =
 * Save different [sawe] instances, and display them wherever using [sawe config_id="#"] (where # is the ID of the saved configuration).
 
-* 4
+= 4 =
 * Saved instances will not be ommited from the loop. (But possible for a future update).
 * Widget removed (because it wouldn't behave nicely with, well, anything.)
 * WP-Pagenavi support added ( falls onto default pagination if WP-Pagenavi plugin not present)
 
-= 3.3 / 3.3.1 / 3.3.2 =
-* 3.3.2 
+= 3.3.2  =
 * Further cleaned up code / stylesheet.
 
-* 3.3.1 
+= 3.3.1 =
 * fixed bug that caused php errors when plugin was activated for the first time and no initial parameters had been set.
 
-* 3.3
+= 3.3 =
 * WP-Pagenavi no longer needed for pagination.  
 * Current bug with pagination: on widget, going to page 1 is impossible.
 
-= 3 / 3.1 / 3.2 =
-* 3.2 
+= 3.2 =
 * Trailing div taken out - last time I update at 2 in the morning, I promise.
 
-* 3.1 
+= 3.1 =
 * Style.css fixed
 
-* 3
+= 3 =
 * Cleaned up code
 * Options CSS should only load on the SAWE options page.
 * Moved FAQ off of plugin page and over to papercaves.com/SAWE
 
-= 2.3.2 - 2.3.3 = 
-* 2.3.3 
+= 2.3.3 =
 * Pagination for shortcode fixed.
 
-* 2.3.2
+= 2.3.2 =
 * Primitive pagination enabled (if you have wp-pagenavi plugin installed and activated).
 * Paginated loops do not play well with ... everything else.
 * Issue: clicking next on the paginated loop will next posts for the SAWE loop as well as the main loop.
@@ -98,7 +98,7 @@ tags, and post-formats just as easily as you can set up the save states themselv
 = 2.3 =
 * So - let's go ahead and clean up the admin screen.
 
-= 1.8 =
+= 1 =
 * Included FAQ (which explains all of the options) to the top of the options page and a preview area to the bottom (so you can instantly see what is being displayed, and how).
 
 = 1.7 = 

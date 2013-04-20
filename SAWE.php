@@ -3,7 +3,7 @@
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 Description: Designate a category for announcements to show in a shortcode while excluding it from the main loop.
-Version: 4.3.1
+Version: 4.3.2
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2
@@ -101,21 +101,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //  Primary loop [sawe] options
 	function simple_announcement_with_exclusion_install() {																			
 		// Delete deprecated options from 4.2.1
-		delete_option("simple_announcement_with_exclusion_0","","Wrapper");
-		delete_option("simple_announcement_with_exclusion_1","","post-type");
-		delete_option("simple_announcement_with_exclusion_1_1","","cat");
-		delete_option("simple_announcement_with_exclusion_1_2","","tag");
-		delete_option("simple_announcement_with_exclusion_1_3","","post-format");
-		delete_option("simple_announcement_with_exclusion_2","3","Option 2");
-		delete_option("simple_announcement_with_exclusion_3","","Option 3");
-		delete_option("simple_announcement_with_exclusion_3_2","","Option 3.2");
-		delete_option("simple_announcement_with_exclusion_4","no","Option 4");
-		delete_option("simple_announcement_with_exclusion_4_2","yes","Option 4.2");
-		delete_option("simple_announcement_with_exclusion_4_3","nothing","Option 4.3");
-		delete_option("simple_announcement_with_exclusion_5","yes","Option 5");
-		delete_option("simple_announcement_with_exclusion_7","no","Option 7");
-		delete_option("simple_announcement_with_exclusion_8_1","Previous","Option 8.1");
-		delete_option("simple_announcement_with_exclusion_8_2","Next","Option 8.2");
+		delete_option("simple_announcement_with_exclusion_0");
+		delete_option("simple_announcement_with_exclusion_1");
+		delete_option("simple_announcement_with_exclusion_1_1");
+		delete_option("simple_announcement_with_exclusion_1_2");
+		delete_option("simple_announcement_with_exclusion_1_3");
+		delete_option("simple_announcement_with_exclusion_2");
+		delete_option("simple_announcement_with_exclusion_3");
+		delete_option("simple_announcement_with_exclusion_3_2");
+		delete_option("simple_announcement_with_exclusion_4");
+		delete_option("simple_announcement_with_exclusion_4_2");
+		delete_option("simple_announcement_with_exclusion_4_3");
+		delete_option("simple_announcement_with_exclusion_5");
+		delete_option("simple_announcement_with_exclusion_7");
+		delete_option("simple_announcement_with_exclusion_8_1");
+		delete_option("simple_announcement_with_exclusion_8_2");
 		add_option("simple_announcement_with_exclusion_6","no","Option 6");
 		add_option("simple_announcement_with_exclusion_9","","Categories front");
 		add_option("simple_announcement_with_exclusion_9_2","","Categories front and tag");
@@ -126,7 +126,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		add_option("simple_announcement_with_exclusion_9_8","","format everywhere");		
 		add_option("simple_announcement_with_exclusion_9_9","","format everywhere");		
 		add_option("simple_announcement_with_exclusion_9_10","","format everywhere");		
-		add_option("simple_announcement_with_exclusion_9_11","","format everywhere");		
+		add_option("simple_announcement_with_exclusion_9_11","","format everywhere");	
+		add_option("simple_announcement_with_exclusion_9_12","","Exclude cats from feed");
+		add_option("simple_announcement_with_exclusion_9_13","","Exclude tags from feed");
+		add_option("simple_announcement_with_exclusion_9_14","","Exclude post-format from feed");
 		add_option("simple_announcement_with_exclusion_delete_on_deactivate","no","Delete on deactivate?");
 	}
 
@@ -144,6 +147,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			delete_option("simple_announcement_with_exclusion_9_9");
 			delete_option("simple_announcement_with_exclusion_9_10");
 			delete_option("simple_announcement_with_exclusion_9_11");
+			delete_option("simple_announcement_with_exclusion_9_12");
+			delete_option("simple_announcement_with_exclusion_9_13");
+			delete_option("simple_announcement_with_exclusion_9_14");
 			delete_option("simple_announcement_with_exclusion_delete_on_deactivate");
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -163,6 +169,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	$simple_announcement_with_exclusion_9_9 = get_option("simple_announcement_with_exclusion_9_9");
 	$simple_announcement_with_exclusion_9_10 = get_option("simple_announcement_with_exclusion_9_10");
 	$simple_announcement_with_exclusion_9_11 = get_option("simple_announcement_with_exclusion_9_11");
+	$simple_announcement_with_exclusion_9_12 = get_option("simple_announcement_with_exclusion_9_12");
+	$simple_announcement_with_exclusion_9_13 = get_option("simple_announcement_with_exclusion_9_13");
+	$simple_announcement_with_exclusion_9_14 = get_option("simple_announcement_with_exclusion_9_14");
 	$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");	
 	
 	
@@ -189,6 +198,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		global $simple_announcement_with_exclusion_9_9;
 		global $simple_announcement_with_exclusion_9_10;
 		global $simple_announcement_with_exclusion_9_11;
+		global $simple_announcement_with_exclusion_9_12;
+		global $simple_announcement_with_exclusion_9_13;
+		global $simple_announcement_with_exclusion_9_14;
 		global $simple_announcement_with_exclusion_delete_on_deactivate;	
 // 	Only update if request isn't empty and request isn't the same as it was before
 		if(isset($_POST['submit'])){
@@ -203,6 +215,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			if ($_REQUEST["simple_announcement_with_exclusion_9_9"] != "$simple_announcement_with_exclusion_9_9") { update_option("simple_announcement_with_exclusion_9_9",$_REQUEST["simple_announcement_with_exclusion_9_9"]); }
 			if ($_REQUEST["simple_announcement_with_exclusion_9_10"] != "$simple_announcement_with_exclusion_9_10") { update_option("simple_announcement_with_exclusion_9_10",$_REQUEST["simple_announcement_with_exclusion_9_10"]); }
 			if ($_REQUEST["simple_announcement_with_exclusion_9_11"] != "$simple_announcement_with_exclusion_9_11") { update_option("simple_announcement_with_exclusion_9_11",$_REQUEST["simple_announcement_with_exclusion_9_11"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_12"] != "$simple_announcement_with_exclusion_9_12") { update_option("simple_announcement_with_exclusion_9_12",$_REQUEST["simple_announcement_with_exclusion_9_12"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_13"] != "$simple_announcement_with_exclusion_9_13") { update_option("simple_announcement_with_exclusion_9_13",$_REQUEST["simple_announcement_with_exclusion_9_13"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_9_14"] != "$simple_announcement_with_exclusion_9_14") { update_option("simple_announcement_with_exclusion_9_14",$_REQUEST["simple_announcement_with_exclusion_9_14"]); }
 			if ($_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "" && $_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "$simple_announcement_with_exclusion_delete_on_deactivate") { update_option("simple_announcement_with_exclusion_delete_on_deactivate",$_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"]); }
 		}
 	}
@@ -231,6 +246,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		$simple_announcement_with_exclusion_9_9 = get_option("simple_announcement_with_exclusion_9_9");
 		$simple_announcement_with_exclusion_9_10 = get_option("simple_announcement_with_exclusion_9_10");
 		$simple_announcement_with_exclusion_9_11 = get_option("simple_announcement_with_exclusion_9_11");
+		$simple_announcement_with_exclusion_9_12 = get_option("simple_announcement_with_exclusion_9_12");
+		$simple_announcement_with_exclusion_9_13 = get_option("simple_announcement_with_exclusion_9_13");
+		$simple_announcement_with_exclusion_9_14 = get_option("simple_announcement_with_exclusion_9_14");
 		$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");	
 		echo "
 		<script type=\"text/javascript\">
@@ -266,11 +284,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		</select>
 		</label>
 			
-		<label class=\"divider\"><u>Exclude from these pages</u>:<br /><small>You may put the same id/post format in all boxes to exclude them 
+		<label class=\"divider\"><u>Exclude from these loops</u>:<br /><small>You may put the same id/post format in all boxes to exclude them 
 		from the designated areas.</small></label>
 		<div class=\"posttypeselection\">
 		<div class=\"cat\">
-		<label for=\"simple_announcement_with_exclusion_9\">Front only
+		<label for=\"simple_announcement_with_exclusion_9_12\">Feed
+		<textarea name=\"simple_announcement_with_exclusion_9_12\">$simple_announcement_with_exclusion_9_12</textarea>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_9\">Home
 		<textarea name=\"simple_announcement_with_exclusion_9\">$simple_announcement_with_exclusion_9</textarea>
 		</label>
 		<label for=\"simple_announcement_with_exclusion_9_2\">Tag
@@ -294,7 +315,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		
 		<div class=\"posttypeselection\">
 		<div class=\"tag\">
-		<label for=\"simple_announcement_with_exclusion_9_4\">Front only
+		<label for=\"simple_announcement_with_exclusion_9_13\">Feed
+		<textarea name=\"simple_announcement_with_exclusion_9_13\">$simple_announcement_with_exclusion_9_13</textarea>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_9_4\">Home
 		<textarea name=\"simple_announcement_with_exclusion_9_4\">$simple_announcement_with_exclusion_9_4</textarea>
 		</label>
 		<label for=\"simple_announcement_with_exclusion_9_5\">Category
@@ -318,7 +342,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		
 		<div class=\"posttypeselection\">
 		<div class=\"post-format\">
-		<label for=\"simple_announcement_with_exclusion_9_8\" class=\"post-format\">Front only
+		<label for=\"simple_announcement_with_exclusion_9_14\">Feed
+		<select name=\"simple_announcement_with_exclusion_9_14\">
+		<option value=\"\"></option>
+		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
+		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
+		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
+		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
+		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
+		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
+		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
+		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
+		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
+		</select>
+		</label>		
+		<label for=\"simple_announcement_with_exclusion_9_8\" class=\"post-format\">Home
 		<select name=\"simple_announcement_with_exclusion_9_8\">
 		<option value=\"\"></option>
 		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
@@ -895,7 +933,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 	Handle exclusion rules for categories and tags (main [sawe] loop
 	
 	function SAWE_filter_home( $query ) {	
-	
 		global $simple_announcement_with_exclusion_9;
 		global $simple_announcement_with_exclusion_9_2;
 		global $simple_announcement_with_exclusion_9_3;
@@ -906,39 +943,56 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		global $simple_announcement_with_exclusion_9_9;
 		global $simple_announcement_with_exclusion_9_10;
 		global $simple_announcement_with_exclusion_9_11;
+		global $simple_announcement_with_exclusion_9_12;
+		global $simple_announcement_with_exclusion_9_13;
+		global $simple_announcement_with_exclusion_9_14;
 
-		$c1 = explode(',', $simple_announcement_with_exclusion_9);
-		foreach ($c1 as &$C1) { $C1 = "".$C1.","; }
-		$c_1 = implode($c1);		
-		$c11 = explode(',', str_replace(' ', '', $c_1));
-		$t1 = explode(',', $simple_announcement_with_exclusion_9_4);
-		foreach ($t1 as &$T1) { $T1 = "".$T1.","; }
-		$t_1 = implode($t1);		
-		$t11 = explode(',', str_replace(' ', '', $t_1));
-
-		$t2 = explode(',', $simple_announcement_with_exclusion_9_5);
-		foreach ($t2 as &$T2) { $T2 = "".$T2.","; }
-		$t_2 = implode($t2);
-		$t22 = explode(',', str_replace(' ', '', $t_2));
-
-		$c3 = explode(',', $simple_announcement_with_exclusion_9_2);
-		foreach ($c3 as &$C3) { $C3 = "".$C3.","; }
-		$c_3 = implode($c3);
-		$c33 = explode(',', str_replace(' ', '', $c_3));
-
-		$c4 = explode(',', $simple_announcement_with_exclusion_9_3);
-		foreach ($c4 as &$C4) { $C4 = "".$C4.","; }
-		$c_4 = implode($c4);		
-		$c44 = explode(',', str_replace(' ', '', $c_4));
-		$t4 = explode(',', $simple_announcement_with_exclusion_9_7);
-		foreach ($t4 as &$T4) { $T4 = "".$T4.","; }
-		$t_4 = implode($t4);		
-		$t44 = explode(',', str_replace(' ', '', $t_4));
-
+		if ($query->is_feed) {
+				$rss1 = explode(',', $simple_announcement_with_exclusion_9_12);
+				foreach ($rss1 as &$RSS1) { $RSS1 = "".$RSS1.","; }
+				$rss_1 = implode($rss1);		
+				$rss11 = explode(',', str_replace(' ', '', $rss_1));
+				$rss2 = explode(',', $simple_announcement_with_exclusion_9_13);
+				foreach ($rss2 as &$RSS2) { $RSS2 = "".$RSS2.","; }
+				$rss_2 = implode($rss2);		
+				$rss22 = explode(',', str_replace(' ', '', $rss_2));
+				
+				$tax_query = array(
+				'relation' => 'AND OR',
+				array(
+					'taxonomy' => 'category',
+					'terms' => $rss11,
+					'field' => 'id',
+					'operator' => 'NOT IN'
+				),
+				array(
+					'taxonomy' => 'post_tag',
+					'terms' => $rss22,
+					'field' => 'id',
+					'operator' => 'NOT IN'
+				),
+				array(
+					'taxonomy' => 'post_format',
+					'field' => 'slug',
+					'terms' => array( $simple_announcement_with_exclusion_9_14 ),
+					'operator' => 'NOT IN'
+				),
+				);
+				$query->set( 'tax_query', $tax_query );						
+		}
 		
 		if ( $query->is_main_query() && !is_admin() ) {
 		
 			if ( $query->is_home() ) {
+				$c1 = explode(',', $simple_announcement_with_exclusion_9);
+				foreach ($c1 as &$C1) { $C1 = "".$C1.","; }
+				$c_1 = implode($c1);		
+				$c11 = explode(',', str_replace(' ', '', $c_1));
+				$t1 = explode(',', $simple_announcement_with_exclusion_9_4);
+				foreach ($t1 as &$T1) { $T1 = "".$T1.","; }
+				$t_1 = implode($t1);		
+				$t11 = explode(',', str_replace(' ', '', $t_1));
+		
 				$tax_query = array(
 				'relation' => 'AND OR',
 				array(
@@ -964,6 +1018,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			}
 
 			elseif ( $query->is_category()) {
+				$t2 = explode(',', $simple_announcement_with_exclusion_9_5);
+				foreach ($t2 as &$T2) { $T2 = "".$T2.","; }
+				$t_2 = implode($t2);
+				$t22 = explode(',', str_replace(' ', '', $t_2));
+			
 				$tax_query = array(
 					'relation' => 'AND OR',
 					array(
@@ -983,6 +1042,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			}
 
 			elseif ( $query->is_tag() ) {
+				$c3 = explode(',', $simple_announcement_with_exclusion_9_2);
+				foreach ($c3 as &$C3) { $C3 = "".$C3.","; }
+				$c_3 = implode($c3);
+				$c33 = explode(',', str_replace(' ', '', $c_3));
+			
 				$tax_query = array(
 					'relation' => 'AND OR',
 					array(
@@ -1002,6 +1066,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			}		
 
 			elseif ( $query->is_search() ) {
+				$c4 = explode(',', $simple_announcement_with_exclusion_9_3);
+				foreach ($c4 as &$C4) { $C4 = "".$C4.","; }
+				$c_4 = implode($c4);		
+				$c44 = explode(',', str_replace(' ', '', $c_4));
+				
+				$t4 = explode(',', $simple_announcement_with_exclusion_9_7);
+				foreach ($t4 as &$T4) { $T4 = "".$T4.","; }
+				$t_4 = implode($t4);		
+				$t44 = explode(',', str_replace(' ', '', $t_4));			
+			
 				$tax_query = array(
 					'relation' => 'AND OR',
 					array(
