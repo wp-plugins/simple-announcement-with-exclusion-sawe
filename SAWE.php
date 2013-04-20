@@ -2,8 +2,8 @@
 /*
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
-Description: Designate a category for announcements to show in a shortcode while excluding it from the main loop.
-Version: 4.3.2
+Description: Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
+Version: 4.3.2.1
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2

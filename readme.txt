@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.3.2
+Stable tag: 4.3.2.1
 
 Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
 
