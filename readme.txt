@@ -1,5 +1,5 @@
 === Simple Announcement With Exclusion ===
-Contributors: Matthew Trevino
+Contributors: Boyevul
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
