@@ -3,7 +3,7 @@
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 Description: Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
-Version: 4.3.3.1
+Version: 4.3.3.2
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2
@@ -23,11 +23,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ------------------------------------------------------------------------*/
-//	Last Updated April 18th, 2013 at 11:41 PM
+//	Last Updated April 24th, 2013 at 3:00 PM
 
 
 
-
+// I'm only human.
+// I will make mistakes.
+// But I will do my damndest to fix them 
+// as soon as is humanly possible.
 
 
 
@@ -178,7 +181,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		}
 	}
 	
-	$simple_announcement_with_exclusion_default_0 = get_option("simple_announcement_with_exclusion_default_1");
+	$simple_announcement_with_exclusion_default_0 = get_option("simple_announcement_with_exclusion_default_0");
 	$simple_announcement_with_exclusion_default_1 = get_option("simple_announcement_with_exclusion_default_1");
 	$simple_announcement_with_exclusion_default_2 = get_option("simple_announcement_with_exclusion_default_2");
 	$simple_announcement_with_exclusion_default_3 = get_option("simple_announcement_with_exclusion_default_3");
@@ -646,9 +649,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		}
 
 		if(
-		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_1_new"] != "" ||
-		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_2_new"] != "" ||
-		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_3_new"] != ""		
+		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_1_new"] != "" ||
+		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_2_new"] != "" ||
+		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_3_new"] != ""		
 		){
 			$SAWE_editing_this = $_REQUEST["edit_this"];
 			global $wpdb;
@@ -982,7 +985,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			
 				while ($defaultQuery->have_posts()) : $defaultQuery->the_post();
 				global $post;
-
+				echo "<div>";
 				if ($simple_announcement_with_exclusion_default_4 === "yes") { 
 						if ( has_post_thumbnail() ) { 
 							echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
@@ -994,6 +997,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					}
 					if ($simple_announcement_with_exclusion_default_6 === "excerpt") { the_excerpt(); 
 					} elseif ($simple_announcement_with_exclusion_default_6 === "content") { the_content(); }
+					echo "</div>";
 					endwhile;
 					
 					
@@ -1001,7 +1005,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					$simple_announcement_with_exclusion_default_6 === "content" && is_home() ||
 					$simple_announcement_with_exclusion_default_6 === "content" && is_single() ||
 					$simple_announcement_with_exclusion_default_6 === "content" && is_archive()
-				) {					
+				) { } else {					
 					if ($simple_announcement_with_exclusion_default_7 === "yes") {
 						if ( (function_exists("wp_pagenavi")) ) {
 							echo "<p>";
