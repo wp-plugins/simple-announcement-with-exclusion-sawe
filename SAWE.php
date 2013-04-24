@@ -963,7 +963,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				'posts_per_page' => $simple_announcement_with_exclusion_default_1
 				));				
 
-				var_dump($defaultQuery);
+				
 				
 				if (
 					$simple_announcement_with_exclusion_default_6 === "content" && is_home() ||
