@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.3.3
+Stable tag: 4.3.3.1
 
 Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
 
@@ -28,6 +28,9 @@ tags, and post-formats just as easily as you can set up the save states themselv
 
 
 == Changelog ==
+= 4.3.3.1 =
+* If the unfiltered loop is called on a single post or page, and the content is set to show either content, you will get a friendly warning instead of output.  This keeps the loop from running inifinitely.
+
 = 4.3.3 =
 * Fixed issue that would break the settings page if a save state were accidentally created without a tag, category, or post format.
 * Added a default save state that will show everything from the regular loop (unfiltered).  The default loop can be displayed by using the shortcode [sawe].

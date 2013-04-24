@@ -3,7 +3,7 @@
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 Description: Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
-Version: 4.3.3
+Version: 4.3.3.1
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2
@@ -960,28 +960,22 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				
 				$defaultQuery = new WP_Query( array(
 				'paged' => $defaultPage,
-				'posts_per_page' => $simple_announcement_with_exclusion_default_1, 				
-				'relation' => 'AND OR',
-				array(
-					'taxonomy' => 'category',
-					'terms' => $sc11,
-					'field' => 'id',
-					'operator' => 'NOT IN'
-				),
-				array(
-					'taxonomy' => 'post_tag',
-					'terms' => $st11,
-					'field' => 'id',
-					'operator' => 'NOT IN'
-				),
-				array(
-					'taxonomy' => 'post_format',
-					'field' => 'slug',
-					'terms' => array( $simple_announcement_with_exclusion_9_8 ),
-					'operator' => 'NOT IN'
-				),
+				'posts_per_page' => $simple_announcement_with_exclusion_default_1
 				));				
 
+				var_dump($defaultQuery);
+				
+				if (
+					$simple_announcement_with_exclusion_default_6 === "content" && is_home() ||
+					$simple_announcement_with_exclusion_default_6 === "content" && is_single() ||
+					$simple_announcement_with_exclusion_default_6 === "content" && is_archive()
+				)
+				{
+				
+					echo "<strong>How about we <em>not</em> try to destroy the world?</strong>";
+				
+				}else{
+				
 				echo "<div class=\"";
 				if ($simple_announcement_with_exclusion_default_0 != "") { echo "$simple_announcement_with_exclusion_default_0"; }
 				echo "\" id=\"SAWE_shortcode 0\">";						
@@ -1001,6 +995,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					if ($simple_announcement_with_exclusion_default_6 === "excerpt") { the_excerpt(); 
 					} elseif ($simple_announcement_with_exclusion_default_6 === "content") { the_content(); }
 					endwhile;
+					
+					
+				if (
+					$simple_announcement_with_exclusion_default_6 === "content" && is_home() ||
+					$simple_announcement_with_exclusion_default_6 === "content" && is_single() ||
+					$simple_announcement_with_exclusion_default_6 === "content" && is_archive()
+				) {					
 					if ($simple_announcement_with_exclusion_default_7 === "yes") {
 						if ( (function_exists("wp_pagenavi")) ) {
 							echo "<p>";
@@ -1030,8 +1031,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 							}
 						}
 					}
+				}
 						
 				wp_reset_postdata();
+				
+				}
 
 			} else {
 				global $wpdb;
