@@ -30,7 +30,7 @@ tags, and post-formats just as easily as you can set up the save states themselv
 == Changelog ==
 = 4.3.3 =
 * Fixed issue that would break the settings page if a save state were accidentally created without a tag, category, or post format.
-* Added a default save state that will show everything from the regular loop, excluding what you have saved in the exclusion config as to be hidden from the home loop (tags, categories, and post format).  The default loop can be displayed by using the shortcode [sawe].
+* Added a default save state that will show everything from the regular loop (unfiltered).  The default loop can be displayed by using the shortcode [sawe].
 * Colored areas settings page.
 
 = 4.3.2 =
