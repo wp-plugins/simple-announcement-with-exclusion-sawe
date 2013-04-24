@@ -3,7 +3,7 @@
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 Description: Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
-Version: 4.3.2.1
+Version: 4.3.3
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2
@@ -116,6 +116,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		delete_option("simple_announcement_with_exclusion_7");
 		delete_option("simple_announcement_with_exclusion_8_1");
 		delete_option("simple_announcement_with_exclusion_8_2");
+		add_option("simple_announcement_with_exclusion_default_0","","Default loop 0");
+		add_option("simple_announcement_with_exclusion_default_1","","Default loop 1");
+		add_option("simple_announcement_with_exclusion_default_2","","Default loop 2");
+		add_option("simple_announcement_with_exclusion_default_3","","Default loop 3");
+		add_option("simple_announcement_with_exclusion_default_4","","Default loop 4");
+		add_option("simple_announcement_with_exclusion_default_5","","Default loop 5");
+		add_option("simple_announcement_with_exclusion_default_6","","Default loop 6");
+		add_option("simple_announcement_with_exclusion_default_7","","Default loop 7");
+		add_option("simple_announcement_with_exclusion_default_8","","Default loop 8");
+		add_option("simple_announcement_with_exclusion_default_9","","Default loop 9");
 		add_option("simple_announcement_with_exclusion_6","no","Option 6");
 		add_option("simple_announcement_with_exclusion_9","","Categories front");
 		add_option("simple_announcement_with_exclusion_9_2","","Categories front and tag");
@@ -136,6 +146,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //	Uninstallation procedure	
 	function simple_announcement_with_exclusion_uninstall() {
 		if ( get_option("simple_announcement_with_exclusion_delete_on_deactivate") === "yes") {
+			delete_option("simple_announcement_with_exclusion_default_0");
+			delete_option("simple_announcement_with_exclusion_default_1");
+			delete_option("simple_announcement_with_exclusion_default_2");
+			delete_option("simple_announcement_with_exclusion_default_3");
+			delete_option("simple_announcement_with_exclusion_default_4");
+			delete_option("simple_announcement_with_exclusion_default_5");
+			delete_option("simple_announcement_with_exclusion_default_6");
+			delete_option("simple_announcement_with_exclusion_default_7");
+			delete_option("simple_announcement_with_exclusion_default_8");
+			delete_option("simple_announcement_with_exclusion_default_9");
 			delete_option("simple_announcement_with_exclusion_6");
 			delete_option("simple_announcement_with_exclusion_9");
 			delete_option("simple_announcement_with_exclusion_9_2");
@@ -158,6 +178,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		}
 	}
 	
+	$simple_announcement_with_exclusion_default_0 = get_option("simple_announcement_with_exclusion_default_1");
+	$simple_announcement_with_exclusion_default_1 = get_option("simple_announcement_with_exclusion_default_1");
+	$simple_announcement_with_exclusion_default_2 = get_option("simple_announcement_with_exclusion_default_2");
+	$simple_announcement_with_exclusion_default_3 = get_option("simple_announcement_with_exclusion_default_3");
+	$simple_announcement_with_exclusion_default_4 = get_option("simple_announcement_with_exclusion_default_4");
+	$simple_announcement_with_exclusion_default_5 = get_option("simple_announcement_with_exclusion_default_5");
+	$simple_announcement_with_exclusion_default_6 = get_option("simple_announcement_with_exclusion_default_6");
+	$simple_announcement_with_exclusion_default_7 = get_option("simple_announcement_with_exclusion_default_7");
+	$simple_announcement_with_exclusion_default_8 = get_option("simple_announcement_with_exclusion_default_8");
+	$simple_announcement_with_exclusion_default_9 = get_option("simple_announcement_with_exclusion_default_9");
 	$simple_announcement_with_exclusion_6 = get_option("simple_announcement_with_exclusion_6");
 	$simple_announcement_with_exclusion_9 = get_option("simple_announcement_with_exclusion_9");
 	$simple_announcement_with_exclusion_9_2 = get_option("simple_announcement_with_exclusion_9_2");
@@ -235,6 +265,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 	The form for the options page.	
 //	---------------------------------------------------------------------
 	function print_simple_announcement_with_exclusion_form() {
+		$simple_announcement_with_exclusion_default_0 = get_option("simple_announcement_with_exclusion_default_0");
+		$simple_announcement_with_exclusion_default_1 = get_option("simple_announcement_with_exclusion_default_1");
+		$simple_announcement_with_exclusion_default_2 = get_option("simple_announcement_with_exclusion_default_2");
+		$simple_announcement_with_exclusion_default_3 = get_option("simple_announcement_with_exclusion_default_3");
+		$simple_announcement_with_exclusion_default_4 = get_option("simple_announcement_with_exclusion_default_4");
+		$simple_announcement_with_exclusion_default_5 = get_option("simple_announcement_with_exclusion_default_5");
+		$simple_announcement_with_exclusion_default_6 = get_option("simple_announcement_with_exclusion_default_6");
+		$simple_announcement_with_exclusion_default_7 = get_option("simple_announcement_with_exclusion_default_7");
+		$simple_announcement_with_exclusion_default_8 = get_option("simple_announcement_with_exclusion_default_8");
+		$simple_announcement_with_exclusion_default_9 = get_option("simple_announcement_with_exclusion_default_9");
 		$simple_announcement_with_exclusion_6 = get_option("simple_announcement_with_exclusion_6");
 		$simple_announcement_with_exclusion_9 = get_option("simple_announcement_with_exclusion_9");
 		$simple_announcement_with_exclusion_9_2 = get_option("simple_announcement_with_exclusion_9_2");
@@ -272,9 +312,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		});		
 		</script>
 		
-		<form method=\"post\">
+		<form method=\"post\" class=\"exclude\">
 		
-		<label><u>Exclusion config</u></label>
+		<header>Exclusion config</header>
 		
 		<label for=\"simple_announcement_with_exclusion_1\">Type
 		<select name=\"simple_announcement_with_exclusion_1\" id=\"chooseposttype\">
@@ -436,7 +476,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		echo "<div class=\"SAWEleft\">
 
 		<form method=\"post\">
-		<label><u>Save states</u></label>
+		<header>Save states</header>
 	
 		<label><select name=\"edit_this\" class=\"selectfull\">
 		<option value=\"\">Creating new</option><option value=\"\">-----</option><option value=\"\">Edit a save sate</option>";
@@ -569,7 +609,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			<label><input type=\"submit\" name=\"dropConfigsyes\" value=\"Can't be undone\" /></label>
 			";		
 		}
-		
 		echo "</form>";
 		
 		if(isset($_POST['dropConfigsyes'])){
@@ -580,7 +619,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
 		}
 		
-		if(isset($_POST['submit_new']) && $_REQUEST["edit_this"] === ""){
+		if(
+			isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_1_new"] != "" ||
+			isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_2_new"] != "" ||
+			isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_3_new"] != ""
+		){
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 			$saweDIV = $_REQUEST["simple_announcement_with_exclusion_0_new"];
@@ -602,7 +645,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			('', '$saweDIV', '$saweTYPE', '$saweCAT', '$saweTAG', '$saweFORMAT', '$saweAMOUNT', '$saweBY', '$saweORDER', '$saweTHUMBS', '$saweTITLES', '$saweSHOW', '$sawePAGED', '$sawePREVIOUS', '$saweNEXT' )") ;
 		}
 
-		if(isset($_POST['submit_new']) && $_REQUEST["edit_this"] != ""){
+		if(
+		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_1_new"] != "" ||
+		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_2_new"] != "" ||
+		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_3_new"] != ""		
+		){
 			$SAWE_editing_this = $_REQUEST["edit_this"];
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -640,9 +687,81 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			saweID = $SAWE_editing_this
 			") ;
 		}
-		
-		echo "</div><div class=\"SAWE\">";
-		
+		echo "</div>
+		<div class=\"SAWE\">
+		<div class=\"item default\">
+		<header>Default Loop <b>[sawe]</b></header>
+		<form method=\"post\">
+		<label for=\"simple_announcement_with_exclusion_default_0\">Div
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_0\" value=\"",$simple_announcement_with_exclusion_default_0,"\" />
+		</label>
+		<label for=\"simple_announcement_with_exclusion_default_1\">Amount
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_1\" value=\"",$simple_announcement_with_exclusion_default_1,"\" />
+		</label>
+		<label for=\"simple_announcement_with_exclusion_default_2\">By
+		<select name=\"simple_announcement_with_exclusion_default_2\">
+			<option value=\"date\"";if ($simple_announcement_with_exclusion_default_2 === "date") { echo "selected=\"selected\""; } echo ">Date</option>
+			<option value=\"title\"";if ($simple_announcement_with_exclusion_default_2 === "title") { echo "selected=\"selected\""; } echo ">Title</option>
+			<option value=\"rand\"";if ($simple_announcement_with_exclusion_default_2 === "random") { echo "selected=\"selected\""; } echo ">Random</option>
+		</select>
+		</label>	
+		<label for=\"simple_announcement_with_exclusion_default_3\">Order
+		<select name=\"simple_announcement_with_exclusion_default_3\">
+			<option value=\"ASC\"";if ($simple_announcement_with_exclusion_default_3 === "ASC") { echo "selected=\"selected\""; } echo ">Ascending</option>
+			<option value=\"DESC\"";if ($simple_announcement_with_exclusion_default_3 === "DESC") { echo "selected=\"selected\""; } echo ">Descending</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_default_4\">Thumbs
+		<select name=\"simple_announcement_with_exclusion_default_4\">
+			<option value=\"yes\"";if ($simple_announcement_with_exclusion_default_4 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
+			<option value=\"no\"";if ($simple_announcement_with_exclusion_default_4 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_default_5\">Titles
+		<select name=\"simple_announcement_with_exclusion_default_5\">
+			<option value=\"yes\"";if ($simple_announcement_with_exclusion_default_5 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
+			<option value=\"no\"";if ($simple_announcement_with_exclusion_default_5 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_default_6\">Show
+		<select name=\"simple_announcement_with_exclusion_default_6\">
+			<option value=\"nothing\"";if ($simple_announcement_with_exclusion_default_6 === "nothing") { echo "selected=\"selected\""; } echo ">Nothing</option>
+			<option value=\"excerpt\"";if ($simple_announcement_with_exclusion_default_6 === "excerpt") { echo "selected=\"selected\""; } echo ">Excerpt</option>
+			<option value=\"content\"";if ($simple_announcement_with_exclusion_default_6 === "content") { echo "selected=\"selected\""; } echo ">Content</option>
+		</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_default_7\">Paged
+			<select name=\"simple_announcement_with_exclusion_default_7\">
+				<option value=\"yes\"";if ($simple_announcement_with_exclusion_default_7 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
+				<option value=\"no\"";if ($simple_announcement_with_exclusion_default_7 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+			</select>
+		</label>
+		<label for=\"simple_announcement_with_exclusion_default_8\">Previous
+			<input type=\"text\" name=\"simple_announcement_with_exclusion_default_8\" value=\"",$simple_announcement_with_exclusion_default_8,"\" />
+		</label>
+		<label for=\"simple_announcement_with_exclusion_default_9\">Next
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_9\" value=\"",$simple_announcement_with_exclusion_default_9,"\" />
+		</label>				
+		<label><input type=\"submit\" name=\"defaultSave\" value=\"Save default\" /></label>
+		</form>
+		</div>";
+		if(isset($_POST['defaultSave'])){
+			if ($_REQUEST["simple_announcement_with_exclusion_default_0"] != "$simple_announcement_with_exclusion_default_0") { update_option("simple_announcement_with_exclusion_default_0",$_REQUEST["simple_announcement_with_exclusion_default_0"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_1"] != "$simple_announcement_with_exclusion_default_1") { update_option("simple_announcement_with_exclusion_default_1",$_REQUEST["simple_announcement_with_exclusion_default_1"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_2"] != "$simple_announcement_with_exclusion_default_2") { update_option("simple_announcement_with_exclusion_default_2",$_REQUEST["simple_announcement_with_exclusion_default_2"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_3"] != "$simple_announcement_with_exclusion_default_3") { update_option("simple_announcement_with_exclusion_default_3",$_REQUEST["simple_announcement_with_exclusion_default_3"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_4"] != "$simple_announcement_with_exclusion_default_4") { update_option("simple_announcement_with_exclusion_default_4",$_REQUEST["simple_announcement_with_exclusion_default_4"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_5"] != "$simple_announcement_with_exclusion_default_5") { update_option("simple_announcement_with_exclusion_default_5",$_REQUEST["simple_announcement_with_exclusion_default_5"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_6"] != "$simple_announcement_with_exclusion_default_6") { update_option("simple_announcement_with_exclusion_default_6",$_REQUEST["simple_announcement_with_exclusion_default_6"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_7"] != "$simple_announcement_with_exclusion_default_7") { update_option("simple_announcement_with_exclusion_default_7",$_REQUEST["simple_announcement_with_exclusion_default_7"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_8"] != "$simple_announcement_with_exclusion_default_8") { update_option("simple_announcement_with_exclusion_default_8",$_REQUEST["simple_announcement_with_exclusion_default_8"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_9"] != "$simple_announcement_with_exclusion_default_9") { update_option("simple_announcement_with_exclusion_default_9",$_REQUEST["simple_announcement_with_exclusion_default_9"]); }
+			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
+		}		
+		echo "
+		<div class=\"item\">
+		<header>Saved states</header>
+		";		 
 		global $wpdb;
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 		$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
@@ -664,7 +783,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			$saweNEXT = $SAWE_table_admin->saweNEXT;
 			echo 
 			"<div class=\"item\">
-			 <strong>[sawe config_id=\"",$SAWE_table_admin->saweID,"\"]</strong> &mdash; <br />
+			 <header>[sawe config_id=\"",$SAWE_table_admin->saweID,"\"]</header>
 			Show $saweAMOUNT ";
 			if ($saweAMOUNT === '1') { 
 				echo "item"; 
@@ -756,7 +875,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
 			}		
 		}
-		 echo "</div>";
+		 echo "</div></div>";
 	}
 	function simple_announcement_with_exclusions_page_content() { 
 		echo "<div class=\"papercaves_plugin_container\"><h2>Simple Announcement With Exclusion</h2><p>Created by Matt @ <a href=\"http://papercaves.com/\">Paper Caves</a> &mdash; <a href=\"http://papercaves.com/wordpress-plugins/sawe/\">Documentation</a></p>";
@@ -797,7 +916,123 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			), $atts));
 			
 			if(empty($config_id)) {	
+				global $simple_announcement_with_exclusion_default_0;
+				global $simple_announcement_with_exclusion_default_1;
+				global $simple_announcement_with_exclusion_default_2;
+				global $simple_announcement_with_exclusion_default_3;
+				global $simple_announcement_with_exclusion_default_4;
+				global $simple_announcement_with_exclusion_default_5;
+				global $simple_announcement_with_exclusion_default_6;
+				global $simple_announcement_with_exclusion_default_7;
+				global $simple_announcement_with_exclusion_default_8;
+				global $simple_announcement_with_exclusion_default_9;
+				global $simple_announcement_with_exclusion_9;
+				global $simple_announcement_with_exclusion_9_2;
+				global $simple_announcement_with_exclusion_9_3;
+				global $simple_announcement_with_exclusion_9_4;
+				global $simple_announcement_with_exclusion_9_5;
+				global $simple_announcement_with_exclusion_9_7;
+				global $simple_announcement_with_exclusion_9_8;
+				global $simple_announcement_with_exclusion_9_9;
+				global $simple_announcement_with_exclusion_9_10;
+				global $simple_announcement_with_exclusion_9_11;
+				global $simple_announcement_with_exclusion_9_12;
+				global $simple_announcement_with_exclusion_9_13;
+				global $simple_announcement_with_exclusion_9_14;			
 				
+				$sc1 = explode(',', $simple_announcement_with_exclusion_9);
+				foreach ($sc1 as &$SC1) { $SC1 = "".$SC1.","; }
+				$sc_1 = implode($sc1);		
+				$sc11 = explode(',', str_replace(' ', '', $sc_1));
+				$st1 = explode(',', $simple_announcement_with_exclusion_9_4);
+				foreach ($st1 as &$ST1) { $ST1 = "".$ST1.","; }
+				$st_1 = implode($st1);		
+				$st11 = explode(',', str_replace(' ', '', $st_1));
+
+						if ($simple_announcement_with_exclusion_default_7 === "yes") {
+							$defaultPage = (get_query_var('paged')) ? get_query_var('paged') : 1;
+						}
+						if ($simple_announcement_with_exclusion_default_7 === "no") {
+							$defaultPage = '';
+						}
+				
+				wp_reset_postdata();
+				
+				$defaultQuery = new WP_Query( array(
+				'paged' => $defaultPage,
+				'posts_per_page' => $simple_announcement_with_exclusion_default_1, 				
+				'relation' => 'AND OR',
+				array(
+					'taxonomy' => 'category',
+					'terms' => $sc11,
+					'field' => 'id',
+					'operator' => 'NOT IN'
+				),
+				array(
+					'taxonomy' => 'post_tag',
+					'terms' => $st11,
+					'field' => 'id',
+					'operator' => 'NOT IN'
+				),
+				array(
+					'taxonomy' => 'post_format',
+					'field' => 'slug',
+					'terms' => array( $simple_announcement_with_exclusion_9_8 ),
+					'operator' => 'NOT IN'
+				),
+				));				
+
+				echo "<div class=\"";
+				if ($simple_announcement_with_exclusion_default_0 != "") { echo "$simple_announcement_with_exclusion_default_0"; }
+				echo "\" id=\"SAWE_shortcode 0\">";						
+			
+				while ($defaultQuery->have_posts()) : $defaultQuery->the_post();
+				global $post;
+
+				if ($simple_announcement_with_exclusion_default_4 === "yes") { 
+						if ( has_post_thumbnail() ) { 
+							echo "<a href=\"",the_permalink(),"\" title=\"",the_title(),"\">
+								",the_post_thumbnail( "thumbnail" ),"</a><br />";
+						} 			
+					}
+					if ($simple_announcement_with_exclusion_default_5 === "yes") { 
+							echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
+					}
+					if ($simple_announcement_with_exclusion_default_6 === "excerpt") { the_excerpt(); 
+					} elseif ($simple_announcement_with_exclusion_default_6 === "content") { the_content(); }
+					endwhile;
+					if ($simple_announcement_with_exclusion_default_7 === "yes") {
+						if ( (function_exists("wp_pagenavi")) ) {
+							echo "<p>";
+							wp_pagenavi(array( 'query' => $defaultQuery ) );
+							echo "</p>";
+						} else { 
+							$big = 999999999;
+							if ($permalinks === "default") {
+								echo "<p>",paginate_links( array(
+									'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+									'format' => '?paged=%#%',
+									'current' => max( 1, get_query_var('paged') ),
+									'total' => $defaultQuery->max_num_pages,
+									'prev_text' => __($simple_announcement_with_exclusion_default_8),
+									'next_text' => __($simple_announcement_with_exclusion_default_9)
+								) ),"</p>";
+							}
+							if ($permalinks === "pretty") {
+								echo "<p>",paginate_links( array(
+									'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+									'format' => '/paged/%#%',
+									'current' => max( 1, get_query_var('paged') ),
+									'total' => $defaultQuery->max_num_pages,
+									'prev_text' => __($simple_announcement_with_exclusion_default_8),
+									'next_text' => __($simple_announcement_with_exclusion_default_09)
+								) ),"</p>";
+							}
+						}
+					}
+						
+				wp_reset_postdata();
+
 			} else {
 				global $wpdb;
 				$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -861,6 +1096,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 							));
 						}
 						// The shortcode loop
+						wp_reset_postdata();
 						echo "<div class=\"";
 						if ($saweDIV != "") { echo "$saweDIV"; }
 						echo "\" id=\"SAWE_shortcode $sawe_this_ID\">";						
@@ -931,6 +1167,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //	depending on what exclusion rules (if any) we are using.
 //	---------------------------------------------------------------------
 // 	Handle exclusion rules for categories and tags (main [sawe] loop
+	
+	
+function the_category_filter($exclude_cats) {
+	global $simple_announcement_with_exclusion_9_12;
+	global $simple_announcement_with_exclusion_9_13;
+
+	$cats1 = explode(',', $simple_announcement_with_exclusion_9_12);
+	foreach ($cats1 as &$CATS1) { $CATS1 = "".$CATS1.","; }
+	$cats_1 = implode($cats1);		
+	$cats11 = explode(',', str_replace(' ', '', $cats_1));
+
+	$exclude_cats['exclude'] = $cats11;
+	
+	
+		
+}
+add_filter('wp_list_categories','the_category_filter');	
 	
 	function SAWE_filter_home( $query ) {	
 		global $simple_announcement_with_exclusion_9;
