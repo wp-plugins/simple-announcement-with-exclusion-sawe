@@ -3,7 +3,7 @@
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 Description: Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
-Version: 4.4
+Version: 4.4.1
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2
@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ------------------------------------------------------------------------*/
-//	Last Updated April 24th, 2013 at 3:00 PM
+//	Last Updated April 25th, 2013 at 9:47 AM
 
 
 
@@ -139,6 +139,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		add_option("simple_announcement_with_exclusion_9_13","","Exclude tags from feed");
 		add_option("simple_announcement_with_exclusion_9_14","","Exclude post-format from feed");
 		add_option("simple_announcement_with_exclusion_scheme","tranquil","Color scheme");
+		add_option("simple_announcement_with_exclusion_readmore","Continune reading","Read more link text");
 		add_option("simple_announcement_with_exclusion_delete_on_deactivate","no","Delete on deactivate?");
 	}
 
@@ -170,6 +171,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			delete_option("simple_announcement_with_exclusion_9_13");
 			delete_option("simple_announcement_with_exclusion_9_14");
 			delete_option("simple_announcement_with_exclusion_scheme");
+			delete_option("simple_announcement_with_exclusion_readmore");
 			delete_option("simple_announcement_with_exclusion_delete_on_deactivate");
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -203,6 +205,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	$simple_announcement_with_exclusion_9_13 = get_option("simple_announcement_with_exclusion_9_13");
 	$simple_announcement_with_exclusion_9_14 = get_option("simple_announcement_with_exclusion_9_14");
 	$simple_announcement_with_exclusion_scheme = get_option("simple_announcement_with_exclusion_scheme");
+	$simple_announcement_with_exclusion_readmore = get_option("simple_announcement_with_exclusion_readmore");
 	$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");	
 	
 	
@@ -241,6 +244,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		global $simple_announcement_with_exclusion_9_13;
 		global $simple_announcement_with_exclusion_9_14;
 		global $simple_announcement_with_exclusion_scheme;
+		global $simple_announcement_with_exclusion_readmore;
 		global $simple_announcement_with_exclusion_delete_on_deactivate;	
 // 	Only update if request isn't empty and request isn't the same as it was before
 		if(isset($_POST['submit'])){
@@ -259,6 +263,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			if ($_REQUEST["simple_announcement_with_exclusion_9_13"] != "$simple_announcement_with_exclusion_9_13") { update_option("simple_announcement_with_exclusion_9_13",$_REQUEST["simple_announcement_with_exclusion_9_13"]); }
 			if ($_REQUEST["simple_announcement_with_exclusion_9_14"] != "$simple_announcement_with_exclusion_9_14") { update_option("simple_announcement_with_exclusion_9_14",$_REQUEST["simple_announcement_with_exclusion_9_14"]); }
 			if ($_REQUEST["simple_announcement_with_exclusion_scheme"] != "$simple_announcement_with_exclusion_scheme") { update_option("simple_announcement_with_exclusion_scheme",$_REQUEST["simple_announcement_with_exclusion_scheme"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_readmore"] != "$simple_announcement_with_exclusion_readmore") { update_option("simple_announcement_with_exclusion_readmore",$_REQUEST["simple_announcement_with_exclusion_readmore"]); }
 			if ($_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "" && $_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"] != "$simple_announcement_with_exclusion_delete_on_deactivate") { update_option("simple_announcement_with_exclusion_delete_on_deactivate",$_REQUEST["simple_announcement_with_exclusion_delete_on_deactivate"]); }
 		}
 	}
@@ -301,6 +306,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		$simple_announcement_with_exclusion_9_13 = get_option("simple_announcement_with_exclusion_9_13");
 		$simple_announcement_with_exclusion_9_14 = get_option("simple_announcement_with_exclusion_9_14");
 		$simple_announcement_with_exclusion_scheme = get_option("simple_announcement_with_exclusion_scheme");
+		$simple_announcement_with_exclusion_readmore = get_option("simple_announcement_with_exclusion_readmore");
 		$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");	
 		echo "
 		<script type=\"text/javascript\">
@@ -473,10 +479,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			<option value=\"no\""; if ($simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 		</select>
 		</label>
-		<label for=\"simple_announcement_with_exclusion_scheme\" class=\"divider\">Colors
+		<label for=\"simple_announcement_with_exclusion_scheme\">Colors
 		<select name=\"simple_announcement_with_exclusion_scheme\">
 			<option value=\"tranquil\""; if ($simple_announcement_with_exclusion_scheme === "tranquil") { echo " selected=\"selected\""; } echo ">Tranquil</option>
 		</select>
+		</label>
+		<label for\"simple_announcement_with_exclusion_readmore\">Read more
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_readmore\" value=\"$simple_announcement_with_exclusion_readmore\" />
 		</label>
 
 		<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\" class=\"uninstall\">Uninstall
@@ -951,7 +960,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				global $simple_announcement_with_exclusion_9_11;
 				global $simple_announcement_with_exclusion_9_12;
 				global $simple_announcement_with_exclusion_9_13;
-				global $simple_announcement_with_exclusion_9_14;			
+				global $simple_announcement_with_exclusion_9_14;
+				global $simple_announcement_with_exclusion_readmore;
 				
 				$sc1 = explode(',', $simple_announcement_with_exclusion_9);
 				foreach ($sc1 as &$SC1) { $SC1 = "".$SC1.","; }
@@ -1007,7 +1017,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 							echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
 					}
 					if ($simple_announcement_with_exclusion_default_6 === "excerpt") { the_excerpt(); 
-					} elseif ($simple_announcement_with_exclusion_default_6 === "content") { the_content(); }
+					} elseif ($simple_announcement_with_exclusion_default_6 === "content") { the_content();
+						global $numpages;
+						if ( is_singular() && $numpages > 1 ) {
+								echo "<a class=\"continue\" href=\"",the_permalink(),"\">",$simple_announcement_with_exclusion_readmore,"</a>";
+						}
+					}
 					echo "</section>";
 					endwhile;
 					
@@ -1051,6 +1066,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				echo "</article></div>";
 			}
 			} else {
+				global $simple_announcement_with_exclusion_readmore;
 				echo "<div id=\"SAWE_shortcode\">";
 				global $wpdb;
 				$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -1131,7 +1147,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 								echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
 						}
 						if ($saweSHOW === "excerpt") { the_excerpt(); 
-						} elseif ($saweSHOW === "content") { the_content(); }
+						} elseif ($saweSHOW === "content") { the_content(); 
+							global $numpages;
+							if ( is_singular() && $numpages > 1 ) {
+								echo "<a class=\"continue\" href=\"",the_permalink(),"\">",$simple_announcement_with_exclusion_readmore,"</a>";
+							}
+						}
 						echo "</section>";
 						endwhile;
 						if ($sawePAGED === "yes") {
