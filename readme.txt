@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.3.3.2
+Stable tag: 4.4
 
 Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
 
@@ -28,6 +28,12 @@ tags, and post-formats just as easily as you can set up the save states themselv
 
 
 == Changelog ==
+= 4.4 =
+* Ability to use multiple (comma separated) categories (by id, found in the category id listing in exclusion config) added for save states.
+* Markup fix: If no custom class is given, a blank class selector will not longer be output.
+* Markup change: Output is now as follows: <main div><article (custom class)><section>content</section></article></main div>
+* (Ignore the color scheme selector for now - there are no schemes yet, and the default is tranquil (light blues)).
+
 = 4.3.3.2 =
 * Bug fix: save state editing.
 * Bug fix: paged default loop pages not showing up.
