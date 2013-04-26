@@ -3,7 +3,7 @@
 Plugin Name: Simple Announcement With Exclusion (SAWE)
 Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
 Description: Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
-Version: 4.4.1
+Version: 4.4.2
 Author: Matthew Trevino
 Author URI: http://papercaves.com
 License: A "Slug" license name e.g. GPL2
@@ -228,6 +228,31 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //	---------------------------------------------------------------------	
 //	Update options (main loop) if requested
 //	---------------------------------------------------------------------	
+	function update_simple_announcement_with_exclusions_defaults() {
+		global $simple_announcement_with_exclusion_default_0;
+		global $simple_announcement_with_exclusion_default_1;
+		global $simple_announcement_with_exclusion_default_2;
+		global $simple_announcement_with_exclusion_default_3;
+		global $simple_announcement_with_exclusion_default_4;
+		global $simple_announcement_with_exclusion_default_5;
+		global $simple_announcement_with_exclusion_default_6;
+		global $simple_announcement_with_exclusion_default_7;
+		global $simple_announcement_with_exclusion_default_8;
+		global $simple_announcement_with_exclusion_default_9;
+		if(isset($_POST['defaultSave'])){
+			if ($_REQUEST["simple_announcement_with_exclusion_default_0"] != "$simple_announcement_with_exclusion_default_0") { update_option("simple_announcement_with_exclusion_default_0",$_REQUEST["simple_announcement_with_exclusion_default_0"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_1"] != "$simple_announcement_with_exclusion_default_1") { update_option("simple_announcement_with_exclusion_default_1",$_REQUEST["simple_announcement_with_exclusion_default_1"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_2"] != "$simple_announcement_with_exclusion_default_2") { update_option("simple_announcement_with_exclusion_default_2",$_REQUEST["simple_announcement_with_exclusion_default_2"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_3"] != "$simple_announcement_with_exclusion_default_3") { update_option("simple_announcement_with_exclusion_default_3",$_REQUEST["simple_announcement_with_exclusion_default_3"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_4"] != "$simple_announcement_with_exclusion_default_4") { update_option("simple_announcement_with_exclusion_default_4",$_REQUEST["simple_announcement_with_exclusion_default_4"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_5"] != "$simple_announcement_with_exclusion_default_5") { update_option("simple_announcement_with_exclusion_default_5",$_REQUEST["simple_announcement_with_exclusion_default_5"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_6"] != "$simple_announcement_with_exclusion_default_6") { update_option("simple_announcement_with_exclusion_default_6",$_REQUEST["simple_announcement_with_exclusion_default_6"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_7"] != "$simple_announcement_with_exclusion_default_7") { update_option("simple_announcement_with_exclusion_default_7",$_REQUEST["simple_announcement_with_exclusion_default_7"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_8"] != "$simple_announcement_with_exclusion_default_8") { update_option("simple_announcement_with_exclusion_default_8",$_REQUEST["simple_announcement_with_exclusion_default_8"]); }
+			if ($_REQUEST["simple_announcement_with_exclusion_default_9"] != "$simple_announcement_with_exclusion_default_9") { update_option("simple_announcement_with_exclusion_default_9",$_REQUEST["simple_announcement_with_exclusion_default_9"]); }
+		}		
+	}
+	
 	function update_simple_announcement_with_exclusions() {
 		global $simple_announcement_with_exclusion_6;
 		global $simple_announcement_with_exclusion_9;
@@ -246,7 +271,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		global $simple_announcement_with_exclusion_scheme;
 		global $simple_announcement_with_exclusion_readmore;
 		global $simple_announcement_with_exclusion_delete_on_deactivate;	
-// 	Only update if request isn't empty and request isn't the same as it was before
 		if(isset($_POST['submit'])){
 			if ($_REQUEST["simple_announcement_with_exclusion_6"] != "$simple_announcement_with_exclusion_6") { update_option("simple_announcement_with_exclusion_6",$_REQUEST["simple_announcement_with_exclusion_6"]); }
 			if ($_REQUEST["simple_announcement_with_exclusion_9"] != "$simple_announcement_with_exclusion_9") { update_option("simple_announcement_with_exclusion_9",$_REQUEST["simple_announcement_with_exclusion_9"]); }
@@ -712,7 +736,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		echo "</div>
 		<div class=\"SAWE\">
 		<div class=\"item default\">
-		<header>Default Loop <b>[sawe]</b></header>
+		<header>Default Loop <strong>[sawe]</strong></header>
 		<form method=\"post\">
 		<label for=\"simple_announcement_with_exclusion_default_0\">Div
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_0\" value=\"",$simple_announcement_with_exclusion_default_0,"\" />
@@ -724,7 +748,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		<select name=\"simple_announcement_with_exclusion_default_2\">
 			<option value=\"date\"";if ($simple_announcement_with_exclusion_default_2 === "date") { echo "selected=\"selected\""; } echo ">Date</option>
 			<option value=\"title\"";if ($simple_announcement_with_exclusion_default_2 === "title") { echo "selected=\"selected\""; } echo ">Title</option>
-			<option value=\"rand\"";if ($simple_announcement_with_exclusion_default_2 === "random") { echo "selected=\"selected\""; } echo ">Random</option>
+			<option value=\"rand\"";if ($simple_announcement_with_exclusion_default_2 === "rand") { echo "selected=\"selected\""; } echo ">Random</option>
 		</select>
 		</label>	
 		<label for=\"simple_announcement_with_exclusion_default_3\">Order
@@ -766,21 +790,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		</label>				
 		<label><input type=\"submit\" name=\"defaultSave\" value=\"Save default\" /></label>
 		</form>
-		</div>";
-		if(isset($_POST['defaultSave'])){
-			if ($_REQUEST["simple_announcement_with_exclusion_default_0"] != "$simple_announcement_with_exclusion_default_0") { update_option("simple_announcement_with_exclusion_default_0",$_REQUEST["simple_announcement_with_exclusion_default_0"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_1"] != "$simple_announcement_with_exclusion_default_1") { update_option("simple_announcement_with_exclusion_default_1",$_REQUEST["simple_announcement_with_exclusion_default_1"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_2"] != "$simple_announcement_with_exclusion_default_2") { update_option("simple_announcement_with_exclusion_default_2",$_REQUEST["simple_announcement_with_exclusion_default_2"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_3"] != "$simple_announcement_with_exclusion_default_3") { update_option("simple_announcement_with_exclusion_default_3",$_REQUEST["simple_announcement_with_exclusion_default_3"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_4"] != "$simple_announcement_with_exclusion_default_4") { update_option("simple_announcement_with_exclusion_default_4",$_REQUEST["simple_announcement_with_exclusion_default_4"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_5"] != "$simple_announcement_with_exclusion_default_5") { update_option("simple_announcement_with_exclusion_default_5",$_REQUEST["simple_announcement_with_exclusion_default_5"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_6"] != "$simple_announcement_with_exclusion_default_6") { update_option("simple_announcement_with_exclusion_default_6",$_REQUEST["simple_announcement_with_exclusion_default_6"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_7"] != "$simple_announcement_with_exclusion_default_7") { update_option("simple_announcement_with_exclusion_default_7",$_REQUEST["simple_announcement_with_exclusion_default_7"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_8"] != "$simple_announcement_with_exclusion_default_8") { update_option("simple_announcement_with_exclusion_default_8",$_REQUEST["simple_announcement_with_exclusion_default_8"]); }
-			if ($_REQUEST["simple_announcement_with_exclusion_default_9"] != "$simple_announcement_with_exclusion_default_9") { update_option("simple_announcement_with_exclusion_default_9",$_REQUEST["simple_announcement_with_exclusion_default_9"]); }
-			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
-		}		
-		echo "
+		</div>
 		<div class=\"item\">
 		<header>Saved states</header>
 		";		 
@@ -906,6 +916,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				update_simple_announcement_with_exclusions();
 			}
 		}
+		if(isset($_POST["defaultSave"])){
+			if ($_REQUEST["defaultSave"]) { 
+				update_simple_announcement_with_exclusions_defaults();
+			}
+		}		
 		print_simple_announcement_with_exclusion_form();
 		echo "</div>";
 	}
@@ -983,7 +998,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				
 				$defaultQuery = new WP_Query( array(
 				'paged' => $defaultPage,
-				'posts_per_page' => $simple_announcement_with_exclusion_default_1
+				'posts_per_page' => $simple_announcement_with_exclusion_default_1,
+				'order' => $simple_announcement_with_exclusion_default_3, 
+				'orderby' => $simple_announcement_with_exclusion_default_2
 				));				
 
 				
@@ -993,11 +1010,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					$simple_announcement_with_exclusion_default_6 === "content" && is_single() ||
 					$simple_announcement_with_exclusion_default_6 === "content" && is_archive()
 				)
-				{
-				
-					echo "<strong>How about we <em>not</em> try to destroy the world?</strong>";
-				
-				}else{
+				{ }
+				else {
 				echo "<div id=\"SAWE_shortcode\"><article ";
 				if ($simple_announcement_with_exclusion_default_0 != "") {
 				echo "class=\"$simple_announcement_with_exclusion_default_0\"";
