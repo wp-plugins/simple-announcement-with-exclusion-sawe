@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.4.2
+Stable tag: 4.4.3
 
 Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
 
@@ -28,6 +28,9 @@ tags, and post-formats just as easily as you can set up the save states themselv
 
 
 == Changelog ==
+= 4.4.3 =
+* Cleaned up code.
+
 = 4.4.2 =
 * Bug fix: Selecting random in default loop settings would not set the selector to random.
 * Bug fix: Order by parameters for default loop settings had no affect on the loop output.

@@ -15,6 +15,7 @@ label:hover									{ opacity:1;}
 
 .item 										{ display:block;border:1px solid #bbb;padding:5px;margin:5px 0 5px ;width:250px;overflow-y:auto;overflow-x:hidden;background-color:#fffbf7;}
 .item .item									{ display:block;border:1px solid #bbb;padding:5px;margin:5px 0 5px ;width:240px;overflow-y:auto;overflow-x:hidden;background-color:#fff9f3;}
+.item p										{ display:block;border:none;width:92%;margin:auto;}
 
 .list 										{ height: 200px; overflow-x:hidden; overflow-y:auto; width:99%;clear:both;border:1px solid #bbb;background-color:#fff;}
 .list item 									{ clear:both;display:block;opacity:.7;width:100%;height:auto;margin:2px 0 2px 0;}
