@@ -3,8 +3,8 @@
  * Plugin Name: Simple Announcement With Exclusion (SAWE)
  * Description: Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
  * Author: Matthew Trevino
- * Author URL: http://papercaves.com
- * Plugin URL: http://papercaves.com/wordpress-plugins/sawe/
+ * Author URI: http://papercaves.com
+ * Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
  * Version: 4.4.3
  * License: GPL2
  */
