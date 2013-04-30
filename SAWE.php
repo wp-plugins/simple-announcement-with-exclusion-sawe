@@ -5,7 +5,7 @@
  * Author: Matthew Trevino
  * Author URI: http://papercaves.com
  * Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
- * Version: 4.4.3
+ * Version: 4.4.4
  * License: GPL2
  */
 
@@ -13,7 +13,6 @@
 register_activation_hook( __FILE__, "simple_announcement_with_exclusion_install" );												
 register_activation_hook( __FILE__, "simple_announcement_with_exclusion_table" );												
 register_deactivation_hook( __FILE__, "simple_announcement_with_exclusion_uninstall" );											
-add_theme_support( 'post-formats', array( 'aside', 'gallery','link','image','quote','status','video','audio','chat' ) );		
 add_shortcode("sawe", "SAWE_shortcode");																						
 add_action( "pre_get_posts", "SAWE_filter_home" );																				
 add_action("admin_menu", "simple_announcement_with_exclusion_add_options_page");												
