@@ -5,7 +5,7 @@
  * Author: Matthew Trevino
  * Author URI: http://papercaves.com
  * Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
- * Version: 4.4.4
+ * Version: 4.4.5
  * License: GPL2
  */
 
@@ -889,7 +889,7 @@ function SAWE_shortcode( $atts, $content = null ) {
 				echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
 			}
 			if ($simple_announcement_with_exclusion_default_6 === "excerpt") { the_excerpt(); 
-			} elseif ($simple_announcement_with_exclusion_default_6 === "content") { the_content();
+			} elseif ($simple_announcement_with_exclusion_default_6 === "content") { the_content("".$simple_announcement_with_exclusion_readmore."");
 			global $numpages;
 				if ( is_singular() && $numpages > 1 ) {
 					echo "<a class=\"continue\" href=\"",the_permalink(),"\">",$simple_announcement_with_exclusion_readmore,"</a>";
@@ -1000,11 +1000,13 @@ function SAWE_shortcode( $atts, $content = null ) {
 					}
 					// The shortcode loop
 					wp_reset_postdata();
+					global $more;
 					echo "<article";
 					if ($saweDIV != "") { echo " class=\"$saweDIV"; }
 					echo ">";						
 					while ($newShortcode->have_posts()) : $newShortcode->the_post();
 					global $post;
+					$more = 0;
 					echo "<section>";
 					if ($saweTHUMBS === "yes") { 
 						if ( has_post_thumbnail() ) { 
@@ -1016,7 +1018,7 @@ function SAWE_shortcode( $atts, $content = null ) {
 							echo "<a class=\"SAWE_shortcode_title\" href=\"",the_permalink(),"\">",the_title(),"</a>";
 					}
 					if ($saweSHOW === "excerpt") { the_excerpt(); 
-					} elseif ($saweSHOW === "content") { the_content(); 
+					} elseif ($saweSHOW === "content") {  the_content("".$simple_announcement_with_exclusion_readmore.""); 
 						global $numpages;
 						if ( is_singular() && $numpages > 1 ) {
 							echo "<a class=\"continue\" href=\"",the_permalink(),"\">",$simple_announcement_with_exclusion_readmore,"</a>";
