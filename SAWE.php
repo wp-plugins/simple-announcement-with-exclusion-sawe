@@ -4,8 +4,8 @@
  * Description: Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
  * Author: Matthew Trevino
  * Author URI: http://papercaves.com
- * Plugin URI: http://papercaves.com/wordpress-plugins/sawe/
- * Version: 4.4.5
+ * Plugin URI: http://papercaves.com/sawe/
+ * Version: 4.5
  * License: GPL2
  */
 
@@ -297,6 +297,24 @@ function print_simple_announcement_with_exclusion_form() {
 		}).trigger('change'); // Setup the initial states
 	});		
 	</script>
+	<div class=\"base\">
+	<div class=\"basesection\">
+	<div class=\"list\">";
+	$showmecats =  get_categories('taxonomy=category'); 
+		echo "<item><span class=\"listleft\">Category</span><span class=\"listright\">id</span></item><item><hr /></item>";
+	foreach ($showmecats as $catsshown) {
+		echo "<item><span class=\"listleft\">",$catsshown->cat_name,"</span><span class=\"listright\">",$catsshown->cat_ID,"</span></item>";
+	}		
+	echo "</div>
+	<div class=\"list\">";
+	$showmetags =  get_categories('taxonomy=post_tag'); 
+		echo "<item><span class=\"listleft\">Tag</span><span class=\"listright\">id</span></item><item><hr /></item>";
+	foreach ($showmetags as $tagsshown) {
+		echo "<item><span class=\"listleft\">",$tagsshown->cat_name,"</span><span class=\"listright\">",$tagsshown->cat_ID,"</span></item>";
+	}		
+	echo "</div>
+	</div>
+	<div class=\"basesection\">
 	<form method=\"post\" class=\"exclude\">
 	<header>Exclusion config</header>
 	<label for=\"simple_announcement_with_exclusion_1\">Type
@@ -322,13 +340,6 @@ function print_simple_announcement_with_exclusion_form() {
 	<label for=\"simple_announcement_with_exclusion_9_3\" class=\"bottom\">Search
 	<textarea name=\"simple_announcement_with_exclusion_9_3\">$simple_announcement_with_exclusion_9_3</textarea>
 	</label>
-	<div class=\"list\">";
-	$showmecats =  get_categories('taxonomy=category'); 
-		echo "<item><span class=\"listleft\">Category</span><span class=\"listright\">id</span></item><item><hr /></item>";
-	foreach ($showmecats as $catsshown) {
-		echo "<item><span class=\"listleft\">",$catsshown->cat_name,"</span><span class=\"listright\">",$catsshown->cat_ID,"</span></item>";
-	}		
-	echo "</div>
 	</div>
 	</div>
 	<div class=\"posttypeselection\">
@@ -345,13 +356,6 @@ function print_simple_announcement_with_exclusion_form() {
 	<label for=\"simple_announcement_with_exclusion_9_7\" class=\"bottom\">Search
 	<textarea name=\"simple_announcement_with_exclusion_9_7\">$simple_announcement_with_exclusion_9_7</textarea>
 	</label>
-	<div class=\"list\">";
-	$showmetags =  get_categories('taxonomy=post_tag'); 
-		echo "<item><span class=\"listleft\">Tag</span><span class=\"listright\">id</span></item><item><hr /></item>";
-	foreach ($showmetags as $tagsshown) {
-		echo "<item><span class=\"listleft\">",$tagsshown->cat_name,"</span><span class=\"listright\">",$tagsshown->cat_ID,"</span></item>";
-	}		
-	echo "</div>
 	</div>
 	</div>
 	<div class=\"posttypeselection\">
@@ -428,10 +432,11 @@ function print_simple_announcement_with_exclusion_form() {
 	</label>
 	</div>
 	</div>
+	<hr />
 	<label for=\"simple_announcement_with_exclusion_6\" class=\"divider\">CSS
 	<select name=\"simple_announcement_with_exclusion_6\">
-	<option value=\"yes\""; if ($simple_announcement_with_exclusion_6 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-	<option value=\"no\""; if ($simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">No</option>
+	<option value=\"yes\" "; if ($simple_announcement_with_exclusion_6 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+	<option value=\"no\" "; if ($simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">No</option>
 	</select>
 	</label>
 	<label for=\"simple_announcement_with_exclusion_scheme\">Colors
@@ -439,29 +444,172 @@ function print_simple_announcement_with_exclusion_form() {
 	<option value=\"tranquil\""; if ($simple_announcement_with_exclusion_scheme === "tranquil") { echo " selected=\"selected\""; } echo ">Tranquil</option>
 	</select>
 	</label>
-	<label for\"simple_announcement_with_exclusion_readmore\">Read more
+	<label for=\"simple_announcement_with_exclusion_readmore\">Read more
 	<input type=\"text\" name=\"simple_announcement_with_exclusion_readmore\" value=\"$simple_announcement_with_exclusion_readmore\" />
 	</label>
 	<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\" class=\"uninstall\">Uninstall
 	<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
-	<option value=\"yes\""; if ($simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-	<option value=\"no\""; if ($simple_announcement_with_exclusion_delete_on_deactivate === "no") { echo " selected=\"selected\""; } echo ">No</option>
+	<option value=\"yes\" "; if ($simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
+	<option value=\"no\" "; if ($simple_announcement_with_exclusion_delete_on_deactivate === "no") { echo " selected=\"selected\""; } echo ">No</option>
 	</select>
 	</label>
 	<label><input type=\"submit\" name=\"submit\" value=\"Save\" /></label>
-	</form>";
+	</form>
+	</div>
+	</div>";
 
 // Save states form
-	echo "<div class=\"SAWEleft\">
-	<form method=\"post\">
-	<header>Save states</header>
-	<label><select name=\"edit_this\" class=\"selectfull\">
-	<option value=\"\">Creating new</option><option value=\"\">-----</option><option value=\"\">Edit a save sate</option>";
+	echo "<div class=\"base\">
+	<div class=\"basesection\">
+	<header>Saved states</header>
+	";		 
 	global $wpdb;
 	$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 	$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
 	foreach ($SAWE_table_ad as $SAWE_table_admin) {
-		echo "<option value=\"$SAWE_table_admin->saweID\">Save state $SAWE_table_admin->saweID</option>";
+		$sawe_this_ID = $SAWE_table_admin->saweID;
+		$saweDIV = $SAWE_table_admin->saweDIV;
+		$saweTYPE = $SAWE_table_admin->saweTYPE;
+		$saweCAT = $SAWE_table_admin->saweCAT;
+		$saweTAG = $SAWE_table_admin->saweTAG;
+		$saweFORMAT = $SAWE_table_admin->saweFORMAT;
+		$saweAMOUNT = $SAWE_table_admin->saweAMOUNT;
+		$saweBY = $SAWE_table_admin->saweBY;
+		$saweORDER = $SAWE_table_admin->saweORDER;
+		$saweTHUMBS = $SAWE_table_admin->saweTHUMBS;
+		$saweTITLES = $SAWE_table_admin->saweTITLES;
+		$saweSHOW = $SAWE_table_admin->saweSHOW;
+		$sawePAGED = $SAWE_table_admin->sawePAGED;
+		$sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
+		$saweNEXT = $SAWE_table_admin->saweNEXT;
+		echo 
+		"<div class=\"item\">
+		 <header>[sawe config_id=\"",$SAWE_table_admin->saweID,"\"]</header>
+		Show $saweAMOUNT ";
+		if ($saweAMOUNT === '1') { 
+			echo "item"; 
+		} elseif ($saweAMOUNT >= '1') { 
+			echo "items"; 
+		} else {
+			echo "nothing";
+		}			
+		echo " (";
+		if ($saweTHUMBS === "yes") { echo "Thumbnails, "; }
+		elseif ($saweTHUMBS === "no") { echo "No thumbnails,  "; }
+		if ($saweTITLES === "yes") { echo "titles, "; }
+		elseif ($saweTITLES === "no") { echo "No titles, "; }
+		if ($saweSHOW === "excerpt") { echo "and post excerpt  "; }
+		elseif ($saweSHOW === "content") { echo "full post content"; }
+		elseif ($saweSHOW === "nothing") { echo "no post content"; }
+		echo ")";
+		if ($sawePAGED === "yes") { echo ", paged, "; }
+		elseif ($sawePAGED === "no") { echo ", non-paged, "; }
+		if ($saweORDER === "ASC") { echo "in ascending order"; }
+		elseif ($saweORDER === "DESC") { echo "in descending order"; }
+		if ($saweBY === "date") { echo " by date, "; }
+		elseif ($saweBY === "title") { echo " by title, "; }
+		elseif ($saweBY === "random") { echo " randomly, "; }
+
+		if ($saweDIV != "") { echo " in the div labeled $saweDIV (#SAWE_shortcode)"; }
+		elseif ($saweDIV === "") { echo " in the div labeled #SAWE_shortcode (no custom class)"; }
+		if ($saweNEXT != "" || $sawePREVIOUS != "") {
+			echo ", with navigation links marked as follows:  ";
+			if ($saweNEXT != "") { echo "Next $saweNEXT."; }
+			elseif ($saweNEXT === "") { echo "Next (has no custom title). "; }
+			if ($sawePREVIOUS !="") { echo "and Previous $sawePREVIOUS."; }
+			elseif ($sawePREVIOUS === "") { echo "and Previous (has no custom title)."; }
+		} else { 
+			echo "."; 
+		}
+		echo "<hr />";
+		if ( $saweCAT != "" || $saweTAG != "" ) {
+			echo "<p>Exclusion ID: <strong>" . $saweCAT . $saweTAG . "</strong></p>";
+		}
+		if(isset($_POST[$sawe_this_ID])){
+			echo "
+			<form method=\"post\" class=\"SAWE_item_form\">
+			<input type=\"submit\" name=\"yes_$sawe_this_ID\" value=\"[Are you sure?]\">
+			</form>";
+		}
+		if(!isset($_POST[$sawe_this_ID])){
+			echo "
+			<form method=\"post\" class=\"SAWE_item_form\">
+			<input type=\"submit\" name=\"$sawe_this_ID\" value=\"[Delete this save state?]\">
+			</form>
+			";
+		}
+		echo "</div>";
+		if(isset($_POST['yes_'.$sawe_this_ID])){
+			$sawe_current = plugin_basename(__FILE__);
+			$wpdb->query("DELETE FROM $SAWE_table_name WHERE saweID = '$sawe_this_ID'");
+			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
+		}		
+	}
+	echo "</div>	
+	<div class=\"basesection\">	
+	<header>Default Loop <strong>[sawe]</strong></header>
+	<form method=\"post\">
+	<label for=\"simple_announcement_with_exclusion_default_0\">Div
+	<input type=\"text\" name=\"simple_announcement_with_exclusion_default_0\" value=\"",$simple_announcement_with_exclusion_default_0,"\" />
+	</label>
+	<label for=\"simple_announcement_with_exclusion_default_1\">Amount
+	<input type=\"text\" name=\"simple_announcement_with_exclusion_default_1\" value=\"",$simple_announcement_with_exclusion_default_1,"\" />
+	</label>
+	<label for=\"simple_announcement_with_exclusion_default_2\">By
+	<select name=\"simple_announcement_with_exclusion_default_2\">
+	<option value=\"date\" ";if ($simple_announcement_with_exclusion_default_2 === "date") { echo "selected=\"selected\""; } echo ">Date</option>
+	<option value=\"title\" ";if ($simple_announcement_with_exclusion_default_2 === "title") { echo "selected=\"selected\""; } echo ">Title</option>
+	<option value=\"rand\" ";if ($simple_announcement_with_exclusion_default_2 === "rand") { echo "selected=\"selected\""; } echo ">Random</option>
+	</select>
+	</label>	
+	<label for=\"simple_announcement_with_exclusion_default_3\">Order
+	<select name=\"simple_announcement_with_exclusion_default_3\">
+	<option value=\"ASC\" ";if ($simple_announcement_with_exclusion_default_3 === "ASC") { echo "selected=\"selected\""; } echo ">Ascending</option>
+	<option value=\"DESC\" ";if ($simple_announcement_with_exclusion_default_3 === "DESC") { echo "selected=\"selected\""; } echo ">Descending</option>
+	</select>
+	</label>
+	<label for=\"simple_announcement_with_exclusion_default_4\">Thumbs
+	<select name=\"simple_announcement_with_exclusion_default_4\">
+	<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_4 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
+	<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_4 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+	</select>
+	</label>
+	<label for=\"simple_announcement_with_exclusion_default_5\">Titles
+	<select name=\"simple_announcement_with_exclusion_default_5\">
+	<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_5 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
+	<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_5 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+	</select>
+	</label>
+	<label for=\"simple_announcement_with_exclusion_default_6\">Show
+	<select name=\"simple_announcement_with_exclusion_default_6\">
+	<option value=\"nothing\" ";if ($simple_announcement_with_exclusion_default_6 === "nothing") { echo "selected=\"selected\""; } echo ">Nothing</option>
+	<option value=\"excerpt\" ";if ($simple_announcement_with_exclusion_default_6 === "excerpt") { echo "selected=\"selected\""; } echo ">Excerpt</option>
+	<option value=\"content\" ";if ($simple_announcement_with_exclusion_default_6 === "content") { echo "selected=\"selected\""; } echo ">Content</option>
+	</select>
+	</label>
+	<label for=\"simple_announcement_with_exclusion_default_7\">Paged
+	<select name=\"simple_announcement_with_exclusion_default_7\">
+	<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_7 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
+	<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_7 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+	</select>
+	</label>
+	<label for=\"simple_announcement_with_exclusion_default_8\">Previous
+	<input type=\"text\" name=\"simple_announcement_with_exclusion_default_8\" value=\"",$simple_announcement_with_exclusion_default_8,"\" />
+	</label>
+	<label for=\"simple_announcement_with_exclusion_default_9\">Next
+	<input type=\"text\" name=\"simple_announcement_with_exclusion_default_9\" value=\"",$simple_announcement_with_exclusion_default_9,"\" />
+	</label>				
+	<label><input type=\"submit\" name=\"defaultSave\" value=\"Save default\" /></label>
+	</form>
+	<form method=\"post\">
+	<header>Save states</header>
+	<label><select name=\"edit_this\" class=\"selectfull\">
+	<option value=\"\">Creating new</option>";
+	global $wpdb;
+	$SAWE_table_name = $wpdb->prefix . "SAWE_config";
+	$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
+	foreach ($SAWE_table_ad as $SAWE_table_admin) {
+		echo "<option value=\"$SAWE_table_admin->saweID\">Edit Save state $SAWE_table_admin->saweID</option>";
 	}		
 	echo "</select></label>
 	<label for=\"simple_announcement_with_exclusion_0_new\">Div
@@ -641,155 +789,12 @@ function print_simple_announcement_with_exclusion_form() {
 		saweID = $SAWE_editing_this
 		") ;
 	}
-	echo "</div>
-	<div class=\"SAWE\">
-	<div class=\"item default\">
-	<header>Default Loop <strong>[sawe]</strong></header>
-	<form method=\"post\">
-	<label for=\"simple_announcement_with_exclusion_default_0\">Div
-	<input type=\"text\" name=\"simple_announcement_with_exclusion_default_0\" value=\"",$simple_announcement_with_exclusion_default_0,"\" />
-	</label>
-	<label for=\"simple_announcement_with_exclusion_default_1\">Amount
-	<input type=\"text\" name=\"simple_announcement_with_exclusion_default_1\" value=\"",$simple_announcement_with_exclusion_default_1,"\" />
-	</label>
-	<label for=\"simple_announcement_with_exclusion_default_2\">By
-	<select name=\"simple_announcement_with_exclusion_default_2\">
-	<option value=\"date\"";if ($simple_announcement_with_exclusion_default_2 === "date") { echo "selected=\"selected\""; } echo ">Date</option>
-	<option value=\"title\"";if ($simple_announcement_with_exclusion_default_2 === "title") { echo "selected=\"selected\""; } echo ">Title</option>
-	<option value=\"rand\"";if ($simple_announcement_with_exclusion_default_2 === "rand") { echo "selected=\"selected\""; } echo ">Random</option>
-	</select>
-	</label>	
-	<label for=\"simple_announcement_with_exclusion_default_3\">Order
-	<select name=\"simple_announcement_with_exclusion_default_3\">
-	<option value=\"ASC\"";if ($simple_announcement_with_exclusion_default_3 === "ASC") { echo "selected=\"selected\""; } echo ">Ascending</option>
-	<option value=\"DESC\"";if ($simple_announcement_with_exclusion_default_3 === "DESC") { echo "selected=\"selected\""; } echo ">Descending</option>
-	</select>
-	</label>
-	<label for=\"simple_announcement_with_exclusion_default_4\">Thumbs
-	<select name=\"simple_announcement_with_exclusion_default_4\">
-	<option value=\"yes\"";if ($simple_announcement_with_exclusion_default_4 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
-	<option value=\"no\"";if ($simple_announcement_with_exclusion_default_4 === "no") { echo "selected=\"selected\""; } echo ">No</option>
-	</select>
-	</label>
-	<label for=\"simple_announcement_with_exclusion_default_5\">Titles
-	<select name=\"simple_announcement_with_exclusion_default_5\">
-	<option value=\"yes\"";if ($simple_announcement_with_exclusion_default_5 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
-	<option value=\"no\"";if ($simple_announcement_with_exclusion_default_5 === "no") { echo "selected=\"selected\""; } echo ">No</option>
-	</select>
-	</label>
-	<label for=\"simple_announcement_with_exclusion_default_6\">Show
-	<select name=\"simple_announcement_with_exclusion_default_6\">
-	<option value=\"nothing\"";if ($simple_announcement_with_exclusion_default_6 === "nothing") { echo "selected=\"selected\""; } echo ">Nothing</option>
-	<option value=\"excerpt\"";if ($simple_announcement_with_exclusion_default_6 === "excerpt") { echo "selected=\"selected\""; } echo ">Excerpt</option>
-	<option value=\"content\"";if ($simple_announcement_with_exclusion_default_6 === "content") { echo "selected=\"selected\""; } echo ">Content</option>
-	</select>
-	</label>
-	<label for=\"simple_announcement_with_exclusion_default_7\">Paged
-	<select name=\"simple_announcement_with_exclusion_default_7\">
-	<option value=\"yes\"";if ($simple_announcement_with_exclusion_default_7 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
-	<option value=\"no\"";if ($simple_announcement_with_exclusion_default_7 === "no") { echo "selected=\"selected\""; } echo ">No</option>
-	</select>
-	</label>
-	<label for=\"simple_announcement_with_exclusion_default_8\">Previous
-	<input type=\"text\" name=\"simple_announcement_with_exclusion_default_8\" value=\"",$simple_announcement_with_exclusion_default_8,"\" />
-	</label>
-	<label for=\"simple_announcement_with_exclusion_default_9\">Next
-	<input type=\"text\" name=\"simple_announcement_with_exclusion_default_9\" value=\"",$simple_announcement_with_exclusion_default_9,"\" />
-	</label>				
-	<label><input type=\"submit\" name=\"defaultSave\" value=\"Save default\" /></label>
-	</form>
-	</div>
-	<div class=\"item\">
-	<header>Saved states</header>
-	";		 
-	global $wpdb;
-	$SAWE_table_name = $wpdb->prefix . "SAWE_config";
-	$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
-	foreach ($SAWE_table_ad as $SAWE_table_admin) {
-		$sawe_this_ID = $SAWE_table_admin->saweID;
-		$saweDIV = $SAWE_table_admin->saweDIV;
-		$saweTYPE = $SAWE_table_admin->saweTYPE;
-		$saweCAT = $SAWE_table_admin->saweCAT;
-		$saweTAG = $SAWE_table_admin->saweTAG;
-		$saweFORMAT = $SAWE_table_admin->saweFORMAT;
-		$saweAMOUNT = $SAWE_table_admin->saweAMOUNT;
-		$saweBY = $SAWE_table_admin->saweBY;
-		$saweORDER = $SAWE_table_admin->saweORDER;
-		$saweTHUMBS = $SAWE_table_admin->saweTHUMBS;
-		$saweTITLES = $SAWE_table_admin->saweTITLES;
-		$saweSHOW = $SAWE_table_admin->saweSHOW;
-		$sawePAGED = $SAWE_table_admin->sawePAGED;
-		$sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
-		$saweNEXT = $SAWE_table_admin->saweNEXT;
-		echo 
-		"<div class=\"item\">
-		 <header>[sawe config_id=\"",$SAWE_table_admin->saweID,"\"]</header>
-		Show $saweAMOUNT ";
-		if ($saweAMOUNT === '1') { 
-			echo "item"; 
-		} elseif ($saweAMOUNT >= '1') { 
-			echo "items"; 
-		} else {
-			echo "nothing";
-		}			
-		echo " (";
-		if ($saweTHUMBS === "yes") { echo "Thumbnails, "; }
-		elseif ($saweTHUMBS === "no") { echo "No thumbnails,  "; }
-		if ($saweTITLES === "yes") { echo "titles, "; }
-		elseif ($saweTITLES === "no") { echo "No titles, "; }
-		if ($saweSHOW === "excerpt") { echo "and post excerpt  "; }
-		elseif ($saweSHOW === "content") { echo "full post content"; }
-		elseif ($saweSHOW === "nothing") { echo "no post content"; }
-		echo ")";
-		if ($sawePAGED === "yes") { echo ", paged, "; }
-		elseif ($sawePAGED === "no") { echo ", non-paged, "; }
-		if ($saweORDER === "ASC") { echo "in ascending order"; }
-		elseif ($saweORDER === "DESC") { echo "in descending order"; }
-		if ($saweBY === "date") { echo " by date, "; }
-		elseif ($saweBY === "title") { echo " by title, "; }
-		elseif ($saweBY === "random") { echo " randomly, "; }
-
-		if ($saweDIV != "") { echo " in the div labeled $saweDIV (#SAWE_shortcode)"; }
-		elseif ($saweDIV === "") { echo " in the div labeled #SAWE_shortcode (no custom class)"; }
-		if ($saweNEXT != "" || $sawePREVIOUS != "") {
-			echo ", with navigation links marked as follows:  ";
-			if ($saweNEXT != "") { echo "Next $saweNEXT."; }
-			elseif ($saweNEXT === "") { echo "Next (has no custom title). "; }
-			if ($sawePREVIOUS !="") { echo "and Previous $sawePREVIOUS."; }
-			elseif ($sawePREVIOUS === "") { echo "and Previous (has no custom title)."; }
-		} else { 
-			echo "."; 
-		}
-		echo "<hr />";
-		if ( $saweCAT != "" || $saweTAG != "" ) {
-			echo "<p>Exclusion ID: <strong>" . $saweCAT . $saweTAG . "</strong></p>";
-		}
-		if(isset($_POST[$sawe_this_ID])){
-			echo "
-			<form method=\"post\" class=\"SAWE_item_form\">
-			<input type=\"submit\" name=\"yes_$sawe_this_ID\" value=\"[Are you sure?]\">
-			</form>";
-		}
-		if(!isset($_POST[$sawe_this_ID])){
-			echo "
-			<form method=\"post\" class=\"SAWE_item_form\">
-			<input type=\"submit\" name=\"$sawe_this_ID\" value=\"[Delete this save state?]\">
-			</form>
-			";
-		}
-		echo "</div>";
-		if(isset($_POST['yes_'.$sawe_this_ID])){
-			$sawe_current = plugin_basename(__FILE__);
-			$wpdb->query("DELETE FROM $SAWE_table_name WHERE saweID = '$sawe_this_ID'");
-			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
-		}		
-	}
-	echo "</div></div>";
+	echo "</div>";
 }
 
 // Output content onto settings page.
 function simple_announcement_with_exclusions_page_content() { 
-	echo "<div class=\"papercaves_plugin_container\"><h2>Simple Announcement With Exclusion</h2><p>Created by Matt @ <a href=\"http://papercaves.com/\">Paper Caves</a> &mdash; <a href=\"http://papercaves.com/wordpress-plugins/sawe/\">Documentation</a><br />
+	echo "<div class=\"papercaves_plugin_container\"><h2>Simple Announcement With Exclusion</h2><p>Created by Matt @ <a href=\"http://papercaves.com/\">Paper Caves</a> &mdash; <a href=\"http://papercaves.com/sawe/\">Documentation</a><br />
 	<strong><em>Don't forget to <a href=\"http://wordpress.org/support/view/plugin-reviews/simple-announcement-with-exclusion-sawe\">rate and review</a> this plugin if you found it helpful!</em></strong></p>";
 	if(isset($_POST["submit"])){
 		if ($_REQUEST["submit"]) { 
@@ -858,6 +863,7 @@ function SAWE_shortcode( $atts, $content = null ) {
 				$defaultPage = '';
 			}
 			wp_reset_postdata();
+			global $more;
 			$defaultQuery = new WP_Query( array(
 			'paged' => $defaultPage,
 			'posts_per_page' => $simple_announcement_with_exclusion_default_1,
@@ -878,6 +884,7 @@ function SAWE_shortcode( $atts, $content = null ) {
 			echo ">";
 			while ($defaultQuery->have_posts()) : $defaultQuery->the_post();
 			global $post;
+			$more = 0;		
 			echo "<section><div>";
 			if ($simple_announcement_with_exclusion_default_4 === "yes") { 
 				if ( has_post_thumbnail() ) { 
