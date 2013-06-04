@@ -5,7 +5,7 @@
 	 * Author: Matthew Trevino
 	 * Author URI: http://papercaves.com
 	 * Plugin URI: http://papercaves.com/sawe/
-	 * Version: 4.6
+	 * Version: 5.0
 	 * License: GPL2
 	 */
  

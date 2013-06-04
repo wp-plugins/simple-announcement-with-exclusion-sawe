@@ -3,7 +3,7 @@ Contributors: Matthew Trevino
 Tags: category, hide, mini loop, shortcode, aside, categories, exclude, hidden, the_loop, get_posts, page, post, sidebar, tag, post-format
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.6
+Stable tag: 5.0
 
 Specify multiple categories, tags, or post formats to show separately, or hide from certain loops.
 
@@ -22,12 +22,10 @@ tags, and post-formats just as easily as you can set up the save states themselv
 4. You'll find settings for the plugin under Settings->SAWE.
 
 
-== Screenshots ==
-
-1. Settings page
-
-
 == Changelog ==
+= 5.0 =
+* UI is now more user friendly, and each setting will display to you in a sentence as to what you are setting.  Scripts removed from admin page, CSS used in place.
+
 = 4.6 = 
 * Core code changes/updates, most notably separation of internal code (for easier future updates).
 

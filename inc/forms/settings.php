@@ -1,5 +1,31 @@
 <?php 
 	function print_simple_announcement_with_exclusion_form() {
+		echo "<div class=\"exclusions\">
+		<input type=\"radio\" id=\"instance1\" name=\"selectFromThis\" class=\"instanceTrigger1\"><label for=\"instance1\">Exclusion rules</label>
+		<input type=\"radio\" id=\"instance2\" name=\"selectFromThis\" class=\"instanceTrigger2\"><label for=\"instance2\">Saved loops</label>
+		<input type=\"radio\" id=\"instance3\" name=\"selectFromThis\" class=\"instanceTrigger3\"><label for=\"instance3\">Default loop</label>
+		<input type=\"radio\" id=\"instance4\" name=\"selectFromThis\" class=\"instanceTrigger4\"><label for=\"instance4\">New/Edit loops</label>
+		<hr />
+		
+		<div class=\"list\"><div>";
+		$showmecats =  get_categories('taxonomy=category'); 
+			echo "<item>Category ids</item>";
+		foreach ($showmecats as $catsshown) {
+			echo "<item><span class=\"listleft\">",$catsshown->cat_name,"</span><span class=\"listright\">",$catsshown->cat_ID,"</span></item>";
+		}		
+			echo "</div><div>";
+		$showmetags =  get_categories('taxonomy=post_tag'); 
+			echo "<item>Tag ids</item>";
+		foreach ($showmetags as $tagsshown) {
+			echo "<item><span class=\"listleft\">",$tagsshown->cat_name,"</span><span class=\"listright\">",$tagsshown->cat_ID,"</span></item>";
+		}		
+		echo "</div></div>
+		
+		<hr />
+		
+		
+		";
+		
 		$simple_announcement_with_exclusion_default_0 = get_option("simple_announcement_with_exclusion_default_0");
 		$simple_announcement_with_exclusion_default_1 = get_option("simple_announcement_with_exclusion_default_1");
 		$simple_announcement_with_exclusion_default_2 = get_option("simple_announcement_with_exclusion_default_2");
@@ -28,90 +54,63 @@
 		$simple_announcement_with_exclusion_readmore = get_option("simple_announcement_with_exclusion_readmore");
 		$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");	
 		echo "
-		<script type=\"text/javascript\">
-		jQuery(document).ready(function () {
-			jQuery('#chooseposttype').bind('change', function () {
-				var elements = jQuery('div.posttypeselection').children().hide(); // hide all the elements
-				var value = jQuery(this).val();
-				if (value.length) { // if somethings' selected
-					elements.filter('.' + value).show(); // show the ones we want
-				}
-			}).trigger('change'); // Setup the initial states
-		jQuery('#chooseposttype_new').bind('change', function () {
-				var elements = jQuery('div.posttypeselection_new').children().hide(); // hide all the elements
-				var value = jQuery(this).val();
-				if (value.length) { // if somethings' selected
-					elements.filter('.' + value).show(); // show the ones we want
-				}
-			}).trigger('change'); // Setup the initial states
-		});		
-		</script>
-		<div class=\"base\">
-		<div class=\"basesection\">
-		<div class=\"list\">";
-		$showmecats =  get_categories('taxonomy=category'); 
-			echo "<item><span class=\"listleft\">Category</span><span class=\"listright\">id</span></item><item><hr /></item>";
-		foreach ($showmecats as $catsshown) {
-			echo "<item><span class=\"listleft\">",$catsshown->cat_name,"</span><span class=\"listright\">",$catsshown->cat_ID,"</span></item>";
-		}		
-		echo "</div>
-		<div class=\"list\">";
-		$showmetags =  get_categories('taxonomy=post_tag'); 
-			echo "<item><span class=\"listleft\">Tag</span><span class=\"listright\">id</span></item><item><hr /></item>";
-		foreach ($showmetags as $tagsshown) {
-			echo "<item><span class=\"listleft\">",$tagsshown->cat_name,"</span><span class=\"listright\">",$tagsshown->cat_ID,"</span></item>";
-		}		
-		echo "</div>
-		</div>
-		<div class=\"basesection\">
+		<div class=\"instance1\">
 		<form method=\"post\" class=\"exclude\">
-		<header>Exclusion config</header>
-		<label for=\"simple_announcement_with_exclusion_1\">Type
-		<select name=\"simple_announcement_with_exclusion_1\" id=\"chooseposttype\">
-		<option value=\"cat\">Category</option>
-		<option value=\"tag\">Tag</option>
-		<option value=\"post-format\">Post format</option>
+		
+		<div class=\"posttypeselection\">		
+		I 
+		<select name=\"simple_announcement_with_exclusion_6\">
+		<option value=\"yes\" "; if ($simple_announcement_with_exclusion_6 === "yes") { echo " selected=\"selected\""; } echo ">do</option>
+		<option value=\"no\" "; if ($simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">do not</option>
 		</select>
-		</label>
-		<label class=\"divider\"><u>Exclude from these loops</u>:<br /><small>You may put the same id/post format in all boxes to exclude them 
-		from the designated areas.</small></label>
+		want to include the default CSS for this plugin on all pages, 
+		and use the 
+		<select name=\"simple_announcement_with_exclusion_scheme\">
+		<option value=\"tranquil\""; if ($simple_announcement_with_exclusion_scheme === "tranquil") { echo " selected=\"selected\""; } echo ">Tranquil</option>
+		</select>
+		color scheme.  
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_readmore\" value=\"$simple_announcement_with_exclusion_readmore\" />
+		will be my \"Read more\" link text (when using excerpts). 
+		</div>
+		
 		<div class=\"posttypeselection\">
-		<div class=\"cat\">
-		<label for=\"simple_announcement_with_exclusion_9_12\">Feed
-		<textarea name=\"simple_announcement_with_exclusion_9_12\">$simple_announcement_with_exclusion_9_12</textarea>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_9\">Home
-		<textarea name=\"simple_announcement_with_exclusion_9\">$simple_announcement_with_exclusion_9</textarea>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_9_2\">Tag
-		<textarea name=\"simple_announcement_with_exclusion_9_2\">$simple_announcement_with_exclusion_9_2</textarea>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_9_3\" class=\"bottom\">Search
-		<textarea name=\"simple_announcement_with_exclusion_9_3\">$simple_announcement_with_exclusion_9_3</textarea>
-		</label>
+		I 
+		<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
+		<option value=\"yes\" "; if ($simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">do</option>
+		<option value=\"no\" "; if ($simple_announcement_with_exclusion_delete_on_deactivate === "no") { echo " selected=\"selected\""; } echo ">do not</option>
+		</select>
+		want to delete all options and databases associated with this plugin when I deactivate it in the admin menu.
 		</div>
+		
+		
+		<div class=\"posttypeselection\">		
+		I want to hide the following 
+		<input type=\"radio\" id=\"instance5\" name=\"selectFromThisToo\" class=\"instanceTrigger5\"><label class=\"inline\" for=\"instance5\">categories</label>
+		<input type=\"radio\" id=\"instance6\" name=\"selectFromThisToo\" class=\"instanceTrigger6\"><label class=\"inline\" for=\"instance6\">tags</label>
+		<input type=\"radio\" id=\"instance7\" name=\"selectFromThisToo\" class=\"instanceTrigger7\"><label class=\"inline\" for=\"instance7\">post-formats</label>:
+		<div class=\"categoriesSelect\">
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_12\" value=\"$simple_announcement_with_exclusion_9_12\">
+		from the <em>feed</em>, 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_9\" value=\"$simple_announcement_with_exclusion_9\">
+		from the <em>front page</em>, 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_2\" value=\"$simple_announcement_with_exclusion_9_2\">
+		from tag <em>archives</em>, 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_3\" value=\"$simple_announcement_with_exclusion_9_3\">
+		and from <em>search results</em>.
 		</div>
-		<div class=\"posttypeselection\">
-		<div class=\"tag\">
-		<label for=\"simple_announcement_with_exclusion_9_13\">Feed
-		<textarea name=\"simple_announcement_with_exclusion_9_13\">$simple_announcement_with_exclusion_9_13</textarea>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_9_4\">Home
-		<textarea name=\"simple_announcement_with_exclusion_9_4\">$simple_announcement_with_exclusion_9_4</textarea>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_9_5\">Category
-		<textarea name=\"simple_announcement_with_exclusion_9_5\">$simple_announcement_with_exclusion_9_5</textarea>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_9_7\" class=\"bottom\">Search
-		<textarea name=\"simple_announcement_with_exclusion_9_7\">$simple_announcement_with_exclusion_9_7</textarea>
-		</label>
+		<div class=\"tagsSelect\">
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_13\" value=\"$simple_announcement_with_exclusion_9_13\">
+		from the <em>feed</em>, 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_4\" value=\"$simple_announcement_with_exclusion_9_4\">
+		from the <em>front page</em>, 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_5\" value=\"$simple_announcement_with_exclusion_9_5\">
+		from <em>category archives</em>, 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_7\" value=\"$simple_announcement_with_exclusion_9_7\">
+		and from <em>search results</em>.
 		</div>
-		</div>
-		<div class=\"posttypeselection\">
-		<div class=\"post-format\">
-		<label for=\"simple_announcement_with_exclusion_9_14\">Feed
+		<div class=\"formatsSelect\">
 		<select name=\"simple_announcement_with_exclusion_9_14\">
-		<option value=\"\"></option>
+		<option value=\"\">none</option>
 		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
 		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
 		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
@@ -122,10 +121,9 @@
 		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
 		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
 		</select>
-		</label>		
-		<label for=\"simple_announcement_with_exclusion_9_8\" class=\"post-format\">Home
+		from the <em>feed</em>, 
 		<select name=\"simple_announcement_with_exclusion_9_8\">
-		<option value=\"\"></option>
+		<option value=\"\">none</option>
 		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
 		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
 		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
@@ -136,10 +134,9 @@
 		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
 		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_9_9\" class=\"post-format\">Category
+		from the <em>front page</em>, 
 		<select name=\"simple_announcement_with_exclusion_9_9\">
-		<option value=\"\"></option>
+		<option value=\"\">none</option>
 		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
 		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
 		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
@@ -150,10 +147,9 @@
 		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
 		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
 		</select>
-		</label>		
-		<label for=\"simple_announcement_with_exclusion_9_10\" class=\"post-format\">Tag
+		from <em>category archives</em>, 
 		<select name=\"simple_announcement_with_exclusion_9_10\">
-		<option value=\"\"></option>
+		<option value=\"\">none</option>
 		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
 		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
 		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
@@ -164,10 +160,9 @@
 		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
 		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_9_11\" class=\"post-format\">Search
+		from <em>tag archives</em>, 
 		<select name=\"simple_announcement_with_exclusion_9_11\">
-		<option value=\"\"></option>
+		<option value=\"\">none</option>
 		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
 		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
 		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
@@ -178,40 +173,17 @@
 		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
 		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
 		</select>
-		</label>
+		and from <em>search results</em>.
+		</div>		
 		</div>
-		</div>
-		<hr />
-		<label for=\"simple_announcement_with_exclusion_6\" class=\"divider\">CSS
-		<select name=\"simple_announcement_with_exclusion_6\">
-		<option value=\"yes\" "; if ($simple_announcement_with_exclusion_6 === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-		<option value=\"no\" "; if ($simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">No</option>
-		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_scheme\">Colors
-		<select name=\"simple_announcement_with_exclusion_scheme\">
-		<option value=\"tranquil\""; if ($simple_announcement_with_exclusion_scheme === "tranquil") { echo " selected=\"selected\""; } echo ">Tranquil</option>
-		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_readmore\">Read more
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_readmore\" value=\"$simple_announcement_with_exclusion_readmore\" />
-		</label>
-		<label for=\"simple_announcement_with_exclusion_delete_on_deactivate\" class=\"uninstall\">Uninstall
-		<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
-		<option value=\"yes\" "; if ($simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">Yes</option>
-		<option value=\"no\" "; if ($simple_announcement_with_exclusion_delete_on_deactivate === "no") { echo " selected=\"selected\""; } echo ">No</option>
-		</select>
-		</label>
-		<label><input type=\"submit\" name=\"submit\" value=\"Save\" /></label>
+		<input type=\"submit\" name=\"submit\" value=\"Save these settings for me\" />
 		</form>
 		</div>
-		</div>";
+		";
 
 	// Save states form
-		echo "<div class=\"base\">
-		<div class=\"basesection\">
-		<header>Saved states</header>
-		";		 
+		echo "
+			<div class=\"instance2\">";
 		global $wpdb;
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 		$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
@@ -232,9 +204,10 @@
 			$sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
 			$saweNEXT = $SAWE_table_admin->saweNEXT;
 			echo 
-			"<div class=\"item\">
-			 <header>[sawe config_id=\"",$SAWE_table_admin->saweID,"\"]</header>
-			Show $saweAMOUNT ";
+			"
+			<div class=\"posttypeselection\">
+			 [sawe config_id=\"",$SAWE_table_admin->saweID,"\"] will 
+			show $saweAMOUNT ";
 			if ($saweAMOUNT === '1') { 
 				echo "item"; 
 			} elseif ($saweAMOUNT >= '1') { 
@@ -268,11 +241,12 @@
 				if ($sawePREVIOUS !="") { echo "and Previous $sawePREVIOUS."; }
 				elseif ($sawePREVIOUS === "") { echo "and Previous (has no custom title)."; }
 			} else { 
-				echo "."; 
+				echo " from "; 
 			}
-			echo "<hr />";
 			if ( $saweCAT != "" || $saweTAG != "" ) {
-				echo "<p>Exclusion ID: <strong>" . $saweCAT . $saweTAG . "</strong></p>";
+				echo "category (or tag) id(s) <strong>" . $saweCAT . $saweTAG . "</strong>";
+			} else {
+				echo "post format $saweFORMAT";
 			}
 			if(isset($_POST[$sawe_this_ID])){
 				echo "
@@ -291,95 +265,84 @@
 			if(isset($_POST['yes_'.$sawe_this_ID])){
 				$sawe_current = plugin_basename(__FILE__);
 				$wpdb->query("DELETE FROM $SAWE_table_name WHERE saweID = '$sawe_this_ID'");
-				echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
 			}		
 		}
-		echo "</div>	
-		<div class=\"basesection\">	
-		<header>Default Loop <strong>[sawe]</strong></header>
+		echo "</div>
+		<div class=\"instance3\">
+		<div class=\"posttypeselection\">
 		<form method=\"post\">
-		<label for=\"simple_announcement_with_exclusion_default_0\">Div
+		For the default loop (displayed with [sawe]), 
+		the class should be 
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_0\" value=\"",$simple_announcement_with_exclusion_default_0,"\" />
-		</label>
-		<label for=\"simple_announcement_with_exclusion_default_1\">Amount
+		.  It should show 
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_1\" value=\"",$simple_announcement_with_exclusion_default_1,"\" />
-		</label>
-		<label for=\"simple_announcement_with_exclusion_default_2\">By
+		 posts, ordered by 
 		<select name=\"simple_announcement_with_exclusion_default_2\">
 		<option value=\"date\" ";if ($simple_announcement_with_exclusion_default_2 === "date") { echo "selected=\"selected\""; } echo ">Date</option>
 		<option value=\"title\" ";if ($simple_announcement_with_exclusion_default_2 === "title") { echo "selected=\"selected\""; } echo ">Title</option>
 		<option value=\"rand\" ";if ($simple_announcement_with_exclusion_default_2 === "rand") { echo "selected=\"selected\""; } echo ">Random</option>
 		</select>
-		</label>	
-		<label for=\"simple_announcement_with_exclusion_default_3\">Order
+		 in 
 		<select name=\"simple_announcement_with_exclusion_default_3\">
 		<option value=\"ASC\" ";if ($simple_announcement_with_exclusion_default_3 === "ASC") { echo "selected=\"selected\""; } echo ">Ascending</option>
 		<option value=\"DESC\" ";if ($simple_announcement_with_exclusion_default_3 === "DESC") { echo "selected=\"selected\""; } echo ">Descending</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_default_4\">Thumbs
+		 order.  I 
 		<select name=\"simple_announcement_with_exclusion_default_4\">
-		<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_4 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
-		<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_4 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+		<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_4 === "yes") { echo "selected=\"selected\""; } echo ">do</option>
+		<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_4 === "no") { echo "selected=\"selected\""; } echo ">do not</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_default_5\">Titles
+		want post thumbnails shown.  The post title 
 		<select name=\"simple_announcement_with_exclusion_default_5\">
-		<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_5 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
-		<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_5 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+		<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_5 === "yes") { echo "selected=\"selected\""; } echo ">should</option>
+		<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_5 === "no") { echo "selected=\"selected\""; } echo ">should not</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_default_6\">Show
+		be displayed, and 
 		<select name=\"simple_announcement_with_exclusion_default_6\">
-		<option value=\"nothing\" ";if ($simple_announcement_with_exclusion_default_6 === "nothing") { echo "selected=\"selected\""; } echo ">Nothing</option>
-		<option value=\"excerpt\" ";if ($simple_announcement_with_exclusion_default_6 === "excerpt") { echo "selected=\"selected\""; } echo ">Excerpt</option>
-		<option value=\"content\" ";if ($simple_announcement_with_exclusion_default_6 === "content") { echo "selected=\"selected\""; } echo ">Content</option>
+		<option value=\"nothing\" ";if ($simple_announcement_with_exclusion_default_6 === "nothing") { echo "selected=\"selected\""; } echo ">nothing from</option>
+		<option value=\"excerpt\" ";if ($simple_announcement_with_exclusion_default_6 === "excerpt") { echo "selected=\"selected\""; } echo ">the excerpt of</option>
+		<option value=\"content\" ";if ($simple_announcement_with_exclusion_default_6 === "content") { echo "selected=\"selected\""; } echo ">the content of</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_default_7\">Paged
+		the post should be seen.  
+		I 
 		<select name=\"simple_announcement_with_exclusion_default_7\">
-		<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_7 === "yes") { echo "selected=\"selected\""; } echo ">Yes</option>
-		<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_7 === "no") { echo "selected=\"selected\""; } echo ">No</option>
+		<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_7 === "yes") { echo "selected=\"selected\""; } echo ">would</option>
+		<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_7 === "no") { echo "selected=\"selected\""; } echo ">would not</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_default_8\">Previous
+		like it to be paged, and the previous and next links (if it <strong>is</strong> paged) should read 
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_8\" value=\"",$simple_announcement_with_exclusion_default_8,"\" />
-		</label>
-		<label for=\"simple_announcement_with_exclusion_default_9\">Next
+		 and 
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_9\" value=\"",$simple_announcement_with_exclusion_default_9,"\" />
-		</label>				
-		<label><input type=\"submit\" name=\"defaultSave\" value=\"Save default\" /></label>
+		(respectively).
+		<input type=\"submit\" name=\"defaultSave\" value=\"I would like to save these defaults.\" />
 		</form>
+		</div></div>
+		<div class=\"instance4\">
+		<div class=\"posttypeselection\">
 		<form method=\"post\">
-		<header>Save states</header>
-		<label><select name=\"edit_this\" class=\"selectfull\">
-		<option value=\"\">Creating new</option>";
+		I would like to <select name=\"edit_this\" class=\"selectfull\">
+		<option value=\"\">create a new</option>";
 		global $wpdb;
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 		$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
 		foreach ($SAWE_table_ad as $SAWE_table_admin) {
-			echo "<option value=\"$SAWE_table_admin->saweID\">Edit Save state $SAWE_table_admin->saweID</option>";
+			echo "<option value=\"$SAWE_table_admin->saweID\">edit id $SAWE_table_admin->saweID</option>";
 		}		
-		echo "</select></label>
-		<label for=\"simple_announcement_with_exclusion_0_new\">Div
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_0_new\" />
-		</label>
-		<label for=\"simple_announcement_with_exclusion_1_new\">Type
-		<select name=\"simple_announcement_with_exclusion_1_new\" id=\"chooseposttype_new\">
-		<option value=\"cat\">Category</option>
-		<option value=\"tag\">Tag</option>
-		<option value=\"post-format\">Post format</option>
-		</select>
-		</label>
-		<div class=\"posttypeselection_new\">
-		<label for=\"simple_announcement_with_exclusion_1_1_new\" class=\"cat\">
-		<center><small><em>Category ids like: 1,2,3...</em></small></center>
-		<textarea name=\"simple_announcement_with_exclusion_1_1_new\"></textarea>
-		</label>
-		</div>
-		<div class=\"posttypeselection_new\">
-		<label for=\"simple_announcement_with_exclusion_1_2_new\" class=\"tag\">
-		<select name=\"simple_announcement_with_exclusion_1_2_new\">
+		echo "</select> loop with the following: 
+		the div class should be 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_0_new\" />.  
+		It will show  
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_2_new\" /> posts from the 		
+		
+		
+		<input id=\"selectiona\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"cat\"><label class=\"inline\" for=\"selectiona\">categories</label>
+		<input id=\"selectionb\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"tag\"><label class=\"inline\" for=\"selectionb\">tags</label>
+		<input id=\"selectionc\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"post-format\"><label class=\"inline\" for=\"selectionc\">post format</label>
+		
+		
+		
+		<input type=\"text\" id=\"selection1\" name=\"simple_announcement_with_exclusion_1_1_new\">
+		<select  id=\"selection2\"name=\"simple_announcement_with_exclusion_1_2_new\">
 		<option value=\"\"></option>";
 		$sawe_tags =  get_categories('taxonomy=post_tag'); 
 		foreach ($sawe_tags as $sawe_tag) {
@@ -387,11 +350,7 @@
 		}
 		echo "
 		</select>
-		</label>
-		</div>
-		<div class=\"posttypeselection_new\">
-		<label for=\"simple_announcement_with_exclusion_1_3_new\" class=\"post-format\">
-		<select name=\"simple_announcement_with_exclusion_1_3_new\">
+		<select  id=\"selection3\" name=\"simple_announcement_with_exclusion_1_3_new\">
 		<option value=\"\"></option>
 		<option value=\"post-format-aside\">Aside</option>
 		<option value=\"post-format-gallery\">Gallery</option>
@@ -402,65 +361,56 @@
 		<option value=\"post-format-video\">Video</option>
 		<option value=\"post-format-audio\">Audio</option>
 		<option value=\"post-format-chat\">Chat</option>
-		</select>
-		</label>
-		</div>
-		<label for=\"simple_announcement_with_exclusion_2_new\">Amount
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_2_new\" />
-		</label>
-		<label for=\"simple_announcement_with_exclusion_3_new\">By
+		</select>, 
+		ordered by 
 		<select name=\"simple_announcement_with_exclusion_3_new\">
 		<option value=\"date\">Date</option>
 		<option value=\"title\">Title</option>
 		<option value=\"rand\">Random</option>
 		</select>
-		</label>	
-		<label for=\"simple_announcement_with_exclusion_3_2_new\">Order
+		in 
 		<select name=\"simple_announcement_with_exclusion_3_2_new\">
 		<option value=\"ASC\">Ascending</option>
 		<option value=\"DESC\">Descending</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_4_new\">Thumbs
+        order.  I 
 		<select name=\"simple_announcement_with_exclusion_4_new\">
-		<option value=\"yes\">Yes</option>
-		<option value=\"no\">No</option>
+		<option value=\"yes\">do</option>
+		<option value=\"no\">do not</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_4_2_new\">Titles
+		want to show post thumbnails.  
+		Titles 
 		<select name=\"simple_announcement_with_exclusion_4_2_new\">
-		<option value=\"yes\">Yes</option>
-		<option value=\"no\">No</option>
+		<option value=\"yes\">should</option>
+		<option value=\"no\">should not</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_4_3_new\">Show
+		shown, 
+		and I would like to show 
 		<select name=\"simple_announcement_with_exclusion_4_3_new\">
-		<option value=\"nothing\">Nothing</option>
-		<option value=\"excerpt\">Excerpt</option>
-		<option value=\"content\">Content</option>
+		<option value=\"nothing\">nothing</option>
+		<option value=\"excerpt\">the excerpt</option>
+		<option value=\"content\">the content</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_7_new\">Paged
+		from the post.  
+		This loop 
 		<select name=\"simple_announcement_with_exclusion_7_new\">
-		<option value=\"yes\">Yes</option>
-		<option value=\"no\">No</option>
+		<option value=\"yes\">should</option>
+		<option value=\"no\">should not</option>
 		</select>
-		</label>
-		<label for=\"simple_announcement_with_exclusion_8_1_new\">Previous
+		be paged, and the previous and next links should read 
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_8_1_new\" />
-		</label>
-		<label for=\"simple_announcement_with_exclusion_8_2_new\">Next
+		 and 
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_8_2_new\" />
-		</label>				
-		<label><input type=\"submit\" name=\"submit_new\" value=\"Save New\" /></label>";
+		(respectively).  
+		<input type=\"submit\" name=\"submit_new\" value=\"I would like to save (or edit) this loop.\" />";
 		if(!isset($_POST['dropConfigs'])){
 			echo "
-			<label><input type=\"submit\" name=\"dropConfigs\" value=\"Delete all saves\" /></label>
+			<input type=\"submit\" name=\"dropConfigs\" value=\"I would like to delete all of my saved loops.\" />
 			";
 		}			 
 		if(isset($_POST['dropConfigs'])){
 			echo "
-			<label><input type=\"submit\" name=\"dropConfigsyes\" value=\"Can't be undone\" /></label>
+			<input type=\"submit\" name=\"dropConfigsyes\" value=\"I am sure.  Delete them.\" />
 			";		
 		}
 		echo "</form>";
@@ -538,6 +488,7 @@
 			saweID = $SAWE_editing_this
 			") ;
 		}
-		echo "</div>";
+		echo "</div>
+		</div>";
 	}
 ?>
