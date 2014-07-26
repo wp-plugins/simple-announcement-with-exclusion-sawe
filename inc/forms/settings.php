@@ -1,5 +1,6 @@
 <?php 
 	function print_simple_announcement_with_exclusion_form() {
+		global $wpdb;
 		echo "<div class=\"exclusions\">
 		<input type=\"radio\" id=\"instance1\" name=\"selectFromThis\" class=\"instanceTrigger1\"><label for=\"instance1\">Exclusion rules</label>
 		<input type=\"radio\" id=\"instance2\" name=\"selectFromThis\" class=\"instanceTrigger2\"><label for=\"instance2\">Saved loops</label>
@@ -184,89 +185,96 @@
 	// Save states form
 		echo "
 			<div class=\"instance2\">";
-		global $wpdb;
+		
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
-		$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
-		foreach ($SAWE_table_ad as $SAWE_table_admin) {
-			$sawe_this_ID = $SAWE_table_admin->saweID;
-			$saweDIV = $SAWE_table_admin->saweDIV;
-			$saweTYPE = $SAWE_table_admin->saweTYPE;
-			$saweCAT = $SAWE_table_admin->saweCAT;
-			$saweTAG = $SAWE_table_admin->saweTAG;
-			$saweFORMAT = $SAWE_table_admin->saweFORMAT;
-			$saweAMOUNT = $SAWE_table_admin->saweAMOUNT;
-			$saweBY = $SAWE_table_admin->saweBY;
-			$saweORDER = $SAWE_table_admin->saweORDER;
-			$saweTHUMBS = $SAWE_table_admin->saweTHUMBS;
-			$saweTITLES = $SAWE_table_admin->saweTITLES;
-			$saweSHOW = $SAWE_table_admin->saweSHOW;
-			$sawePAGED = $SAWE_table_admin->sawePAGED;
-			$sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
-			$saweNEXT = $SAWE_table_admin->saweNEXT;
-			echo 
-			"
-			<div class=\"posttypeselection\">
-			 [sawe config_id=\"",$SAWE_table_admin->saweID,"\"] will 
-			show $saweAMOUNT ";
-			if ($saweAMOUNT === '1') { 
-				echo "item"; 
-			} elseif ($saweAMOUNT >= '1') { 
-				echo "items"; 
-			} else {
-				echo "nothing";
-			}			
-			echo " (";
-			if ($saweTHUMBS === "yes") { echo "Thumbnails, "; }
-			elseif ($saweTHUMBS === "no") { echo "No thumbnails,  "; }
-			if ($saweTITLES === "yes") { echo "titles, "; }
-			elseif ($saweTITLES === "no") { echo "No titles, "; }
-			if ($saweSHOW === "excerpt") { echo "and post excerpt  "; }
-			elseif ($saweSHOW === "content") { echo "full post content"; }
-			elseif ($saweSHOW === "nothing") { echo "no post content"; }
-			echo ")";
-			if ($sawePAGED === "yes") { echo ", paged, "; }
-			elseif ($sawePAGED === "no") { echo ", non-paged, "; }
-			if ($saweORDER === "ASC") { echo "in ascending order"; }
-			elseif ($saweORDER === "DESC") { echo "in descending order"; }
-			if ($saweBY === "date") { echo " by date, "; }
-			elseif ($saweBY === "title") { echo " by title, "; }
-			elseif ($saweBY === "random") { echo " randomly, "; }
+			global $wpdb;
+			$SAWE_table_ad = $wpdb->get_results ("SELECT * FROM $SAWE_table_name ORDER BY saweID DESC");
+			foreach ($SAWE_table_ad as $SAWE_table_admin) {
+				$sawe_this_ID = $SAWE_table_admin->saweID;
+				$saweDIV = $SAWE_table_admin->saweDIV;
+				$saweTYPE = $SAWE_table_admin->saweTYPE;
+				$saweCAT = $SAWE_table_admin->saweCAT;
+				$saweTAG = $SAWE_table_admin->saweTAG;
+				$saweFORMAT = $SAWE_table_admin->saweFORMAT;
+				$saweAMOUNT = $SAWE_table_admin->saweAMOUNT;
+				$saweBY = $SAWE_table_admin->saweBY;
+				$saweORDER = $SAWE_table_admin->saweORDER;
+				$saweTHUMBS = $SAWE_table_admin->saweTHUMBS;
+				$saweTITLES = $SAWE_table_admin->saweTITLES;
+				$saweSHOW = $SAWE_table_admin->saweSHOW;
+				$sawePAGED = $SAWE_table_admin->sawePAGED;
+				$sawePREVIOUS = $SAWE_table_admin->sawePREVIOUS;
+				$saweNEXT = $SAWE_table_admin->saweNEXT;
+				echo 
+				"
+				<div class=\"posttypeselection\">
+				 [sawe config_id=\"",$SAWE_table_admin->saweID,"\"] will 
+				show $saweAMOUNT ";
+				if ($saweAMOUNT === '1') { 
+					echo "item"; 
+				} elseif ($saweAMOUNT >= '1') { 
+					echo "items"; 
+				} else {
+					echo "nothing";
+				}			
+				echo " (";
+				if ($saweTHUMBS === "yes") { echo "Thumbnails, "; }
+				elseif ($saweTHUMBS === "no") { echo "No thumbnails,  "; }
+				if ($saweTITLES === "yes") { echo "titles, "; }
+				elseif ($saweTITLES === "no") { echo "No titles, "; }
+				if ($saweSHOW === "excerpt") { echo "and post excerpt  "; }
+				elseif ($saweSHOW === "content") { echo "full post content"; }
+				elseif ($saweSHOW === "nothing") { echo "no post content"; }
+				echo ")";
+				if ($sawePAGED === "yes") { echo ", paged, "; }
+				elseif ($sawePAGED === "no") { echo ", non-paged, "; }
+				if ($saweORDER === "ASC") { echo "in ascending order"; }
+				elseif ($saweORDER === "DESC") { echo "in descending order"; }
+				if ($saweBY === "date") { echo " by date, "; }
+				elseif ($saweBY === "title") { echo " by title, "; }
+				elseif ($saweBY === "random") { echo " randomly, "; }
 
-			if ($saweDIV != "") { echo " in the div labeled $saweDIV (#SAWE_shortcode)"; }
-			elseif ($saweDIV === "") { echo " in the div labeled #SAWE_shortcode (no custom class)"; }
-			if ($saweNEXT != "" || $sawePREVIOUS != "") {
+				if ($saweDIV != "") { echo " in the div labeled $saweDIV (#SAWE_shortcode)"; }
+				elseif ($saweDIV === "") { echo " in the div labeled #SAWE_shortcode (no custom class)"; }
+			
+			
 				echo ", with navigation links marked as follows:  ";
-				if ($saweNEXT != "") { echo "Next $saweNEXT."; }
-				elseif ($saweNEXT === "") { echo "Next (has no custom title). "; }
-				if ($sawePREVIOUS !="") { echo "and Previous $sawePREVIOUS."; }
-				elseif ($sawePREVIOUS === "") { echo "and Previous (has no custom title)."; }
-			} else { 
+				
+				if( $saweNEXT ) { echo "Next ( $saweNEXT ) "; }
+				elseif( !$saweNEXT ) { echo "Next (has no custom title). "; }
+				
+				if( $sawePREVIOUS ) { echo " Previous ( $sawePREVIOUS )"; }
+				elseif( !$sawePREVIOUS ) { echo "and Previous (has no custom title)."; }
+				elseif( $sawePREVIOUS && $saweNEXT ) { echo "and Previous ( $sawePrevious )"; }
+				
+			
 				echo " from "; 
+			
+				if ( $saweCAT != "" || $saweTAG != "" ) {
+					echo "category (or tag) id(s) <strong>" . $saweCAT . $saweTAG . "</strong>";
+				} else {
+					echo "post format $saweFORMAT";
+				}
+				if(isset($_POST[$sawe_this_ID])){
+					echo "
+					<form method=\"post\" class=\"SAWE_item_form\">
+					<input type=\"submit\" name=\"yes_$sawe_this_ID\" value=\"[Are you sure?]\">
+					</form>";
+				}
+				if(!isset($_POST[$sawe_this_ID])){
+					echo "
+					<form method=\"post\" class=\"SAWE_item_form\">
+					<input type=\"submit\" name=\"$sawe_this_ID\" value=\"[Delete this save state?]\">
+					</form>
+					";
+				}
+				echo "</div>";
+				if(isset($_POST['yes_'.$sawe_this_ID])){
+					$sawe_current = plugin_basename(__FILE__);
+					$wpdb->query("DELETE FROM $SAWE_table_name WHERE saweID = '$sawe_this_ID'");
+				}		
 			}
-			if ( $saweCAT != "" || $saweTAG != "" ) {
-				echo "category (or tag) id(s) <strong>" . $saweCAT . $saweTAG . "</strong>";
-			} else {
-				echo "post format $saweFORMAT";
-			}
-			if(isset($_POST[$sawe_this_ID])){
-				echo "
-				<form method=\"post\" class=\"SAWE_item_form\">
-				<input type=\"submit\" name=\"yes_$sawe_this_ID\" value=\"[Are you sure?]\">
-				</form>";
-			}
-			if(!isset($_POST[$sawe_this_ID])){
-				echo "
-				<form method=\"post\" class=\"SAWE_item_form\">
-				<input type=\"submit\" name=\"$sawe_this_ID\" value=\"[Delete this save state?]\">
-				</form>
-				";
-			}
-			echo "</div>";
-			if(isset($_POST['yes_'.$sawe_this_ID])){
-				$sawe_current = plugin_basename(__FILE__);
-				$wpdb->query("DELETE FROM $SAWE_table_name WHERE saweID = '$sawe_this_ID'");
-			}		
-		}
+
 		echo "</div>
 		<div class=\"instance3\">
 		<div class=\"posttypeselection\">
@@ -332,14 +340,14 @@
 		the div class should be 
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_0_new\" />.  
 		It will show  
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_2_new\" /> posts from the 		
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_2_new\" /> posts from the  		
 		
 		
 		<input id=\"selectiona\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"cat\"><label class=\"inline\" for=\"selectiona\">categories</label>
 		<input id=\"selectionb\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"tag\"><label class=\"inline\" for=\"selectionb\">tags</label>
 		<input id=\"selectionc\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"post-format\"><label class=\"inline\" for=\"selectionc\">post format</label>
 		
-		
+		(<small>click one</small>) 
 		
 		<input type=\"text\" id=\"selection1\" name=\"simple_announcement_with_exclusion_1_1_new\">
 		<select  id=\"selection2\"name=\"simple_announcement_with_exclusion_1_2_new\">
@@ -442,6 +450,60 @@
 			$sawePAGED = $_REQUEST["simple_announcement_with_exclusion_7_new"];
 			$sawePREVIOUS = $_REQUEST["simple_announcement_with_exclusion_8_1_new"];
 			$saweNEXT = $_REQUEST["simple_announcement_with_exclusion_8_2_new"];
+			
+									$wpdb->query( 
+										$wpdb->prepare( 
+											"INSERT INTO $SAWE_table_name 
+											(
+												saweID,
+												saweDIV,
+												saweTYPE,
+												saweCAT,
+												saweTAG,
+												saweFORMAT,
+												saweAMOUNT,
+												saweBY,
+												saweORDER,
+												saweTHUMBS,
+												saweTITLES,
+												saweSHOW,
+												sawePAGED,
+												sawePREVIOUS,
+												saweNEXT
+											) VALUES (
+												%d,
+												%s,
+												%s,
+												%s,
+												%s,
+												%s,
+												%d,
+												%s,
+												%s,
+												%s,
+												%s,
+												%s,
+												%s,
+												%s,
+												%s
+											)",
+											$saweDIV,
+											$saweTYPE,
+											$saweCAT,
+											$saweTAG,
+											$saweFORMAT,
+											$saweAMOUNT,
+											$saweBY,
+											$saweORDER,
+											$saweTHUMBS,
+											$saweTITLES,
+											$saweSHOW,
+											$sawePAGED,
+											$sawePREVIOUS,
+											$saweNEXT
+										)
+									);			
+			
 			$wpdb->query("INSERT INTO $SAWE_table_name 
 			( saweID, saweDIV, saweTYPE, saweCAT, saweTAG, saweFORMAT, saweAMOUNT, saweBY, saweORDER, saweTHUMBS, saweTITLES, saweSHOW, sawePAGED, sawePREVIOUS, saweNEXT ) VALUES 
 			('', '$saweDIV', '$saweTYPE', '$saweCAT', '$saweTAG', '$saweFORMAT', '$saweAMOUNT', '$saweBY', '$saweORDER', '$saweTHUMBS', '$saweTITLES', '$saweSHOW', '$sawePAGED', '$sawePREVIOUS', '$saweNEXT' )") ;

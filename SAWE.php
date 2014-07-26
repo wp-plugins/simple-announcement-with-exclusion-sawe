@@ -5,7 +5,7 @@
 	 * Author: Matthew Trevino
 	 * Author URI: http://papercaves.com
 	 * Plugin URI: http://papercaves.com/sawe/
-	 * Version: 5.0
+	 * Version: 5.0.0.1
 	 * License: GPL2
 	 */
  
@@ -40,7 +40,7 @@
 
 	function simple_announcement_with_exclusions_page_content() {
 		if (is_admin() ) {
-			echo "<div class=\"papercaves_plugin_container\"><h2>Simple Announcement With Exclusion</h2><p>Created by Matt @ <a href=\"http://papercaves.com/\">Paper Caves</a> &mdash; <a href=\"http://papercaves.com/sawe/\">Documentation</a><br />
+			echo "<div class=\"papercaves_plugin_container\"><h2>Simple Announcement With Exclusion</h2><p>
 			<strong><em>Don't forget to <a href=\"http://wordpress.org/support/view/plugin-reviews/simple-announcement-with-exclusion-sawe\">rate and review</a> this plugin if you found it helpful!</em></strong></p>";
 			if(isset($_POST["submit"])){
 				if ($_REQUEST["submit"]) { 
@@ -331,6 +331,7 @@
 	
 	function SAWE_filter_home( $query ) {	
 		global $simple_announcement_with_exclusion_9;
+		global $simple_announcement_with_exclusion_9_1;
 		global $simple_announcement_with_exclusion_9_2;
 		global $simple_announcement_with_exclusion_9_3;
 		global $simple_announcement_with_exclusion_9_4;
@@ -470,7 +471,8 @@
 				$t44 = explode(',', str_replace(' ', '', $t_4));			
 					
 				$tax_query = array(
-					'relation' => 'AND OR',
+					'ignore_sticky_posts' => true,
+					'post_type' => 'any',
 					array(
 						'taxonomy' => 'category',
 						'terms' => $c44,

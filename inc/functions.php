@@ -13,12 +13,12 @@
 		return $links; 
 	}
 
-	function simple_announcement_with_exclusion_table() {																			
+	function simple_announcement_with_exclusion_table() {
 		global $wpdb;
 		$SAWE_db_version = '1';
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 			$SAWE_sql = "CREATE TABLE $SAWE_table_name (
-			saweID INT( 11 ) NOT NULL PRIMARY KEY AUTO_INCREMENT , 
+			saweID BIGINT( 11 ) NOT NULL PRIMARY KEY AUTO_INCREMENT , 
 			saweDIV TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 			saweTYPE TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 			saweCAT TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
