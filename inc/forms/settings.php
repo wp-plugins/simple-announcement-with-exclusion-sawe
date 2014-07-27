@@ -85,7 +85,7 @@
 		
 		
 		<div class=\"posttypeselection\">		
-		I want to hide the following 
+		I want to hide the following (comma separated list of/single selection) 
 		<input type=\"radio\" id=\"instance5\" name=\"selectFromThisToo\" class=\"instanceTrigger5\"><label class=\"inline\" for=\"instance5\">categories</label>
 		<input type=\"radio\" id=\"instance6\" name=\"selectFromThisToo\" class=\"instanceTrigger6\"><label class=\"inline\" for=\"instance6\">tags</label>
 		<input type=\"radio\" id=\"instance7\" name=\"selectFromThisToo\" class=\"instanceTrigger7\"><label class=\"inline\" for=\"instance7\">post-formats</label>:
@@ -234,7 +234,7 @@
 				elseif ($saweBY === "title") { echo " by title, "; }
 				elseif ($saweBY === "random") { echo " randomly, "; }
 
-				if ($saweDIV != "") { echo " in the div labeled $saweDIV (#SAWE_shortcode)"; }
+				if ($saweDIV != "") { echo " in the div .$saweDIV (#SAWE_shortcode)"; }
 				elseif ($saweDIV === "") { echo " in the div labeled #SAWE_shortcode (no custom class)"; }
 			
 			
@@ -279,23 +279,23 @@
 		<div class=\"instance3\">
 		<div class=\"posttypeselection\">
 		<form method=\"post\">
-		For the default loop (displayed with [sawe]), 
-		the class should be 
+		For the default loop (displayed on a post or a page with the shortcode [sawe]), 
+		the container class should be 
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_0\" value=\"",$simple_announcement_with_exclusion_default_0,"\" />
-		.  It should show 
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_1\" value=\"",$simple_announcement_with_exclusion_default_1,"\" />
-		 posts, ordered by 
-		<select name=\"simple_announcement_with_exclusion_default_2\">
-		<option value=\"date\" ";if ($simple_announcement_with_exclusion_default_2 === "date") { echo "selected=\"selected\""; } echo ">Date</option>
-		<option value=\"title\" ";if ($simple_announcement_with_exclusion_default_2 === "title") { echo "selected=\"selected\""; } echo ">Title</option>
-		<option value=\"rand\" ";if ($simple_announcement_with_exclusion_default_2 === "rand") { echo "selected=\"selected\""; } echo ">Random</option>
-		</select>
+		.  The amount of posts it should show per page is 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_default_1\" value=\"",$simple_announcement_with_exclusion_default_1,"\" />,
 		 in 
 		<select name=\"simple_announcement_with_exclusion_default_3\">
 		<option value=\"ASC\" ";if ($simple_announcement_with_exclusion_default_3 === "ASC") { echo "selected=\"selected\""; } echo ">Ascending</option>
 		<option value=\"DESC\" ";if ($simple_announcement_with_exclusion_default_3 === "DESC") { echo "selected=\"selected\""; } echo ">Descending</option>
 		</select>
-		 order.  I 
+		order, by 
+		<select name=\"simple_announcement_with_exclusion_default_2\">
+		<option value=\"date\" ";if ($simple_announcement_with_exclusion_default_2 === "date") { echo "selected=\"selected\""; } echo ">Date</option>
+		<option value=\"title\" ";if ($simple_announcement_with_exclusion_default_2 === "title") { echo "selected=\"selected\""; } echo ">Title</option>
+		<option value=\"rand\" ";if ($simple_announcement_with_exclusion_default_2 === "rand") { echo "selected=\"selected\""; } echo ">Random</option>
+		</select>		 
+		 .  I 
 		<select name=\"simple_announcement_with_exclusion_default_4\">
 		<option value=\"yes\" ";if ($simple_announcement_with_exclusion_default_4 === "yes") { echo "selected=\"selected\""; } echo ">do</option>
 		<option value=\"no\" ";if ($simple_announcement_with_exclusion_default_4 === "no") { echo "selected=\"selected\""; } echo ">do not</option>
@@ -337,12 +337,10 @@
 			echo "<option value=\"$SAWE_table_admin->saweID\">edit id $SAWE_table_admin->saweID</option>";
 		}		
 		echo "</select> loop with the following: 
-		the div class should be 
+		the container class should be
 		<input type=\"text\" name=\"simple_announcement_with_exclusion_0_new\" />.  
-		It will show  
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_2_new\" /> posts from the  		
-		
-		
+		The amount of posts it will show per page is 
+		<input type=\"text\" name=\"simple_announcement_with_exclusion_2_new\" /> from the (comma separated list of) 
 		<input id=\"selectiona\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"cat\"><label class=\"inline\" for=\"selectiona\">categories</label>
 		<input id=\"selectionb\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"tag\"><label class=\"inline\" for=\"selectionb\">tags</label>
 		<input id=\"selectionc\" type=\"radio\" name=\"simple_announcement_with_exclusion_1_new\" value=\"post-format\"><label class=\"inline\" for=\"selectionc\">post format</label>
@@ -370,18 +368,19 @@
 		<option value=\"post-format-audio\">Audio</option>
 		<option value=\"post-format-chat\">Chat</option>
 		</select>, 
-		ordered by 
-		<select name=\"simple_announcement_with_exclusion_3_new\">
-		<option value=\"date\">Date</option>
-		<option value=\"title\">Title</option>
-		<option value=\"rand\">Random</option>
-		</select>
 		in 
 		<select name=\"simple_announcement_with_exclusion_3_2_new\">
 		<option value=\"ASC\">Ascending</option>
 		<option value=\"DESC\">Descending</option>
 		</select>
-        order.  I 
+        order, 		
+		by 
+		<select name=\"simple_announcement_with_exclusion_3_new\">
+		<option value=\"date\">Date</option>
+		<option value=\"title\">Title</option>
+		<option value=\"rand\">Random</option>
+		</select>
+		.  I 
 		<select name=\"simple_announcement_with_exclusion_4_new\">
 		<option value=\"yes\">do</option>
 		<option value=\"no\">do not</option>
@@ -392,7 +391,7 @@
 		<option value=\"yes\">should</option>
 		<option value=\"no\">should not</option>
 		</select>
-		shown, 
+		be shown, 
 		and I would like to show 
 		<select name=\"simple_announcement_with_exclusion_4_3_new\">
 		<option value=\"nothing\">nothing</option>
@@ -430,9 +429,7 @@
 			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
 		}
 		if(
-			isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_1_new"] != "" ||
-			isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_2_new"] != "" ||
-			isset($_POST['submit_new']) && $_REQUEST["edit_this"] === "" && $_REQUEST["simple_announcement_with_exclusion_1_3_new"] != ""
+			isset($_POST['submit_new']) && $_REQUEST["edit_this"] === ""
 		){
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -509,9 +506,7 @@
 			('', '$saweDIV', '$saweTYPE', '$saweCAT', '$saweTAG', '$saweFORMAT', '$saweAMOUNT', '$saweBY', '$saweORDER', '$saweTHUMBS', '$saweTITLES', '$saweSHOW', '$sawePAGED', '$sawePREVIOUS', '$saweNEXT' )") ;
 		}
 		if(
-		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_1_new"] != "" ||
-		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_2_new"] != "" ||
-		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != "" && $_REQUEST["simple_announcement_with_exclusion_1_3_new"] != ""		
+		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != ""
 		){
 			$SAWE_editing_this = $_REQUEST["edit_this"];
 			global $wpdb;
