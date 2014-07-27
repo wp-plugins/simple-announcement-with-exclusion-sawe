@@ -1,32 +1,9 @@
 <?php 
 	function print_simple_announcement_with_exclusion_form() {
 		global $wpdb;
-		echo "<div class=\"exclusions\">
-		<input type=\"radio\" id=\"instance1\" name=\"selectFromThis\" class=\"instanceTrigger1\"><label for=\"instance1\">Exclusion rules</label>
-		<input type=\"radio\" id=\"instance2\" name=\"selectFromThis\" class=\"instanceTrigger2\"><label for=\"instance2\">Saved loops</label>
-		<input type=\"radio\" id=\"instance3\" name=\"selectFromThis\" class=\"instanceTrigger3\"><label for=\"instance3\">Default loop</label>
-		<input type=\"radio\" id=\"instance4\" name=\"selectFromThis\" class=\"instanceTrigger4\"><label for=\"instance4\">New/Edit loops</label>
-		<hr />
 		
-		<div class=\"list\"><div>";
 		$showmecats =  get_categories('taxonomy=category'); 
-			echo "<item>Category ids</item>";
-		foreach ($showmecats as $catsshown) {
-			echo "<item><span class=\"listleft\">",$catsshown->cat_name,"</span><span class=\"listright\">",$catsshown->cat_ID,"</span></item>";
-		}		
-			echo "</div><div>";
 		$showmetags =  get_categories('taxonomy=post_tag'); 
-			echo "<item>Tag ids</item>";
-		foreach ($showmetags as $tagsshown) {
-			echo "<item><span class=\"listleft\">",$tagsshown->cat_name,"</span><span class=\"listright\">",$tagsshown->cat_ID,"</span></item>";
-		}		
-		echo "</div></div>
-		
-		<hr />
-		
-		
-		";
-		
 		$simple_announcement_with_exclusion_default_0 = get_option("simple_announcement_with_exclusion_default_0");
 		$simple_announcement_with_exclusion_default_1 = get_option("simple_announcement_with_exclusion_default_1");
 		$simple_announcement_with_exclusion_default_2 = get_option("simple_announcement_with_exclusion_default_2");
@@ -53,138 +30,374 @@
 		$simple_announcement_with_exclusion_9_14 = get_option("simple_announcement_with_exclusion_9_14");
 		$simple_announcement_with_exclusion_scheme = get_option("simple_announcement_with_exclusion_scheme");
 		$simple_announcement_with_exclusion_readmore = get_option("simple_announcement_with_exclusion_readmore");
-		$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");	
-		echo "
-		<div class=\"instance1\">
-		<form method=\"post\" class=\"exclude\">
+		$simple_announcement_with_exclusion_delete_on_deactivate = get_option("simple_announcement_with_exclusion_delete_on_deactivate");
 		
-		<div class=\"posttypeselection\">		
-		I 
-		<select name=\"simple_announcement_with_exclusion_6\">
-		<option value=\"yes\" "; if ($simple_announcement_with_exclusion_6 === "yes") { echo " selected=\"selected\""; } echo ">do</option>
-		<option value=\"no\" "; if ($simple_announcement_with_exclusion_6 === "no") { echo " selected=\"selected\""; } echo ">do not</option>
-		</select>
-		want to include the default CSS for this plugin on all pages, 
-		and use the 
-		<select name=\"simple_announcement_with_exclusion_scheme\">
-		<option value=\"tranquil\""; if ($simple_announcement_with_exclusion_scheme === "tranquil") { echo " selected=\"selected\""; } echo ">Tranquil</option>
-		</select>
-		color scheme.  
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_readmore\" value=\"$simple_announcement_with_exclusion_readmore\" />
-		will be my \"Read more\" link text (when using excerpts). 
-		</div>
+		echo '<div class="exclusions">
+		<input type="radio" id="instance1" name="selectFromThis" class="instanceTrigger1"><label for="instance1">Exclusion rules</label>
+		<input type="radio" id="instance2" name="selectFromThis" class="instanceTrigger2"><label for="instance2">Saved loops</label>
+		<input type="radio" id="instance3" name="selectFromThis" class="instanceTrigger3"><label for="instance3">Default loop</label>
+		<input type="radio" id="instance4" name="selectFromThis" class="instanceTrigger4"><label for="instance4">New/Edit loops</label>
+		<hr />';
 		
-		<div class=\"posttypeselection\">
-		I 
-		<select name=\"simple_announcement_with_exclusion_delete_on_deactivate\">
-		<option value=\"yes\" "; if ($simple_announcement_with_exclusion_delete_on_deactivate === "yes") { echo " selected=\"selected\""; } echo ">do</option>
-		<option value=\"no\" "; if ($simple_announcement_with_exclusion_delete_on_deactivate === "no") { echo " selected=\"selected\""; } echo ">do not</option>
-		</select>
-		want to delete all options and databases associated with this plugin when I deactivate it in the admin menu.
+		// Output all categories and tags (with corresponding IDs) in an easy to scroll display
+		// so the user can quickly pick which categories and tags to exclude based on the ID
+		echo '<div class="list">
+			<div>
+				<item>Category ids</item>';
+				foreach ($showmecats as $catsshown) {
+					echo '<item><span class="listleft">' . $catsshown->cat_name . '</span><span class="listright">' . $catsshown->cat_ID .'</span></item>';
+				}
+				echo '</div>
+			<div>
+			<item>Tag ids</item>';
+			foreach ($showmetags as $tagsshown) {
+				echo '<item><span class="listleft">' . $tagsshown->cat_name . '</span><span class="listright">' . $tagsshown->cat_ID . '</span></item>';
+			}
+			echo '</div>
 		</div>
+		<hr />';
 		
 		
-		<div class=\"posttypeselection\">		
-		I want to hide the following (comma separated list of/single selection) 
-		<input type=\"radio\" id=\"instance5\" name=\"selectFromThisToo\" class=\"instanceTrigger5\"><label class=\"inline\" for=\"instance5\">categories</label>
-		<input type=\"radio\" id=\"instance6\" name=\"selectFromThisToo\" class=\"instanceTrigger6\"><label class=\"inline\" for=\"instance6\">tags</label>
-		<input type=\"radio\" id=\"instance7\" name=\"selectFromThisToo\" class=\"instanceTrigger7\"><label class=\"inline\" for=\"instance7\">post-formats</label>:
-		<div class=\"categoriesSelect\">
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_12\" value=\"$simple_announcement_with_exclusion_9_12\">
-		from the <em>feed</em>, 
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_9\" value=\"$simple_announcement_with_exclusion_9\">
-		from the <em>front page</em>, 
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_2\" value=\"$simple_announcement_with_exclusion_9_2\">
-		from tag <em>archives</em>, 
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_3\" value=\"$simple_announcement_with_exclusion_9_3\">
-		and from <em>search results</em>.
-		</div>
-		<div class=\"tagsSelect\">
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_13\" value=\"$simple_announcement_with_exclusion_9_13\">
-		from the <em>feed</em>, 
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_4\" value=\"$simple_announcement_with_exclusion_9_4\">
-		from the <em>front page</em>, 
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_5\" value=\"$simple_announcement_with_exclusion_9_5\">
-		from <em>category archives</em>, 
-		<input type=\"text\" name=\"simple_announcement_with_exclusion_9_7\" value=\"$simple_announcement_with_exclusion_9_7\">
-		and from <em>search results</em>.
-		</div>
-		<div class=\"formatsSelect\">
-		<select name=\"simple_announcement_with_exclusion_9_14\">
-		<option value=\"\">none</option>
-		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
-		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
-		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
-		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
-		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
-		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
-		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
-		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
-		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_14 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
-		</select>
-		from the <em>feed</em>, 
-		<select name=\"simple_announcement_with_exclusion_9_8\">
-		<option value=\"\">none</option>
-		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
-		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
-		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
-		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
-		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
-		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
-		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
-		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
-		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_8 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
-		</select>
-		from the <em>front page</em>, 
-		<select name=\"simple_announcement_with_exclusion_9_9\">
-		<option value=\"\">none</option>
-		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
-		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
-		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
-		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
-		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
-		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
-		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
-		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
-		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_9 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
-		</select>
-		from <em>category archives</em>, 
-		<select name=\"simple_announcement_with_exclusion_9_10\">
-		<option value=\"\">none</option>
-		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
-		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
-		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
-		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
-		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
-		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
-		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
-		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
-		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_10 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
-		</select>
-		from <em>tag archives</em>, 
-		<select name=\"simple_announcement_with_exclusion_9_11\">
-		<option value=\"\">none</option>
-		<option value=\"post-format-aside\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-aside") { echo " selected=\"selected\""; } echo ">Aside</option>
-		<option value=\"post-format-gallery\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-gallery") { echo " selected=\"selected\""; } echo ">Gallery</option>
-		<option value=\"post-format-link\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-link") { echo " selected=\"selected\""; } echo ">Link</option>
-		<option value=\"post-format-image\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-image") { echo " selected=\"selected\""; } echo ">Image</option>
-		<option value=\"post-format-quote\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-quote") { echo " selected=\"selected\""; } echo ">Quote</option>
-		<option value=\"post-format-status\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-status") { echo " selected=\"selected\""; } echo ">Status</option>
-		<option value=\"post-format-video\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-video") { echo " selected=\"selected\""; } echo ">Video</option>
-		<option value=\"post-format-audio\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-audio") { echo " selected=\"selected\""; } echo ">Audio</option>
-		<option value=\"post-format-chat\"";if ($simple_announcement_with_exclusion_9_11 === "post-format-chat") { echo " selected=\"selected\""; } echo ">Chat</option>
-		</select>
-		and from <em>search results</em>.
-		</div>		
-		</div>
-		<input type=\"submit\" name=\"submit\" value=\"Save these settings for me\" />
-		</form>
-		</div>
-		";
+		
+		
+		// ---
+		// Exclusion Rules
+		echo '<div class="instance1">
+			<form method="post" class="exclude">
+				
+				<div class="posttypeselection">
+					I 
+					<select name="simple_announcement_with_exclusion_6">
+						<option value="yes" '; 
+						if( $simple_announcement_with_exclusion_6 === 'yes' ) { 
+							echo ' selected="selected"'; 
+						} 
+						echo '>do</option>
+						<option value="no" '; 
+						if( $simple_announcement_with_exclusion_6 === 'no' ) { 
+							echo ' selected="selected"'; 
+						} 
+						echo '>do not</option>
+					</select>
+					want to include the default CSS for this plugin on all pages, and use the 
+					<select name=\"simple_announcement_with_exclusion_scheme\">
+						<option value="tranquil"'; 
+						if( $simple_announcement_with_exclusion_scheme === 'tranquil' ) { 
+							echo ' selected="selected"'; 
+						} 
+						echo '>Tranquil</option>
+					</select>
+					color scheme.  
+					<input type="text" name="simple_announcement_with_exclusion_readmore" value="' . $simple_announcement_with_exclusion_readmore . '" /> will be my "Read more" link text (when using excerpts). 
+				</div>		
+				
+				<div class="posttypeselection">
+					I 
+					<select name="simple_announcement_with_exclusion_delete_on_deactivate">
+						<option value="yes" '; 
+						if( $simple_announcement_with_exclusion_delete_on_deactivate === 'yes' ) { 
+							echo ' selected="selected"'; 
+						} 
+						echo '>do</option>
+						<option value="no" '; 
+						if( $simple_announcement_with_exclusion_delete_on_deactivate === 'no' ) { 
+							echo ' selected="selected"'; 
+						} 
+						echo '>do not</option>
+					</select>
+					want to delete all options and databases associated with this plugin when I deactivate it in the admin menu.
+				</div>
+				
+				<div class="posttypeselection">		
+					I want to hide the following (comma separated list of/single selection) 
+					<input type="radio" id="instance5" name="selectFromThisToo" class="instanceTrigger5"><label class="inline" for="instance5">categories</label>
+					<input type="radio" id="instance6" name="selectFromThisToo" class="instanceTrigger6"><label class="inline" for="instance6">tags</label>
+					<input type="radio" id="instance7" name="selectFromThisToo" class="instanceTrigger7"><label class="inline" for="instance7">post-formats</label>:
+		
+					<div class="categoriesSelect">
+						<input type="text" name="simple_announcement_with_exclusion_9_12" value="' . $simple_announcement_with_exclusion_9_12 . '">
+						from the <em>feed</em>, 
+						<input type="text" name="simple_announcement_with_exclusion_9" value="' . $simple_announcement_with_exclusion_9 . '">
+						from the <em>front page</em>, 
+						<input type="text" name="simple_announcement_with_exclusion_9_2" value="' . $simple_announcement_with_exclusion_9_2 . '">
+						from tag <em>archives</em>, 
+						<input type="text" name="simple_announcement_with_exclusion_9_3" value="' . $simple_announcement_with_exclusion_9_3 . '">
+						and from <em>search results</em>.
+					</div>
+					
+					<div class="tagsSelect">
+						<input type="text" name="simple_announcement_with_exclusion_9_13" value="' . $simple_announcement_with_exclusion_9_13 . '">
+						from the <em>feed</em>, 
+						<input type="text" name="simple_announcement_with_exclusion_9_4" value="' . $simple_announcement_with_exclusion_9_4 . '">
+						from the <em>front page</em>, 
+						<input type="text" name="simple_announcement_with_exclusion_9_5" value="' . $simple_announcement_with_exclusion_9_5 . '">
+						from <em>category archives</em>, 
+						<input type="text" name="simple_announcement_with_exclusion_9_7" value="' . $simple_announcement_with_exclusion_9_7 . '">
+						and from <em>search results</em>.
+					</div>
+					
+					<div class="formatsSelect">
+						<select name="simple_announcement_with_exclusion_9_14">
+							<option value="">none</option>
+							<option value="post-format-aside"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-aside' ) { 
+								echo ' selected="selected"'; 
+							}
+							echo '>Aside</option>
+							<option value="post-format-gallery"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-gallery' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Gallery</option>
+							<option value="post-format-link"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-link' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Link</option>
+							<option value="post-format-image"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-image' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Image</option>
+							<option value="post-format-quote"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-quote' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Quote</option>
+							<option value="post-format-status"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-status' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Status</option>
+							<option value="post-format-video"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-video' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Video</option>
+							<option value="post-format-audio"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-audio' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Audio</option>
+							<option value="post-format-chat"'; 
+							if( $simple_announcement_with_exclusion_9_14 === 'post-format-chat' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Chat</option>
+						</select>
+						from the <em>feed</em>, 
+						
+						<select name="simple_announcement_with_exclusion_9_8">
+							<option value="">none</option>
+							<option value="post-format-aside"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-aside' ) { 
+								echo ' selected="selected"'; 
+							}
+							echo '>Aside</option>
+							<option value="post-format-gallery"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-gallery') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Gallery</option>
+							<option value="post-format-link"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-link') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Link</option>
+							<option value="post-format-image"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-image') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Image</option>
+							<option value="post-format-quote"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-quote') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Quote</option>
+							<option value="post-format-status"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-status') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Status</option>
+							<option value="post-format-video"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-video') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Video</option>
+							<option value="post-format-audio"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-audio') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Audio</option>
+							<option value="post-format-chat"'; 
+							if( $simple_announcement_with_exclusion_9_8 === 'post-format-chat') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Chat</option>
+						</select>
+						from the <em>front page</em>, 
+						
+						<select name="simple_announcement_with_exclusion_9_9">
+							<option value="">none</option>
+							<option value="post-format-aside"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-aside') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Aside</option>
+							<option value="post-format-gallery"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-gallery') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Gallery</option>
+							<option value="post-format-link"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-link') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Link</option>
+							<option value="post-format-image"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-image') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Image</option>
+							<option value="post-format-quote"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-quote') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Quote</option>
+							<option value="post-format-status"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-status') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Status</option>
+							<option value="post-format-video"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-video') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Video</option>
+							<option value="post-format-audio"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-audio') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Audio</option>
+							<option value="post-format-chat"'; 
+							if( $simple_announcement_with_exclusion_9_9 === 'post-format-chat') {
+								echo ' selected="selected"'; 
+							}
+							echo '>Chat</option>
+						</select>
+						from <em>category archives</em>, 
 
+						<select name="simple_announcement_with_exclusion_9_10">
+							<option value="">none</option>
+							<option value="post-format-aside"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-aside' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Aside</option>
+							<option value="post-format-gallery"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-gallery' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Gallery</option>
+							<option value="post-format-link"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-link' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Link</option>
+							<option value="post-format-image"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-image' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Image</option>
+							<option value="post-format-quote"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-quote' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Quote</option>
+							<option value="post-format-status"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-status' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Status</option>
+							<option value="post-format-video"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-video' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Video</option>
+							<option value="post-format-audio"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-audio' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Audio</option>
+							<option value="post-format-chat"'; 
+							if( $simple_announcement_with_exclusion_9_10 === 'post-format-chat' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Chat</option>
+						</select>
+						from <em>tag archives</em>, 
+						
+						<select name="simple_announcement_with_exclusion_9_11">
+							<option value="">none</option>
+							<option value="post-format-aside"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-aside' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Aside</option>
+							<option value="post-format-gallery"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-gallery' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Gallery</option>
+							<option value="post-format-link"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-link' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Link</option>
+							<option value="post-format-image"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-image' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Image</option>
+							<option value="post-format-quote"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-quote' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Quote</option>
+							<option value="post-format-status"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-status' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Status</option>
+							<option value="post-format-video"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-video' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Video</option>
+							<option value="post-format-audio"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-audio' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Audio</option>
+							<option value="post-format-chat"'; 
+							if( $simple_announcement_with_exclusion_9_11 === 'post-format-chat' ) {
+								echo ' selected="selected"'; 
+							}
+							echo '>Chat</option>
+						</select>
+						and from <em>search results</em>.
+					</div>		
+				</div>
+				<input type="submit" name="submit" value="Save these settings for me" />
+			</form>
+		</div>';
+		// ---
+		
+		
+		
+		
 	// Save states form
-		echo "
-			<div class=\"instance2\">";
+		echo '<div class="instance2">';
 		
 		$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 			global $wpdb;
@@ -325,6 +538,8 @@
 		<input type=\"submit\" name=\"defaultSave\" value=\"I would like to save these defaults.\" />
 		</form>
 		</div></div>
+		
+		
 		<div class=\"instance4\">
 		<div class=\"posttypeselection\">
 		<form method=\"post\">
@@ -428,9 +643,8 @@
 			$wpdb->query("TRUNCATE TABLE $SAWE_table_name");
 			echo "<meta http-equiv=\"refresh\" content=\"0;url=\"$sawe_current\" />";
 		}
-		if(
-			isset($_POST['submit_new']) && $_REQUEST["edit_this"] === ""
-		){
+		
+		if( isset($_POST['submit_new']) && $_REQUEST["edit_this"] === '' && current_user_can( 'manage_options' ) ){
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
 			$saweDIV = $_REQUEST["simple_announcement_with_exclusion_0_new"];
@@ -447,67 +661,65 @@
 			$sawePAGED = $_REQUEST["simple_announcement_with_exclusion_7_new"];
 			$sawePREVIOUS = $_REQUEST["simple_announcement_with_exclusion_8_1_new"];
 			$saweNEXT = $_REQUEST["simple_announcement_with_exclusion_8_2_new"];
-			
-									$wpdb->query( 
-										$wpdb->prepare( 
-											"INSERT INTO $SAWE_table_name 
-											(
-												saweID,
-												saweDIV,
-												saweTYPE,
-												saweCAT,
-												saweTAG,
-												saweFORMAT,
-												saweAMOUNT,
-												saweBY,
-												saweORDER,
-												saweTHUMBS,
-												saweTITLES,
-												saweSHOW,
-												sawePAGED,
-												sawePREVIOUS,
-												saweNEXT
-											) VALUES (
-												%d,
-												%s,
-												%s,
-												%s,
-												%s,
-												%s,
-												%d,
-												%s,
-												%s,
-												%s,
-												%s,
-												%s,
-												%s,
-												%s,
-												%s
-											)",
-											$saweDIV,
-											$saweTYPE,
-											$saweCAT,
-											$saweTAG,
-											$saweFORMAT,
-											$saweAMOUNT,
-											$saweBY,
-											$saweORDER,
-											$saweTHUMBS,
-											$saweTITLES,
-											$saweSHOW,
-											$sawePAGED,
-											$sawePREVIOUS,
-											$saweNEXT
-										)
-									);			
+			$wpdb->query( 
+				$wpdb->prepare( 
+					"INSERT INTO $SAWE_table_name 
+					(
+						saweID,
+						saweDIV,
+						saweTYPE,
+						saweCAT,
+						saweTAG,
+						saweFORMAT,
+						saweAMOUNT,
+						saweBY,
+						saweORDER,
+						saweTHUMBS,
+						saweTITLES,
+						saweSHOW,
+						sawePAGED,
+						sawePREVIOUS,
+						saweNEXT
+					) VALUES (
+						%d,
+						%s,
+						%s,
+						%s,
+						%s,
+						%s,
+						%d,
+						%s,
+						%s,
+						%s,
+						%s,
+						%s,
+						%s,
+						%s,
+						%s
+					)",
+					$saweDIV,
+					$saweTYPE,
+					$saweCAT,
+					$saweTAG,
+					$saweFORMAT,
+					$saweAMOUNT,
+					$saweBY,
+					$saweORDER,
+					$saweTHUMBS,
+					$saweTITLES,
+					$saweSHOW,
+					$sawePAGED,
+					$sawePREVIOUS,
+					$saweNEXT
+				)
+			);
 			
 			$wpdb->query("INSERT INTO $SAWE_table_name 
 			( saweID, saweDIV, saweTYPE, saweCAT, saweTAG, saweFORMAT, saweAMOUNT, saweBY, saweORDER, saweTHUMBS, saweTITLES, saweSHOW, sawePAGED, sawePREVIOUS, saweNEXT ) VALUES 
 			('', '$saweDIV', '$saweTYPE', '$saweCAT', '$saweTAG', '$saweFORMAT', '$saweAMOUNT', '$saweBY', '$saweORDER', '$saweTHUMBS', '$saweTITLES', '$saweSHOW', '$sawePAGED', '$sawePREVIOUS', '$saweNEXT' )") ;
 		}
-		if(
-		isset($_POST['submit_new']) && $_REQUEST["edit_this"] != ""
-		){
+		
+		if( isset($_POST['submit_new']) && $_REQUEST["edit_this"] != '' && current_user_can( 'manage_options' ) ){
 			$SAWE_editing_this = $_REQUEST["edit_this"];
 			global $wpdb;
 			$SAWE_table_name = $wpdb->prefix . "SAWE_config";
@@ -547,5 +759,7 @@
 		}
 		echo "</div>
 		</div>";
+		
+		
 	}
 ?>

@@ -5,7 +5,7 @@
 	 * Author: Matthew Trevino
 	 * Author URI: http://papercaves.com
 	 * Plugin URI: http://papercaves.com/sawe/
-	 * Version: 5.0.0.2
+	 * Version: 5.0.0.3
 	 * License: GPL2
 	 */
  
@@ -13,14 +13,16 @@
 	include( plugin_dir_path( __FILE__ ) . 'inc/variables.php');
 	include( plugin_dir_path( __FILE__ ) . 'inc/forms.php');
 
-	if (!is_admin() && get_option("simple_announcement_with_exclusion_6") === "yes") {												
-		if (get_option("simple_announcement_with_exclusion_scheme") === "tranquil") {
-				wp_register_style( 'SAWEDefaultStylesheet', plugins_url('default.css', __FILE__), '1.4' );
+	if (!is_admin() && get_option("simple_announcement_with_exclusion_6") === "yes") {
+		function SAWEStyleEnqueue() {
+			if (get_option("simple_announcement_with_exclusion_scheme") === "tranquil") {
+					wp_enqueue_style( 'SAWEDefaultStylesheet', plugins_url('default.css', __FILE__) );
 			} else {
-				wp_register_style( 'SAWEDefaultStylesheet', plugins_url('default.css', __FILE__), '1.4' );
+				wp_enqueue_style( 'SAWEDefaultStylesheet', plugins_url('default.css', __FILE__) );
 			}
-		wp_enqueue_style( 'SAWEDefaultStylesheet' );
+		}
 	}
+	add_action( 'wp_enqueue_scripts', 'SAWEStyleEnqueue' );
 	
 	$simple_announcement_with_exclusion_plugin = plugin_basename(__FILE__); 
 	add_filter("plugin_action_links_$simple_announcement_with_exclusion_plugin", 'simple_announcement_with_exclusion_settings_link' );
